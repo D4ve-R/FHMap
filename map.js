@@ -99,7 +99,7 @@ const map = L.map('map', {
     layers: [osm, mask, parking, food, bus]
 }).fitBounds(maxBounds);
 
-const layerControl = L.control.layers({}, overlays).addTo(map);
+const layerControl = L.control.layers({}, overlays, {collapsed: false}).addTo(map);
 
 map.on('overlayadd', (e) => {  
     e.layer.openPopup(); 
