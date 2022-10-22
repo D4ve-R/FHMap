@@ -12,7 +12,7 @@ const maxBounds = [
     [50.760754, 6.082779],
 ];
 
-const fhBounds = [
+const eupenerBounds = [
     [50.757677, 6.079721],
     [50.757382, 6.080875],
     [50.757328, 6.081698],
@@ -25,7 +25,7 @@ const fhBounds = [
     [50.760631, 6.082829],
 ];
 
-const mask = L.polygon([worldBounds, fhBounds], {
+const eupenerMask = L.polygon([worldBounds, eupenerBounds], {
     color: 'black', 
     fillOpacity: 0.8,
     renderer: L.svg({padding: 1})
@@ -37,6 +37,9 @@ const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }
 );
+const satelliteAttr = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+const satelliteUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+const satellite = L.tileLayer(satelliteUrl, {attribution: satelliteAttr});
 
 const mensaIcon = L.divIcon({
     html: '<i class="fa fa-utensils fa-lg"></i>',
@@ -49,10 +52,14 @@ const mensaIcon = L.divIcon({
 const mensa0 = L.marker([50.759407, 6.082322], {icon: mensaIcon}).bindPopup('<b>Mensa Eupenerstr</b><br/><small><a href="https://www.studierendenwerk-aachen.de/de/Gastronomie/mensa-eupener-strasse-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
 const mensa1 = L.marker([50.757915, 6.081952], {icon: mensaIcon}).bindPopup('<b>Mensa Südpark</b><br/><small><a href="https://www.studierendenwerk-aachen.de/de/Essen_und_Trinken/mensa-suedpark-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
 
-const buildE = L.marker([0,0]).bindPopup("Building E"),
-      buildD = L.marker([0,0]).bindPopup("Building D"),
-      buildF = L.marker([0,0]).bindPopup("Building F"),
-      buildC = L.marker([0,0]).bindPopup("Building C");
+const buildE = L.marker([50.759521, 6.082668]).bindPopup("Building E").on('click', (e) => {Swal.fire({title: 'Building E', html: '<div id="map"></div>'});}),
+      buildD = L.marker([50.760445, 6.083084]).bindPopup("Building D"),
+      buildF = L.marker([50.758912, 6.081351]).bindPopup("Building F"),
+      buildC = L.marker([50.758048, 6.08163]).bindPopup("Building C");
+      buildG = L.marker([50.758835, 6.081898]).bindPopup("Building G");
+      buildH = L.marker([50.758761, 6.082601]).bindPopup("Building H");
+      buildW = L.marker([50.758397, 6.081096]).bindPopup("Building W");
+      buildB = L.marker([50.758002, 6.082545]).bindPopup("Building B");
 
 const studentParking = L.polygon([
         [50.759296, 6.083616],
@@ -73,53 +80,59 @@ const visitorParking = L.polygon([
 ).bindPopup("<b>Visitor Parking</b><br/><small>Parking Pass at Reception</small>");
 
 const aseagUrl = 'href="https://aseag.de/fahrplanauskunft" target="_blank" rel="noopener"';
-const bus0 = L.circle([50.758061, 6.085252], {color: orange}).bindPopup("<b>Ronheider Weg, H.1<b><br/><small>-> AC City<br/><a "+aseagUrl+">Aseag</a></small>"),
-      bus1 = L.circle([50.757401, 6.085041], {color: orange}).bindPopup("<b>Ronheider Weg, H.2<b><br/><small>-> AC Siegel<br/><a "+aseagUrl+">Aseag</a></small>"),
-      bus2 = L.circle([50.757662, 6.084355], {color: orange}).bindPopup("<b>Ronheider Weg, H.3<b><br/><small>-> Hangeweiher<br/><a "+aseagUrl+">Aseag</a></small>"),
-      bus3 = L.circle([50.757109, 6.084742], {color: orange}).bindPopup("<b>Ronheider Weg, H.4<b><br/><small>-> BE<br/><a "+aseagUrl+">Aseag</a></small>");
+const bus0 = L.circle([50.758011, 6.085252], {color: orange}).bindPopup("<b>Ronheider Weg, H.1<b><br/><small>-> AC City<br/><a "+aseagUrl+">Aseag</a></small>"),
+      bus1 = L.circle([50.757364, 6.085035], {color: orange}).bindPopup("<b>Ronheider Weg, H.2<b><br/><small>-> AC Siegel<br/><a "+aseagUrl+">Aseag</a></small>"),
+      bus2 = L.circle([50.757627, 6.084363], {color: orange}).bindPopup("<b>Ronheider Weg, H.3<b><br/><small>-> Hangeweiher<br/><a "+aseagUrl+">Aseag</a></small>"),
+      bus3 = L.circle([50.757101, 6.084729], {color: orange}).bindPopup("<b>Ronheider Weg, H.4<b><br/><small>-> BE<br/><a "+aseagUrl+">Aseag</a></small>");
 
-const buildings = L.layerGroup([buildE, buildD, buildF, buildC]);
+const buildings = L.layerGroup([buildB, buildE, buildD, buildF, buildC, buildD, buildG, buildW, buildH]);
 const bus = L.layerGroup([bus0, bus1, bus2, bus3]);
 const food = L.featureGroup([mensa0, mensa1]);
 const parking = L.layerGroup([studentParking, visitorParking]);
 
+const baseLayers = {
+    "Map": osm,
+    "Satellite": satellite
+}
+
 const overlays = {
-    "FH Aachen": mask,
+    "FH Aachen": eupenerMask,
     "Food": food,
     "Student Parking": studentParking,
     "Visitor Parking": visitorParking,
-    "ÖPNV/PT": bus
+    "ÖPNV/PT": bus,
+    "Buildings": buildings
 };
 
 const map = L.map('map', {
     //center: fhBaseCoords,
     zoom: 17,
     minZoom: 16,
-    maxBounds: maxBounds,
-    layers: [osm, mask, parking, food, bus]
+    //maxBounds: maxBounds,
+    layers: [osm, eupenerMask, parking, food, bus]
 }).fitBounds(maxBounds);
 
-const layerControl = L.control.layers({}, overlays, {collapsed: false}).addTo(map);
+const layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
 map.on('overlayadd', (e) => {  
     e.layer.openPopup(); 
+    const latlng = e.layer.getBounds().getCenter();
+    //map.setView(latlng);
 });
 
 var marker = null;
-
-const setLocationMarker = (pos) => { 
-    marker = L.circle([pos.coords.latitude, pos.coords.longitude], {
-        color: 'red',
-        radius: 3
-    }).addTo(map);
-}
 
 function success(pos) {
     if(marker != null)
         map.removeLayer(marker);
 
-    setLocationMarker(pos);
-    map.setView([pos.coords.latitude, pos.coords.longitude], map.getMinZoom() + 1);
+    marker = L.circle([pos.coords.latitude, pos.coords.longitude], {
+        color: 'red',
+        fillOpacity: 0.99,
+        radius: 3
+    }).addTo(map);
+
+    map.setView([pos.coords.latitude, pos.coords.longitude], map.getMinZoom() + 2);
 }
 
 function error(err) {
@@ -137,4 +150,8 @@ L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
     navigator.geolocation.watchPosition(success, error, options);
 }).addTo(map);
 
-
+/*
+map.on('click', function(e) {
+        alert(e.latlng);
+} );
+*/
