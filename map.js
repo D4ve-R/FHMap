@@ -1,6 +1,12 @@
+//import fhAc from './fhac.js';
+
 const lila = '#ed2bea';
 const green = '#03fc41';
 const orange = '#e85e02';
+
+const minZoom = 14;
+const maxZoom = 19;
+const zoom = minZoom;
 
 const fhBaseCoords = [50.761409, 6.08767];
 const worldBounds = [[49, 5], [51, 5], [51, 7], [49, 7]];
@@ -51,14 +57,16 @@ const fhMask = L.polygon([worldBounds, eupenerBounds, bayernBounds, baboBounds],
 });
 
 const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: maxZoom,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }
 );
 
-const satelliteAttr = '&copy; <a href="https://www.esri.com/legal/copyright-trademarks">Esri</a>';
 const satelliteUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-const satellite = L.tileLayer(satelliteUrl, {attribution: satelliteAttr});
+const satellite = L.tileLayer(satelliteUrl, {
+    maxZoom: maxZoom - 1,
+    attribution: '&copy; <a href="https://www.esri.com/legal/copyright-trademarks">Esri</a>'
+});
 
 const mensaIcon = L.divIcon({
     html: '<i class="fa fa-utensils fa-lg"></i>',
@@ -76,10 +84,10 @@ const mensa3 = L.marker([50.764799, 6.078159], {icon: mensaIcon}).bindPopup('<b>
 const buildE = L.marker([50.759521, 6.082668]).bindPopup("Building E").on('click', (e) => {Swal.fire({title: 'Building E', html: '<div id="map"></div>'});}),
       buildD = L.marker([50.760445, 6.083084]).bindPopup("Building D"),
       buildF = L.marker([50.758912, 6.081351]).bindPopup("Building F"),
-      buildC = L.marker([50.758048, 6.08163]).bindPopup("Building C");
-      buildG = L.marker([50.758835, 6.081898]).bindPopup("Building G");
-      buildH = L.marker([50.758761, 6.082601]).bindPopup("Building H");
-      buildW = L.marker([50.758397, 6.081096]).bindPopup("Building W");
+      buildC = L.marker([50.758048, 6.08163]).bindPopup("Building C"),
+      buildG = L.marker([50.758835, 6.081898]).bindPopup("Building G"),
+      buildH = L.marker([50.758761, 6.082601]).bindPopup("Building H"),
+      buildW = L.marker([50.758397, 6.081096]).bindPopup("Building W"),
       buildB = L.marker([50.758002, 6.082545]).bindPopup("Building B");
 
 const studentParking = L.polygon([
@@ -127,21 +135,34 @@ const overlays = {
     "Buildings": buildings
 };
 
+const layerControl = L.control.layers(baseLayers, overlays);
+
 const map = L.map('map', {
     center: fhBaseCoords,
-    zoom: 15,
-    minZoom: 14,
+    zoom: zoom,
+    minZoom: minZoom,
     maxBounds: mapBounds,
-    layers: [osm, fhMask, parking, food, bus]
+    layers: [osm, fhMask, parking, food, bus],
 });
 
-const layerControl = L.control.layers(baseLayers, overlays).addTo(map);
+map.addControl(layerControl);
 
 map.on('overlayadd', (e) => {  
     e.layer.openPopup(); 
 });
 
-var marker = null;
+const search = new L.Control.Search({
+    layer: buildings,
+});
+
+map.addControl(search);
+
+/**
+ * device location tracking
+ */
+
+
+let marker = null;
 
 function success(pos) {
     if(marker != null)
@@ -166,8 +187,111 @@ const options = {
     maximumAge: 0
 };
 
+let track = false;
+let handlerId = 0;
 L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
-    navigator.geolocation.getCurrentPosition(success, error, options);
-    navigator.geolocation.watchPosition(success, error, options);
+    if(!track) {
+        navigator.geolocation.getCurrentPosition(success, error, options);
+        handlerId = navigator.geolocation.watchPosition(success, error, options);
+        track = true;
+    }
+    else {
+        navigator.geolocation.clearWatch(handlerId);
+        // map.removeLayer(marker);
+        // marker.remove();
+        track = false;
+    }
 }).addTo(map);
 
+/**
+ * Add a marker at location
+ *
+ */
+
+const copyToClip = () => {
+let text = document.getElementById('locationMarkerText');
+navigator.clipboard.writeText(text.innerHTML);
+};
+
+const locationMarkerIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -40],
+    shadowSize: [41, 41]
+});
+
+const locationMarker = L.marker([], {
+    icon: locationMarkerIcon,
+});
+
+const addHandler = (e) => {
+    L.DomUtil.removeClass(map.getContainer(), 'leaflet-crosshair');
+    L.DomUtil.removeClass(map.getContainer(), 'leaflet-interactive');
+    L.DomUtil.addClass(map.getContainer(), 'leaflet-grab');
+    locationMarker.setLatLng(e.latlng).addTo(map);
+    locationMarker._draggable = true;
+    let link = window.location.href + '?lat=' + e.latlng.lat + '&lng=' + e.latlng.lng;
+    locationMarker.bindPopup(
+        `<div style="display: flex; padding: 1rem; background-color: #ccc; border-radius: 1rem;">
+            <p id="locationMarkerText">${link}</p>
+            <button style="height: 22px; width: 22px;" onclick="copyToClip()">
+                <i class="fa-solid fa-clipboard fa-lg"></i>
+            </button>
+        </div>
+        `        
+    ).openPopup();
+
+
+    map.off('click', addHandler);
+};
+
+let adding = false;
+
+L.easyButton('fa-plus fa-lg', (btn, map) => {
+    if(!adding) {
+        adding = true;
+        L.DomUtil.removeClass(map.getContainer(), 'leaflet-grab');
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-crosshair');
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-interactive');
+        map.on('click', addHandler);
+    }
+    else {
+        adding = false;
+        L.DomUtil.removeClass(map.getContainer(), 'leaflet-crosshair');
+        L.DomUtil.removeClass(map.getContainer(), 'leaflet-interactive');
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-grab');
+        locationMarker.remove();
+        map.off('click', addHandler);
+    }
+}, { position: 'topright'}).addTo(map);
+
+/**
+ * Read locationMarker position from url params
+ */
+
+function getUrlParam(name){
+    if(name=(new RegExp('[?&;]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
+        return decodeURIComponent(name[1]);
+}
+
+
+const targetMarkerIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -40],
+    shadowSize: [41, 41]
+});
+
+const lat = getUrlParam('lat');
+const lng = getUrlParam('lng');
+
+if(lat != undefined && lng != undefined)
+{
+    L.marker([lat, lng], {
+        icon: targetMarkerIcon,
+    }).addTo(map);
+}
