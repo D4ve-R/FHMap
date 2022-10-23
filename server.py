@@ -1,15 +1,20 @@
+import argparse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import ssl
 
-host = '192.168.178.147'
-port = 4443
+parser = argparse.ArgumentParser(description="dev https server for FHMap")
+parser.add_argument('-H', '--host', type=str, default='127.0.0.1')
+parser.add_argument('-P', '--port', type=int, default=4443)
 
-httpd = HTTPServer((host, port), SimpleHTTPRequestHandler)
+if __name__ == '__main__':
+    args = parser.parse_args()
 
-httpd.socket = ssl.wrap_socket (httpd.socket, 
+    httpd = HTTPServer((args.host, args.port), SimpleHTTPRequestHandler)
+
+    httpd.socket = ssl.wrap_socket (httpd.socket, 
                 keyfile="server/key.pem", 
                 certfile='server/cert.pem',
                 server_side=True)
 
-print(f"Server started https://{host}:{port}")
-httpd.serve_forever()
+    print(f"Server started https://{args.host}:{args.port}")
+    httpd.serve_forever()
