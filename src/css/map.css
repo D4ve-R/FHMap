@@ -1,0 +1,9 @@
+.leaflet-container.crosshair-cursor-enabled {
+    cursor: crosshair;
+}
+
+
+.mensaIcon {
+    text-align: center;
+    line-height: 22px;
+}

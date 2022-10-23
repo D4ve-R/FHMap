@@ -143,19 +143,26 @@ const map = L.map('map', {
     minZoom: minZoom,
     maxBounds: mapBounds,
     layers: [osm, fhMask, parking, food, bus],
-    searchControl: {
-        layer: buildings,
-        position: 'topright',
-    }
 });
 
-layerControl.addTo(map);
+map.addControl(layerControl);
 
 map.on('overlayadd', (e) => {  
     e.layer.openPopup(); 
 });
 
-var marker = null;
+const search = new L.Control.Search({
+    layer: buildings,
+});
+
+map.addControl(search);
+
+/**
+ * device location tracking
+ */
+
+
+let marker = null;
 
 function success(pos) {
     if(marker != null)
@@ -180,22 +187,111 @@ const options = {
     maximumAge: 0
 };
 
+let track = false;
+let handlerId = 0;
 L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
-    navigator.geolocation.getCurrentPosition(success, error, options);
-    navigator.geolocation.watchPosition(success, error, options);
+    if(!track) {
+        navigator.geolocation.getCurrentPosition(success, error, options);
+        handlerId = navigator.geolocation.watchPosition(success, error, options);
+        track = true;
+    }
+    else {
+        navigator.geolocation.clearWatch(handlerId);
+        // map.removeLayer(marker);
+        // marker.remove();
+        track = false;
+    }
 }).addTo(map);
 
-function getUrlParam(name){
-    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
-        return decodeURIComponent(name[1]);
-}
+/**
+ * Add a marker at location
+ *
+ */
+
+const copyToClip = () => {
+let text = document.getElementById('locationMarkerText');
+navigator.clipboard.writeText(text.innerHTML);
+};
+
+const locationMarkerIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -40],
+    shadowSize: [41, 41]
+});
+
+const locationMarker = L.marker([], {
+    icon: locationMarkerIcon,
+});
+
+const addHandler = (e) => {
+    L.DomUtil.removeClass(map.getContainer(), 'leaflet-crosshair');
+    L.DomUtil.removeClass(map.getContainer(), 'leaflet-interactive');
+    L.DomUtil.addClass(map.getContainer(), 'leaflet-grab');
+    locationMarker.setLatLng(e.latlng).addTo(map);
+    locationMarker._draggable = true;
+    let link = window.location.href + '?lat=' + e.latlng.lat + '&lng=' + e.latlng.lng;
+    locationMarker.bindPopup(
+        `<div style="display: flex; padding: 1rem; background-color: #ccc; border-radius: 1rem;">
+            <p id="locationMarkerText">${link}</p>
+            <button style="height: 22px; width: 22px;" onclick="copyToClip()">
+                <i class="fa-solid fa-clipboard fa-lg"></i>
+            </button>
+        </div>
+        `        
+    ).openPopup();
+
+
+    map.off('click', addHandler);
+};
+
+let adding = false;
 
 L.easyButton('fa-plus fa-lg', (btn, map) => {
-    const param = getUrlParam('location');
-    if(param != undefined)
-    {
-
-
+    if(!adding) {
+        adding = true;
+        L.DomUtil.removeClass(map.getContainer(), 'leaflet-grab');
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-crosshair');
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-interactive');
+        map.on('click', addHandler);
+    }
+    else {
+        adding = false;
+        L.DomUtil.removeClass(map.getContainer(), 'leaflet-crosshair');
+        L.DomUtil.removeClass(map.getContainer(), 'leaflet-interactive');
+        L.DomUtil.addClass(map.getContainer(), 'leaflet-grab');
+        locationMarker.remove();
+        map.off('click', addHandler);
     }
 }, { position: 'topright'}).addTo(map);
 
+/**
+ * Read locationMarker position from url params
+ */
+
+function getUrlParam(name){
+    if(name=(new RegExp('[?&;]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
+        return decodeURIComponent(name[1]);
+}
+
+
+const targetMarkerIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -40],
+    shadowSize: [41, 41]
+});
+
+const lat = getUrlParam('lat');
+const lng = getUrlParam('lng');
+
+if(lat != undefined && lng != undefined)
+{
+    L.marker([lat, lng], {
+        icon: targetMarkerIcon,
+    }).addTo(map);
+}
