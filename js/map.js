@@ -1,5 +1,6 @@
 //import fhAc from './fhac.js';
 
+const blue = '#0095ff';
 const lila = '#ed2bea';
 const green = '#03fc41';
 const orange = '#e85e02';
@@ -106,7 +107,9 @@ const visitorParking = L.polygon([
         [50.758901, 6.082537],
         [50.759148, 6.082579]
     ], {color: lila}
-).bindPopup("<b>Visitor Parking</b><br/><small>Parking Pass at Reception</small>");
+).bindPopup("<b>Visitor Parking</b><br/><small>Parking Pass at <a href=" +  window.location.pathname 
+    + "?lat=50.75934933893059&lng=6.08283162117"
+    + ">Reception</a></small>");
 
 const aseagUrl = 'href="https://aseag.de/fahrplanauskunft" target="_blank" rel="noopener"';
 const bus0 = L.circle([50.758011, 6.085252], {color: orange}).bindPopup("<b>Ronheider Weg, H.1<b><br/><small>-> AC City<br/><a "+aseagUrl+">Aseag</a></small>"),
@@ -135,7 +138,26 @@ const overlays = {
     "Buildings": buildings
 };
 
-const layerControl = L.control.layers(baseLayers, overlays);
+L.Map.include({
+    _initControlPos: function () {
+        const corners = this._controlCorners = {},
+        l = 'leaflet-',
+        container = this._controlContainer = L.DomUtil.create('div', l + 'control-container', this._container);
+
+        function createCorner(vSide, hSide) {
+            const className = l + vSide + ' ' + l + hSide;
+
+            corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+        }
+
+        createCorner('top', 'left');
+        createCorner('top', 'right');
+        createCorner('bottom', 'left');
+        createCorner('bottom', 'right');
+        createCorner('top', 'center');
+        createCorner('bottom', 'center');
+    }
+});
 
 const map = L.map('map', {
     center: fhBaseCoords,
@@ -145,6 +167,7 @@ const map = L.map('map', {
     layers: [osm, fhMask, parking, food, bus],
 });
 
+const layerControl = L.control.layers(baseLayers, overlays);
 map.addControl(layerControl);
 
 map.on('overlayadd', (e) => {  
@@ -153,6 +176,8 @@ map.on('overlayadd', (e) => {
 
 const search = new L.Control.Search({
     layer: buildings,
+    position: 'topcenter',
+    collapsed: false
 });
 
 map.addControl(search);
@@ -191,11 +216,13 @@ let track = false;
 let handlerId = 0;
 L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
     if(!track) {
+        btn.button.style.backgroundColor = blue;
         navigator.geolocation.getCurrentPosition(success, error, options);
         handlerId = navigator.geolocation.watchPosition(success, error, options);
         track = true;
     }
     else {
+        btn.button.style.backgroundColor = 'white';
         navigator.geolocation.clearWatch(handlerId);
         // map.removeLayer(marker);
         // marker.remove();
@@ -214,7 +241,7 @@ navigator.clipboard.writeText(text.innerHTML);
 };
 
 const locationMarkerIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -232,10 +259,15 @@ const addHandler = (e) => {
     L.DomUtil.addClass(map.getContainer(), 'leaflet-grab');
     locationMarker.setLatLng(e.latlng).addTo(map);
     locationMarker._draggable = true;
-    let link = window.location.href + '?lat=' + e.latlng.lat + '&lng=' + e.latlng.lng;
+    let link = window.location.protocol + "//" 
+        + window.location.host 
+        + window.location.pathname 
+        + '?lat=' + e.latlng.lat + '&amp;lng=' + e.latlng.lng;
     locationMarker.bindPopup(
-        `<div style="display: flex; padding: 1rem; background-color: #ccc; border-radius: 1rem;">
-            <p id="locationMarkerText">${link}</p>
+        `<div style="display: flex; padding: 0.5rem; background-color: #ccc; border-radius: 1rem;">
+            <p id="locationMarkerText" style="overflow: hidden;" onclick="copyToClip()">
+                ${link}
+            </p>
             <button style="height: 22px; width: 22px;" onclick="copyToClip()">
                 <i class="fa-solid fa-clipboard fa-lg"></i>
             </button>
@@ -243,29 +275,41 @@ const addHandler = (e) => {
         `        
     ).openPopup();
 
-
     map.off('click', addHandler);
 };
 
-let adding = false;
+L.easyButton({ 
+    position: 'topright', 
+    states: [{
+            stateName: 'add-inactive',
+            icon: 'fa-plus',
+            title: 'add',
+            onClick: function(btn, map) {
+                btn.button.style.backgroundColor = blue;
+                L.DomUtil.removeClass(map.getContainer(), 'leaflet-grab');
+                L.DomUtil.addClass(map.getContainer(), 'leaflet-crosshair');
+                L.DomUtil.addClass(map.getContainer(), 'leaflet-interactive');
+                map.on('click', addHandler);
+                btn.state('add-active');
+            }
+        }, 
+        {
+            stateName: 'add-active',
+            icon: 'fa-plus',
+            title: 'add',
+            onClick: function(btn, map) {
+                btn.button.style.backgroundColor = 'white';
+                L.DomUtil.removeClass(map.getContainer(), 'leaflet-crosshair');
+                L.DomUtil.removeClass(map.getContainer(), 'leaflet-interactive');
+                L.DomUtil.addClass(map.getContainer(), 'leaflet-grab');
+                locationMarker.remove();
+                map.off('click', addHandler);
+                btn.state('add-inactive');
+            }
+        }
+    ]
+}).addTo(map);
 
-L.easyButton('fa-plus fa-lg', (btn, map) => {
-    if(!adding) {
-        adding = true;
-        L.DomUtil.removeClass(map.getContainer(), 'leaflet-grab');
-        L.DomUtil.addClass(map.getContainer(), 'leaflet-crosshair');
-        L.DomUtil.addClass(map.getContainer(), 'leaflet-interactive');
-        map.on('click', addHandler);
-    }
-    else {
-        adding = false;
-        L.DomUtil.removeClass(map.getContainer(), 'leaflet-crosshair');
-        L.DomUtil.removeClass(map.getContainer(), 'leaflet-interactive');
-        L.DomUtil.addClass(map.getContainer(), 'leaflet-grab');
-        locationMarker.remove();
-        map.off('click', addHandler);
-    }
-}, { position: 'topright'}).addTo(map);
 
 /**
  * Read locationMarker position from url params
@@ -276,9 +320,8 @@ function getUrlParam(name){
         return decodeURIComponent(name[1]);
 }
 
-
 const targetMarkerIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -294,4 +337,9 @@ if(lat != undefined && lng != undefined)
     L.marker([lat, lng], {
         icon: targetMarkerIcon,
     }).addTo(map);
+
+    map.removeLayer(fhMask);
+    map.removeLayer(buildings);
+    map.setView([lat, lng], map.getMaxZoom() - 1);
 }
+
