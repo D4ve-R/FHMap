@@ -2,9 +2,13 @@
     cursor: crosshair;
 }
 
-
 .mensaIcon {
     text-align: center;
     line-height: 22px;
+}
+
+.leaflet-center {
+    left: 50%;
+    transform: translate(-50%, 0%);
 }
 
