@@ -1,8 +1,11 @@
 chmod +x createSSLKeys.sh
 ./createSSLKeys.sh
 
-mkdir server
-mv *.pem server
+mkdir -p server/cert
+mv *.pem server/cert/
+
+mkdir -p server/public/js
+cp -r src/ server/public/
 
 python3 server.py
 

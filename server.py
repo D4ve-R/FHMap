@@ -1,20 +1,29 @@
 import argparse
+from os import path, system
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import ssl
+
+certPath = path.join('server', 'cert')
+webPath = path.join('server', 'public')
 
 parser = argparse.ArgumentParser(description="dev https server for FHMap")
 parser.add_argument('-H', '--host', type=str, default='127.0.0.1')
 parser.add_argument('-P', '--port', type=int, default=4443)
 
+class RequestHandler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=webPath, **kwargs)
+
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    httpd = HTTPServer((args.host, args.port), SimpleHTTPRequestHandler)
+    httpd = HTTPServer((args.host, args.port), RequestHandler)
 
     httpd.socket = ssl.wrap_socket (httpd.socket, 
-                keyfile="server/key.pem", 
-                certfile='server/cert.pem',
+                keyfile=path.join(certPath, 'key.pem'), 
+                certfile= path.join(certPath, 'cert.pem'),
                 server_side=True)
 
     print(f"Server started https://{args.host}:{args.port}")
+    system(f"open https://{args.host}:{args.port}")
     httpd.serve_forever()

@@ -1,6 +1,12 @@
+//import fhAc from './fhac.js';
+
 const lila = '#ed2bea';
 const green = '#03fc41';
 const orange = '#e85e02';
+
+const minZoom = 14;
+const maxZoom = 19;
+const zoom = minZoom;
 
 const fhBaseCoords = [50.761409, 6.08767];
 const worldBounds = [[49, 5], [51, 5], [51, 7], [49, 7]];
@@ -51,14 +57,16 @@ const fhMask = L.polygon([worldBounds, eupenerBounds, bayernBounds, baboBounds],
 });
 
 const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: maxZoom,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }
 );
 
-const satelliteAttr = '&copy; <a href="https://www.esri.com/legal/copyright-trademarks">Esri</a>';
 const satelliteUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-const satellite = L.tileLayer(satelliteUrl, {attribution: satelliteAttr});
+const satellite = L.tileLayer(satelliteUrl, {
+    maxZoom: maxZoom - 1,
+    attribution: '&copy; <a href="https://www.esri.com/legal/copyright-trademarks">Esri</a>'
+});
 
 const mensaIcon = L.divIcon({
     html: '<i class="fa fa-utensils fa-lg"></i>',
@@ -76,10 +84,10 @@ const mensa3 = L.marker([50.764799, 6.078159], {icon: mensaIcon}).bindPopup('<b>
 const buildE = L.marker([50.759521, 6.082668]).bindPopup("Building E").on('click', (e) => {Swal.fire({title: 'Building E', html: '<div id="map"></div>'});}),
       buildD = L.marker([50.760445, 6.083084]).bindPopup("Building D"),
       buildF = L.marker([50.758912, 6.081351]).bindPopup("Building F"),
-      buildC = L.marker([50.758048, 6.08163]).bindPopup("Building C");
-      buildG = L.marker([50.758835, 6.081898]).bindPopup("Building G");
-      buildH = L.marker([50.758761, 6.082601]).bindPopup("Building H");
-      buildW = L.marker([50.758397, 6.081096]).bindPopup("Building W");
+      buildC = L.marker([50.758048, 6.08163]).bindPopup("Building C"),
+      buildG = L.marker([50.758835, 6.081898]).bindPopup("Building G"),
+      buildH = L.marker([50.758761, 6.082601]).bindPopup("Building H"),
+      buildW = L.marker([50.758397, 6.081096]).bindPopup("Building W"),
       buildB = L.marker([50.758002, 6.082545]).bindPopup("Building B");
 
 const studentParking = L.polygon([
@@ -127,15 +135,17 @@ const overlays = {
     "Buildings": buildings
 };
 
+const layerControl = L.control.layers(baseLayers, overlays);
+
 const map = L.map('map', {
     center: fhBaseCoords,
-    zoom: 15,
-    minZoom: 14,
+    zoom: zoom,
+    minZoom: minZoom,
     maxBounds: mapBounds,
     layers: [osm, fhMask, parking, food, bus]
 });
 
-const layerControl = L.control.layers(baseLayers, overlays).addTo(map);
+layerControl.addTo(map);
 
 map.on('overlayadd', (e) => {  
     e.layer.openPopup(); 
@@ -170,4 +180,18 @@ L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
     navigator.geolocation.getCurrentPosition(success, error, options);
     navigator.geolocation.watchPosition(success, error, options);
 }).addTo(map);
+
+function getUrlParam(name){
+    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
+        return decodeURIComponent(name[1]);
+}
+
+L.easyButton('fa-plus fa-lg', (btn, map) => {
+    const param = getUrlParam('location');
+    if(param != undefined)
+    {
+
+
+    }
+}, { position: 'topright'}).addTo(map);
 
