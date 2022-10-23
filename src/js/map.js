@@ -142,7 +142,11 @@ const map = L.map('map', {
     zoom: zoom,
     minZoom: minZoom,
     maxBounds: mapBounds,
-    layers: [osm, fhMask, parking, food, bus]
+    layers: [osm, fhMask, parking, food, bus],
+    searchControl: {
+        layer: buildings,
+        position: 'topright',
+    }
 });
 
 layerControl.addTo(map);
