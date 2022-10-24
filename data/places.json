@@ -1,0 +1,90 @@
+[
+{
+    "name": "E",
+    "coords": {
+        "lat": 50.759521,
+        "lng": 6.082668
+    }
+},
+{
+    "name": "D",
+    "coords": {
+        "lat": 50.760445,
+        "lng": 6.083084
+    }
+},
+{
+    "name": "G",
+    "coords": {
+        "lat": 50.758835,
+        "lng": 6.081898
+    }
+},
+{
+    "name": "H",
+    "coords": {
+        "lat": 50.758761,
+        "lng": 6.082601
+    }
+},
+{
+    "name": "F",
+    "coords": {
+        "lat": 50.758912,
+        "lng": 6.081351
+    }
+},
+{
+    "name": "C",
+    "coords": {
+        "lat": 50.758048,
+        "lng": 6.08163
+    }
+},
+{
+    "name": "B",
+    "coords": {
+        "lat": 50.758002,
+        "lng": 6.082545
+    }
+},
+{
+    "name": "W",
+    "coords": {
+        "lat": 50.758397,
+        "lng": 6.081096
+    }
+},
+{
+    "name": "Mensa Eup.",
+    "color": "red",
+    "coords": {
+        "lat": 50.759407,
+        "lng": 6.082322
+    }
+},
+{
+    "name": "Mensa Süd.",
+    "color": "red",
+    "coords": {
+        "lat": 50.757915,
+        "lng": 6.081952
+    }
+},
+{
+    "name": "Mensa Bay.",
+    "color": "red",
+    "coords": {
+        "lat": 50.755691,
+        "lng": 6.097063
+    }
+},
+{
+    "name": "Mensa KMAC",
+    "color": "red",
+    "coords": {
+        "lat": 50.764799,
+        "lng": 6.078159
+    }
+}
+]
