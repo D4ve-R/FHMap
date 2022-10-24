@@ -11,7 +11,7 @@ const zoom = minZoom;
 
 const fhBaseCoords = [50.761409, 6.08767];
 const worldBounds = [[49, 5], [51, 5], [51, 7], [49, 7]];
-const mapBounds = [[50.735, 6.038], [50.738, 6.177], [50.805, 6.170], [50.808, 6.04]]
+const mapBounds = [[50.735, 6.038], [50.738, 6.177], [50.832, 6.169], [50.829, 6.035]]
 
 const eupenerBounds = [
     [50.757677, 6.079721],
@@ -309,6 +309,17 @@ L.easyButton({
         }
     ]
 }).addTo(map);
+
+/**
+ * AR Button
+ */
+
+L.easyButton('fa-globe', function(btn, map) {
+    window.location.href = window.location.protocol + "//" 
+        + window.location.host
+        + window.location.pathname
+        + "ar.html"
+}, { position: 'bottomleft' }).addTo(map);
 
 
 /**
