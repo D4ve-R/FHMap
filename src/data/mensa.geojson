@@ -1,0 +1,49 @@
+{
+    "type": "FeatureCollection",
+    "features": 
+[{
+    "type": "Feature",
+    "properties": {
+        "title": "Mensa Eupnener",
+        "popUpContent": "Building E"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.759407,6.082322]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "title": "Mensa Südpark",
+        "popUpContent": "Building D"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.757915,6.081952]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "title": "Mensa KMAC",
+        "popUpContent": "Building G"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.764799,6.078159]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "title": "Mensa Bayern",
+        "popUpContent": "Building H"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.755691,6.097063]
+    }
+}
+]
+}
