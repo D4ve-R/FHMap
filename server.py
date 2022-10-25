@@ -26,4 +26,10 @@ if __name__ == '__main__':
 
     print(f"Server started https://{args.host}:{args.port}")
     system(f"open https://{args.host}:{args.port}")
-    httpd.serve_forever()
+
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("Shutting down server")
+
+    httpd.server_close()
