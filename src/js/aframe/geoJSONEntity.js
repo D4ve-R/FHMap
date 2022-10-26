@@ -48,7 +48,7 @@ function createGeoJSONEntity(feature, projected, primitive, scale, color, positi
     return entity;
 }
 
-AFRAME.registerComponent('geojson', {
+AFRAME.registerComponent('geojson-entity', {
     schema: {
         url: {
             type: 'string',
@@ -77,17 +77,19 @@ AFRAME.registerComponent('geojson', {
 		this.geoJSONEntities = [];
 
 		this.visibilityHandler = () => {
-			for(const entity in this.geoJSONEntities) {
+			this.geoJSONEntities.forEach(entity => {
 				if(entity.getAttribute('distance') > 200)
 					entity.setAttribute('visible', false);
 				else
 					entity.setAttribute('visible', true);
-			}
+			});
 		};
 		
 		const camera = document.querySelector('a-camera');
 		if(camera.getAttribute('gps-projected-camera'))
 			this.projected = '-projected';
+		else if(camera.getAttribute('gps-new-camera'))
+			this.projected = '-new';
 
        	try {
 			window.dispatchEvent(new Event('geojson-load-start'));

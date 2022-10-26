@@ -1,8 +1,8 @@
-function createUrlEntity({ name, coords, primitive, color, scale }) {
+function createUrlEntity({ name, coords, projected, primitive, color, scale }) {
     const textScale = scale * 20;
     const entity = document.createElement('a-entity');
-    entity.setAttribute('look-at', '[gps-projected-camera]');
-    entity.setAttribute('gps-projected-entity-place', {latitude: coords.lat, longitude: coords.lng});
+    entity.setAttribute('look-at', '[gps'+projected+'-camera]');
+    entity.setAttribute('gps'+projected+'-entity-place', {latitude: coords.lat, longitude: coords.lng});
     entity.setAttribute('position', {x: 0, y: 1, z: 0});
 
     const text = document.createElement('a-text');
@@ -52,11 +52,18 @@ AFRAME.registerComponent('location-url', {
     init: function() {
               const lat = getUrlParam('lat');
               const lng = getUrlParam('lng');
-			  const title = getUrlParam('title');
+			  const name = getUrlParam('name');
+
+			  const camera = document.querySelector('a-camera');
+			  if(camera.getAttribute('gps-projected-camera'))
+			  	this.projected = '-projected';
+			  else if(camera.getAttribute('gps-new-camera'))
+				this.projected = '-new';
 
               if(lat != undefined && lng != undefined) {
                   const entity = createUrlEntity({
-						name: title || this.data.name, 
+						name: name || this.data.name,
+						projected: this.projected || '',
 						coords: { lat: lat, lng: lng },
 						primitive: this.data.primitive,
 						color: this.data.color, 

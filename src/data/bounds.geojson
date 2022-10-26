@@ -4,7 +4,7 @@
 	{
 		"type": "Feature",
 		"properties": {
-			"title": "world"
+			"name": "world"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -16,7 +16,7 @@
 	{
 		"type": "Feature",
 		"properties": {
-			"title": "map"
+			"name": "map"
 		},
 		"geometry": {
 			"type": "Polygon",
@@ -31,7 +31,7 @@
 	{
 	    "type": "Feature",
 	    "properties": {
-	        "title": "eupener"
+	        "name": "eupener"
 	    },
 	    "geometry": {
 	        "type": "Polygon",
@@ -52,7 +52,7 @@
 	{
 	    "type": "Feature",
 	    "properties": {
-	        "title": "bayern"
+	        "name": "bayern"
 	    },
 	    "geometry": {
 	        "type": "Polygon",
@@ -71,7 +71,7 @@
 	{
 	    "type": "Feature",
 	    "properties": {
-	        "title": "barbarossa"
+	        "name": "barbarossa"
 	    },
 	    "geometry": {
 	        "type": "Polygon",
@@ -93,7 +93,7 @@
 	{
 	    "type": "Feature",
 	    "properties": {
-	        "title": "E"
+	        "name": "E"
 	    },
 	    "geometry": {
 	        "type": "Polygon",

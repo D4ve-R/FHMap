@@ -88,6 +88,54 @@
         "type": "Point",
         "coordinates": [50.758397,6.081096]
     }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa Eupnener",
+		"color": "red",
+        "popUpContent": "Building E"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.759407,6.082322]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa Suedpark",
+		"color": "red",
+        "popUpContent": "Building D"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.757915,6.081952]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa KMAC",
+		"color": "red",
+        "popUpContent": "Building G"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.764799,6.078159]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa Bayern",
+		"color": "red",
+        "popUpContent": "Building H"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.755691,6.097063]
+    }
 }
 ]
 }

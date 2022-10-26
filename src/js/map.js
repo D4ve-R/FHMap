@@ -143,7 +143,7 @@ const map = L.map('map', {
     zoom: zoom,
     minZoom: minZoom,
     maxBounds: mapBounds,
-    layers: [osm, fhMask, parking, food, bus],
+    layers: [osm, parking, food, bus],
 });
 
 const layerControl = L.control.layers(baseLayers, overlays);
@@ -207,7 +207,7 @@ L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
         // marker.remove();
         track = false;
     }
-}).addTo(map);
+}, { position: 'bottomright' }).addTo(map);
 
 /**
  * Add a marker at location
@@ -258,7 +258,7 @@ const addHandler = (e) => {
 };
 
 L.easyButton({ 
-    position: 'topright', 
+    position: 'bottomright', 
     states: [{
             stateName: 'add-inactive',
             icon: 'fa-plus',

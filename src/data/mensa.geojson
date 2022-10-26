@@ -4,7 +4,7 @@
 [{
     "type": "Feature",
     "properties": {
-        "title": "Mensa Eupnener",
+        "name": "Mensa Eupnener",
         "popUpContent": "Building E"
     },
     "geometry": {
@@ -15,7 +15,7 @@
 {
     "type": "Feature",
     "properties": {
-        "title": "Mensa Südpark",
+        "name": "Mensa Südpark",
         "popUpContent": "Building D"
     },
     "geometry": {
@@ -26,7 +26,7 @@
 {
     "type": "Feature",
     "properties": {
-        "title": "Mensa KMAC",
+        "name": "Mensa KMAC",
         "popUpContent": "Building G"
     },
     "geometry": {
@@ -37,7 +37,7 @@
 {
     "type": "Feature",
     "properties": {
-        "title": "Mensa Bayern",
+        "name": "Mensa Bayern",
         "popUpContent": "Building H"
     },
     "geometry": {
