@@ -20,13 +20,13 @@ built with [Leaflet](https://github.com/Leaflet/Leaflet) and [AR.js](https://git
 ## Dev Setup
 ```
 cd FHMap
-chmod +x setup.sh
+chmod +x devSetup.sh
 ./devSetup.sh
 ```
   
-must be served through https
-dev server defaults to https://127.0.0.1:4443
-can be changed to host device local network ip, to test on mobile
+must be served through https  
+dev server defaults to https://127.0.0.1:4443  
+can be changed to host device local network ip, to test on mobile  
 ```
 # use local ip example
 python3 server.py -H 192.168.178.22
@@ -39,8 +39,8 @@ python3 server.py -H 192.168.178.22
 
 ## Contributions
 clone repo & create new branch 
-do your changes & [write good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-create pull request to this repo
+do your changes & [write good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)  
+create pull request to this repo  
 
 ## Issues
-create an issues in this repo
+create an issues in this repo  
