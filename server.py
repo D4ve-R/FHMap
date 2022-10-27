@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 from os import path, system
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -30,6 +32,6 @@ if __name__ == '__main__':
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print("Shutting down server")
+        print("\n\nShutting down server")
 
     httpd.server_close()
