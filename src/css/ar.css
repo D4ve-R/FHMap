@@ -1,4 +1,4 @@
-.button-container {
+.container {
 	position: relative;
 }
 
@@ -10,8 +10,33 @@
 	float: right;
 	height: 2rem;
 	position: absolute;
+	font-weight: bold;
 	z-index: 1000;
 }
+
+.map-container {
+	bottom: 0;
+	position: absolute;
+	width: 100vw;
+	height: 25vh;
+	border-radius: 45% 45% 0 0;
+}
+
+#embedded-map {
+	bottom: 0;
+	position: absolute;
+	width: 100vw;
+	height: 22vh;
+	border-radius: 55% 55% 0 0;
+	overflow: hidden;
+	z-index: 1000;
+}
+
+
+/* 
+AR.js css 
+https://github.com/AR-js-org/AR.js/blob/master/aframe/src/location-based/stylesheets/index.css
+*/
 
 span {
     margin-right: 0.5em;

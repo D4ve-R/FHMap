@@ -4,7 +4,6 @@
 
 .mensaIcon {
     text-align: center;
-    line-height: 22px;
 }
 
 .leaflet-center {
@@ -12,3 +11,33 @@
     transform: translate(-50%, 0%);
 }
 
+.leaflet-bar button { 
+	left: 0;
+	height: 2.5rem !important; 
+	width: 2.5rem !important; 
+	font-size: 1.25rem;
+	line-height: 2.5rem !important;
+}
+
+.copy-container {
+	position: relative;
+	display: flex; 
+	padding: 0.5rem; 
+	background-color: #ccc; 
+	border-radius: 1rem;
+}
+
+.copy-container #tooltiptext {
+	visibility: hidden;
+	margin: 0.5rem;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+	position: absolute;
+  	z-index: 1;
+	bottom: 100%;
+	left: 50%;
+	margin: 0 auto;
+}

@@ -5,7 +5,7 @@
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 
         <title>FHMap AR</title>
-        
+
         <!-- aframe -->
         <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
 		<!-- ar.js -->
@@ -17,25 +17,49 @@
 		<!-- aframe look-at -->
 		<script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
+		<!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+             integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+             crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+            crossorigin=""></script>
+
+		<!-- OSM Buildings -->
+		<!--
+		<link href="https://cdn.osmbuildings.org/4.1.1/OSMBuildings.css" rel="stylesheet">
+		<script src="https://cdn.osmbuildings.org/4.1.1/OSMBuildings.js"></script> 
+		-->
+		<script src="https://cdn.osmbuildings.org/classic/0.2.2b/OSMBuildings-Leaflet.js"></script>
+        
         <!-- FontAwesome -->
         <script src="https://kit.fontawesome.com/b7337029fa.js" crossorigin="anonymous"></script>
 
-		<!-- <script src="js/arjs/ar-threex-location-only.js"></script> 
-		<script src="js/arjs/aframe-ar.js"></script> -->
+		<link rel="stylesheet" href="css/ar.css" />
+		<script src="js/utils.js"></script>
+		<!-- 
+		<script src="js/arjs/ar-threex-location-only.js"></script> 
+		<script src="js/arjs/aframe-ar.js"></script>
+		-->
 		<script src="js/arjs/urlLocation.js"></script>
-        <script src="js/arjs/jsonEntity.js"></script>
 		<script src="js/arjs/geoJSONEntity.js"></script>
+		<script src="js/arjs/pathEntity.js"></script>
+
         <script>
             function onClick() {
                     window.location.href = window.location.protocol + "//"
                         + window.location.host
             };
+
+			const rot = getUrlParam('rotation');
+			if (rot) {
+				document.querySelector('a-camera').setAttribute('rotation', {x: 0, y: rot, z: 0});
+			}
         </script>
 
-        <link rel="stylesheet" href="css/ar.css" />
     </head>
     <body style="margin: 0; overflow: hidden;">
-        <div class="button-container">
+        <div class="container">
             <button type="button" id="map-button" onclick="onClick()">
                 Map
             </button>
@@ -45,19 +69,29 @@
             arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false;'
             renderer='antialias: true; alpha: true;'>
 
-			<a-entity geojson-entity__places="url: data/places.geojson"></a-entity>
-			<a-entity geojson-entity__try="url: data/try.geojson"></a-entity>
-
             <a-camera
-                gps-projected-camera="alert: true; gpsMinDistance: 5; minDistance: 15;" 
+                gps-projected-camera="
+					simulateLatitude: 50.7713571042012;
+					simulateLongitude: 6.103484630584717;
+					alert: true; gpsMinDistance: 10;
+					minDistance: 15;
+					positionMinAccuracy: 10;" 
                 look-controls="enabled: false;" 
-				arjs-look-controls='touchEnable: false; smoothingFactor: 0.1'
+				arjs-look-controls='touchEnabled: false; smoothingFactor: 0.1'
                 position="0 1.5 0"
-				rotation-reader
             ></a-camera>
 
-            <!-- <a-entity json-entity__places="url: data/places.json"></a-entity> -->
-            <!-- <a-entity location-url></a-entity>  --> 
+			<a-entity geojson-entity__places="url: data/places.geojson"></a-entity>
+			<a-entity geojson-entity__try="url: data/try.geojson"></a-entity>
+			<a-entity path-entity__try="url: data/path.geojson"></a-entity>
+            <a-entity location-url></a-entity>
         </a-scene>
+
+		<div class="container">
+			<div id="embedded-map"></div>
+		</div>
+
+		<!-- <script src="js/arjs/navMap.js"></script> -->
+		<script src="js/leaflet/embeddedMap.js"></script>
     </body>
 </html>

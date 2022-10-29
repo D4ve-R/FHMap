@@ -38,7 +38,7 @@ python3 server.py -H 192.168.178.22
 ```
 
 ## Contributions
-clone repo & create new branch 
+clone repo & create new branch  
 do your changes & [write good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)  
 create pull request to this repo  
 
