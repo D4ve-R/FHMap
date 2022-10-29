@@ -37,8 +37,19 @@ python3 server.py -H 192.168.178.22
 ./build.sh
 ```
 
+## Todos
+
+- [x] add google maps ar like map to ar view
+- [] resize device location marker on map zoom
+- [] fix search function
+- [] use geojson in map
+- [] fix path visualizer path width
+- [] buttons css 
+- [] fix inital rotation issue ar view
+- [] bundle with webpack or similar
+
 ## Contributions
-clone repo & create new branch 
+clone repo & create new branch  
 do your changes & [write good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)  
 create pull request to this repo  
 
