@@ -1,4 +1,5 @@
-//import fhAc from './fhac.js';
+//import fetchGeoJSON from './fetchGeoJSON.js';
+// import getUrlParams from '../utils.js';
 
 const blue = '#0095ff';
 const lila = '#ed2bea';
@@ -70,7 +71,7 @@ const satellite = L.tileLayer(satelliteUrl, {
 });
 
 const mensaIcon = L.divIcon({
-    html: '<i class="fa fa-utensils fa-lg"></i>',
+    html: '<i class="fa fa-utensils"></i>',
     className: 'mensaIcon',
     iconSize: [40, 40],
     iconAnchor: [20, 20],
@@ -143,7 +144,7 @@ const map = L.map('map', {
     zoom: zoom,
     minZoom: minZoom,
     maxBounds: mapBounds,
-    layers: [osm, parking, food, bus],
+    layers: [osm, parking, food, bus, buildings],
 });
 
 const layerControl = L.control.layers(baseLayers, overlays);
@@ -153,18 +154,9 @@ map.on('overlayadd', (e) => {
     e.layer.openPopup(); 
 });
 
-const search = new L.Control.Search({
-    layer: buildings,
-    position: 'topcenter',
-    collapsed: false
-});
-
-map.addControl(search);
-
 /**
  * device location tracking
  */
-
 
 let marker = null;
 
@@ -193,7 +185,7 @@ const options = {
 
 let track = false;
 let handlerId = 0;
-L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
+L.easyButton('fa-crosshairs', (btn, map) => {
     if(!track) {
         btn.button.style.backgroundColor = blue;
         navigator.geolocation.getCurrentPosition(success, error, options);
@@ -214,9 +206,14 @@ L.easyButton('fa-crosshairs fa-lg', (btn, map) => {
  *
  */
 
-const copyToClip = () => {
-let text = document.getElementById('locationMarkerText');
-navigator.clipboard.writeText(text.innerHTML);
+const copyToClip = () => {
+	let text = document.getElementById('locationMarkerText');
+	let tooltip = document.getElementById('tooltiptext');
+	tooltip.style.visibility = 'visible';
+	navigator.clipboard.writeText(text.innerHTML.trim());
+	setTimeout(() => {
+		tooltip.style.visibility = 'hidden';
+	}, 650);
 };
 
 const locationMarkerIcon = L.icon({
@@ -243,13 +240,14 @@ const addHandler = (e) => {
         + window.location.pathname 
         + '?lat=' + e.latlng.lat + '&amp;lng=' + e.latlng.lng;
     locationMarker.bindPopup(
-        `<div style="display: flex; padding: 0.5rem; background-color: #ccc; border-radius: 1rem;">
+        `<div class="copy-container">
             <p id="locationMarkerText" style="overflow: hidden;" onclick="copyToClip()">
                 ${link}
             </p>
-            <button style="height: 22px; width: 22px;" onclick="copyToClip()">
-                <i class="fa-solid fa-clipboard fa-lg"></i>
+            <button style="height: 22px; width: 22px; padding: 0;" onclick="copyToClip()">
+                <i class="fa fa-plus"></i>
             </button>
+			<span id="tooltiptext">Copied!</span>
         </div>
         `        
     ).openPopup();
@@ -305,11 +303,6 @@ L.easyButton('fa-globe', function(btn, map) {
  * Read locationMarker position from url params
  */
 
-function getUrlParam(name){
-    if(name=(new RegExp('[?&;]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
-        return decodeURIComponent(name[1]);
-}
-
 const targetMarkerIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/images/marker-shadow.png',
@@ -332,4 +325,3 @@ if(lat != undefined && lng != undefined)
     map.removeLayer(buildings);
     map.setView([lat, lng], map.getMaxZoom() - 1);
 }
-

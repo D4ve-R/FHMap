@@ -1,17 +1,27 @@
+class GeoJSONError extends Error {
+	constructor(message, geojson) {
+		const props = {
+			geojson: geojson,
+		};
+		super(message, props);
+		this.name = 'GeoJSONError';
+	}
+}
+
 function validateGeoJSONFeature(feature) {
 	if(!feature.hasOwnProperty('type') 
 		|| !feature.hasOwnProperty('geometry') 
 		|| !feature.hasOwnProperty('properties')
 		|| !feature.geometry.hasOwnProperty('coordinates')
 		)
-		throw new Error('Invalid GeoJSON Feature');
+		throw new GeoJSONError('Invalid GeoJSON Feature', feature);
 }
 
 function createGeoJSONEntity(feature, projected, primitive, scale, color, position) {
 	validateGeoJSONFeature(feature);
 
 	if(feature.geometry.type !== 'Point')
-		throw new Error('Only Point geometry is supported');
+		throw new GeoJSONError('Only Point geometry is supported', feature);
 	
 	const [ lat, lng ] = feature.geometry.coordinates;
 	const _scale = feature.properties.scale || scale || 1;
@@ -26,12 +36,12 @@ function createGeoJSONEntity(feature, projected, primitive, scale, color, positi
     entity.setAttribute('position', _position);
 	
 	if(feature.properties.name) {
-		const textScale = _scale * 20;
+		const textScale = _scale * 15;
 		const text = document.createElement('a-text');
 		text.setAttribute('value', feature.properties.name);
 		text.setAttribute('scale', {x: textScale, y: textScale, z: textScale});
 		text.setAttribute('align', 'center');
-		text.setAttribute('position', {x: 0, y: textScale/4, z: 0});
+		text.setAttribute('position', {x: 0, y: textScale/5, z: 0});
 		entity.appendChild(text);
 	}
 	
@@ -84,6 +94,10 @@ AFRAME.registerComponent('geojson-entity', {
 					entity.setAttribute('visible', true);
 			});
 		};
+
+		this.loader = document.createElement('div');
+    	this.loader.classList.add('arjs-loader');
+    	document.body.appendChild(this.loader);
 		
 		const camera = document.querySelector('a-camera');
 		if(camera.getAttribute('gps-projected-camera'))
@@ -96,7 +110,7 @@ AFRAME.registerComponent('geojson-entity', {
 
 			fetch(this.data.url).then(res => res.json()).then(json => {
 				if(typeof json !== 'object' || Array.isArray(json) || json === null)
-					throw new Error('Invalid GeoJSON');
+					throw new GeoJSONError('Invalid GeoJSON', json);
 
 				if(json.type === 'FeatureCollection') {
                		json.features.forEach(item => {
@@ -120,7 +134,7 @@ AFRAME.registerComponent('geojson-entity', {
 				}
 
 				if(this.geoJSONEntities.length < 1)
-					throw new Error('No valid features in GeoJSON');
+					throw new GeoJSONError('No valid features in GeoJSON', undefined);
 			
             });
         } catch(err) { console.trace(err); }
@@ -128,7 +142,8 @@ AFRAME.registerComponent('geojson-entity', {
 		if(this.data.updateVisibility)
 			this.el.addEventListener('gps-camera-update-position', this.visibilityHandler);
 
-		window.dispatchEvent(new Event('geojson-load-end'));
+		window.dispatchEvent(new CustomEvent('geojson-load-end', { geojson: this.geoJSONEntities }));
+		this.loader.remove();
 		
     },
 	remove: function() {

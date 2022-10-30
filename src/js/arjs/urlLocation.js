@@ -1,3 +1,5 @@
+// import getUrlParams from '../utils.js';
+
 function createUrlEntity({ name, coords, projected, primitive, color, scale }) {
     const textScale = scale * 20;
     const entity = document.createElement('a-entity');
@@ -23,11 +25,6 @@ function createUrlEntity({ name, coords, projected, primitive, color, scale }) {
     entity.appendChild(prim);
     
     return entity;
-}
-
-function getUrlParam(name){
-    if(name=(new RegExp('[?&;]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
-        return decodeURIComponent(name[1]);
 }
 
 AFRAME.registerComponent('location-url', {
