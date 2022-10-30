@@ -40,13 +40,13 @@ python3 server.py -H 192.168.178.22
 ## Todos
 
 - [x] add google maps ar like map to ar view
-- [] resize device location marker on map zoom
-- [] fix search function
-- [] use geojson in map
-- [] fix path visualizer path width
-- [] buttons css 
-- [] fix inital rotation issue ar view
-- [] bundle with webpack or similar
+- [ ] resize device location marker on map zoom
+- [ ] fix search function
+- [ ] use geojson in map
+- [ ] fix path visualizer path width
+- [ ] buttons css 
+- [ ] fix inital rotation issue ar view
+- [ ] bundle with webpack or similar
 
 ## Contributions
 clone repo & create new branch  
