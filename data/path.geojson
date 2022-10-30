@@ -1,0 +1,14 @@
+{
+	"type": "Feature",
+	"geometry": {
+		"type": "LineString",
+		"coordinates": [
+			[50.7713571042012, 6.103484630584717],
+			[50.759521, 6.082668],
+			[50.760445,6.083084]
+		]
+	},
+	"properties": {
+		"name": "Path"
+	}
+}

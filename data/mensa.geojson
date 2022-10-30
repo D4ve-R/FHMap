@@ -1,0 +1,49 @@
+{
+    "type": "FeatureCollection",
+    "features": 
+[{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa Eupnener",
+		"popUpContent": "<b>Mensa Eupenerstr</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Gastronomie/mensa-eupener-strasse-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.759407,6.082322]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa Südpark",
+        "popUpContent": "<b>Mensa Südpark</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Essen_und_Trinken/mensa-suedpark-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.757915,6.081952]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa KMAC",
+        "popUpContent": "<b>Mensa KMAC</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Gastronomie/mensa-goethestrasse-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.764799,6.078159]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Mensa Bayern",
+        "popUpContent": "<b>Mensa Bayernallee</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Gastronomie/mensa-bayernallee-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.755691,6.097063]
+    }
+}
+]
+}

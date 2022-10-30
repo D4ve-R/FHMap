@@ -23,6 +23,7 @@ function createAEntity({ name, coords, color, scale }) {
     return entity;
 }
 
+
 AFRAME.registerComponent('json-entity', {
     schema: {
         url: {
@@ -58,23 +59,5 @@ AFRAME.registerComponent('json-entity', {
     remove: function() {
                 window.removeEventListener('gps-camera-updated-postion');
             }
-});
-
-function getUrlParam(name){
-    if(name=(new RegExp('[?&;]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
-        return decodeURIComponent(name[1]);
-}
-
-AFRAME.registerComponent('location-url', {
-    init: function() {
-              const lat = getUrlParam('lat');
-              const lng = getUrlParam('lng');
-
-              if(lat != undefined && lng != undefined) {
-                  const entity = createAEntity({name: 'Marker', coords: { lat: lat, lng: lng}, color: 'green', scale: 20});
-
-                  this.el.sceneEl.appendChild(entity);
-              }
-          }
 });
 
