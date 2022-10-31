@@ -50,11 +50,6 @@
                     window.location.href = window.location.protocol + "//"
                         + window.location.host
             };
-
-			const rot = getUrlParam('rotation');
-			if (rot) {
-				document.querySelector('a-camera').setAttribute('rotation', {x: 0, y: rot, z: 0});
-			}
         </script>
 
     </head>
@@ -93,5 +88,11 @@
 
 		<!-- <script src="js/arjs/navMap.js"></script> -->
 		<script src="js/leaflet/embeddedMap.js"></script>
+		<script>
+			const rot = getUrlParam('rotation');
+			if (rot) {
+				document.querySelector('a-camera').setAttribute('rotation', {x: 0, y: rot, z: 0});
+			}
+		</script>
     </body>
 </html>

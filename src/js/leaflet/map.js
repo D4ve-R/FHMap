@@ -70,6 +70,8 @@ const satellite = L.tileLayer(satelliteUrl, {
     attribution: '&copy; <a href="https://www.esri.com/legal/copyright-trademarks">Esri</a>'
 });
 
+const osmb = new OSMBuildings().load('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
+
 const mensaIcon = L.divIcon({
     html: '<i class="fa fa-utensils"></i>',
     className: 'mensaIcon',
@@ -136,7 +138,8 @@ const overlays = {
     "Student Parking": studentParking,
     "Visitor Parking": visitorParking,
     "ÖPNV/PT": bus,
-    "Buildings": buildings
+    "Buildings": buildings,
+	"3D": osmb
 };
 
 const map = L.map('map', {
