@@ -1,32 +1,3 @@
-
-/*
-function _createPathEntity(feature, color) {
-	const _color = feature.properties.color || color || 'blue';
-
-	if(feature.geometry.type !== 'LineString') 
-		throw new Error('PathEntity only supports LineString geometries');
-
-	if(feature.geometry.coordinates.length < 2) 
-		throw new Error('PathEntity requires at least two coordinates');
-
-	const path = document.createElement('a-entity');
-	
-	for(let i = 0; i < feature.geometry.coordinates.length - 1; i++) {
-		const [ startLat, startLng ] = feature.geometry.coordinates[i];
-		const [ endLat, endLng ] = feature.geometry.coordinates[i+1];
-		const startPos = this.camera.latLonToWorld(startLat, startLng);
-		const endPos = this.camera.latLonToWorld(endLat, endLng);
-
-		path.setAttribute(`line__${feature.properties.name}${i}`, {
-			start: {x: startPos[0], y: 0, z: startPos[1]},
-			end: {x: endPos[0], y: 0, z: endPos[1]},
-			color: _color
-		});
-	}
-
-	return path;
-} */
-
 AFRAME.registerComponent('path-entity', {
 	schema: {
 		url: {
@@ -93,7 +64,7 @@ AFRAME.registerComponent('path-entity', {
 			const geometry = new THREE.BufferGeometry().setFromPoints(points);
 			this.rendererSystem.applyColorCorrection(material.color);
 			const line = new THREE.Line(geometry, material);
-			this.el.setObject3D(this.attrName, line);
+			path.el.setObject3D(this.attrName, line);
 
 			return path;
 		}.bind(this);

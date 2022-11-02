@@ -8,7 +8,6 @@ const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }
 );
 
-
 const map = L.map('embedded-map', {
 	center: fhBaseCoords,
 	zoom: maxZoom,
