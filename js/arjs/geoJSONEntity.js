@@ -88,7 +88,7 @@ AFRAME.registerComponent('geojson-entity', {
 
 		this.visibilityHandler = () => {
 			this.geoJSONEntities.forEach(entity => {
-				if(entity.getAttribute('distance') > 200)
+				if(entity.getAttribute('distance') > 100)
 					entity.setAttribute('visible', false);
 				else
 					entity.setAttribute('visible', true);
@@ -140,7 +140,7 @@ AFRAME.registerComponent('geojson-entity', {
         } catch(err) { console.trace(err); }
 
 		if(this.data.updateVisibility)
-			this.el.addEventListener('gps-camera-update-position', this.visibilityHandler);
+			this.el.addEventListener('gps-entity-place-update-position', this.visibilityHandler);
 
 		window.dispatchEvent(new CustomEvent('geojson-load-end', { geojson: this.geoJSONEntities }));
 		this.loader.remove();
@@ -148,7 +148,7 @@ AFRAME.registerComponent('geojson-entity', {
     },
 	remove: function() {
 		if(this.data.updateVisibility)
-			this.el.removeEventListener('gps-camera-update-position', this.visibilityHandler);
+			this.el.removeEventListener('gps-entity-place-update-position', this.visibilityHandler);
 
 		for(const entity in this.geoJSONEntities) {
 			this.el.sceneEl.removeChild(entity);

@@ -8,7 +8,6 @@ const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }
 );
 
-
 const map = L.map('embedded-map', {
 	center: fhBaseCoords,
 	zoom: maxZoom,
@@ -38,13 +37,15 @@ const osmb = new OSMBuildings(map).load('https://{s}.data.osmbuildings.org/0.2/a
 let marker = null;
 
 function success(e) {
+	const accuracy = e.accuracy;
+
 	if(marker !== null)
 		map.removeLayer(marker);
  
 	marker = L.circle(e.latlng, {
-		color: 'red',
-		fillOpacity: 0.99,
-		radius: 2
+		color: 'blue',
+		fillOpacity: accuracy < 15 ? 0.99 : 0.6,
+		radius: accuracy < 15 ? 2 : 4
 	}).addTo(map);
 }
  
