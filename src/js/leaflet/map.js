@@ -2,13 +2,14 @@
 // import getUrlParams from '../utils.js';
 
 const blue = '#0095ff';
+const fhBlue = '#00b1ac';
 const lila = '#ed2bea';
 const green = '#03fc41';
 const orange = '#e85e02';
 
-const minZoom = 14;
+const minZoom = 12;
 const maxZoom = 19;
-const zoom = minZoom;
+const zoom = 14;
 
 const fhBaseCoords = [50.761409, 6.08767];
 const worldBounds = [[49, 5], [51, 5], [51, 7], [49, 7]];
@@ -52,7 +53,16 @@ const baboBounds = [
     [50.764375, 6.079903],
 ];
 
-const fhMask = L.polygon([worldBounds, eupenerBounds, bayernBounds, baboBounds], {
+const boxGrabenBounds = [
+	[50.76847335022682, 6.078202128410339],
+	[50.769138325736684, 6.078051924705505],
+	[50.769243499568944, 6.079038977622987],
+	[50.76914511115235, 6.079902648925781],
+	[50.76919260903448, 6.080272793769837],
+	[50.768629416756596, 6.0804283618927]
+];
+
+const fhMask = L.polygon([worldBounds, eupenerBounds, bayernBounds, baboBounds, boxGrabenBounds], {
     color: 'black', 
     fillOpacity: 0.8,
     renderer: L.svg({padding: 1})
@@ -66,7 +76,7 @@ const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const satelliteUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 const satellite = L.tileLayer(satelliteUrl, {
-    maxZoom: maxZoom - 1,
+    maxZoom: maxZoom - 2,
     attribution: '&copy; <a href="https://www.esri.com/legal/copyright-trademarks">Esri</a>'
 });
 
@@ -85,14 +95,43 @@ const mensa1 = L.marker([50.757915, 6.081952], {icon: mensaIcon}).bindPopup('<b>
 const mensa2 = L.marker([50.755691, 6.097063], {icon: mensaIcon}).bindPopup('<b>Mensa Bayernallee</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-bayernallee-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
 const mensa3 = L.marker([50.764799, 6.078159], {icon: mensaIcon}).bindPopup('<b>Mensa KMAC</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-goethestrasse-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
 
-const buildE = L.marker([50.759521, 6.082668]).bindPopup("Building E").on('click', (e) => {Swal.fire({title: 'Building E', html: '<div id="map"></div>'});}),
-      buildD = L.marker([50.760445, 6.083084]).bindPopup("Building D"),
-      buildF = L.marker([50.758912, 6.081351]).bindPopup("Building F"),
-      buildC = L.marker([50.758048, 6.08163]).bindPopup("Building C"),
-      buildG = L.marker([50.758835, 6.081898]).bindPopup("Building G"),
-      buildH = L.marker([50.758761, 6.082601]).bindPopup("Building H"),
-      buildW = L.marker([50.758397, 6.081096]).bindPopup("Building W"),
-      buildB = L.marker([50.758002, 6.082545]).bindPopup("Building B");
+const buildE = L.marker([50.759521, 6.082668]).bindPopup("<b>E</b>").on('click', (e) => {Swal.fire({title: 'Building E', html: '<div id="map"></div>'});}),
+      buildD = L.marker([50.760445, 6.083084]).bindPopup("<b>D</b>"),
+      buildF = L.marker([50.758912, 6.081351]).bindPopup("<b>F</b>"),
+      buildC = L.marker([50.758048, 6.08163]).bindPopup("<b>C</b>"),
+      buildG = L.marker([50.758835, 6.081898]).bindPopup("<b>G</b>"),
+      buildH = L.marker([50.758761, 6.082601]).bindPopup("<b>H</b>"),
+      buildW = L.marker([50.758397, 6.081096]).bindPopup("<b>W</b>"),
+      buildB = L.marker([50.758002, 6.082545]).bindPopup("<b>B</b>");
+
+const fsIcon = new L.Icon({
+	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+	iconSize: [25, 41],
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	shadowSize: [41, 41]
+});
+
+const fs1 = L.marker([50.75517694555507,6.096261441707611], {icon: fsIcon}).bindPopup('<b>FB01 Architektur</b><br/><a href="https://www.fh-aachen.de/fachbereiche/architektur" target="_blank" rel="noopener">Info</a>'),
+      fs2 = L.marker([50.75485284412427, 6.096585988998414], {icon: fsIcon}).bindPopup('<b>FB02 Bauingenieurwesen</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen" target="_blank" rel="noopener">Info</a>'),
+      //fs3 = L.marker([50.758912, 6.081351]).bindPopup("FB03 Chemie & Biotech."),
+      fs4 = L.marker([50.76873459173299, 6.0787439346313485], {icon: fsIcon}).bindPopup('<b>FB04 Gestaltung</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung" target="_blank" rel="noopener">Info</a>'),
+      fs5 = L.marker([50.7581395697898, 6.082625091075898], {icon: fsIcon}).bindPopup('<b>FB05 Elektro- & Informationstech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/elektrotechnik-und-informationstechnik" target="_blank" rel="noopener">Info</a>'),
+      fs6 = L.marker([50.76487519379996, 6.079749763011932], {icon: fsIcon}).bindPopup('<b>FB06 Luft- & Raumfahrttech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/luft-und-raumfahrttechnik" target="_blank" rel="noopener">Info</a>'),
+      fs7 = L.marker([50.75953088643949, 6.082909405231477], {icon: fsIcon}).bindPopup('<b>FB07 Wirtschaftswiss.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/wirtschaft" target="_blank" rel="noopener">Info</a>'),
+      fs8 = L.marker([50.76410157947173, 6.081096231937409], {icon: fsIcon}).bindPopup('<b>FB08 Maschinenbau & Mechatronik</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik" target="_blank" rel="noopener">Info</a>');
+
+const rektorIcon = new L.Icon({
+	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+	iconSize: [25, 41],
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	shadowSize: [41, 41]
+});
+
+const rektor = L.marker([50.75559606816141,6.096009314060212], {icon: rektorIcon}).bindPopup('<b>Rektorat</b><br/><a href="https://www.fh-aachen.de/hochschule/rektorat" target="_blank" rel="noopener">Info</a>');
 
 const studentParking = L.polygon([
         [50.759296, 6.083616],
@@ -122,7 +161,8 @@ const bus0 = L.circle([50.758011, 6.085252], {color: orange}).bindPopup("<b>Ronh
       bus4 = L.circle([50.755185, 6.095537], {color: orange}).bindPopup("<b>Bayernallee, H.2<b><br/><small>-> AC Siegel<br/><a "+aseagUrl+">Aseag</a></small>"),
       bus5 = L.circle([50.755369, 6.095586], {color: orange}).bindPopup("<b>Bayernallee, H.1<b><br/><small>-> AC City<br/><a "+aseagUrl+">Aseag</a></small>");
 
-const buildings = L.layerGroup([buildB, buildE, buildD, buildF, buildC, buildD, buildG, buildW, buildH]);
+const buildings = L.layerGroup([buildB, buildE, buildD, buildF, buildC, buildD, buildG, buildW, buildH, rektor]);
+const fs = L.layerGroup([fs1, fs2, fs4, fs5, fs6, fs7, fs8]);
 const bus = L.layerGroup([bus0, bus1, bus2, bus3, bus4, bus5]);
 const food = L.featureGroup([mensa0, mensa1, mensa2, mensa3]);
 const parking = L.layerGroup([studentParking, visitorParking]);
@@ -134,11 +174,12 @@ const baseLayers = {
 
 const overlays = {
     "FH Aachen": fhMask,
-    "Food": food,
+	"Faculties": fs,
+	"Buildings": buildings,
+    "Mensen": food,
     "Student Parking": studentParking,
     "Visitor Parking": visitorParking,
-    "ÖPNV/PT": bus,
-    "Buildings": buildings,
+	"ÖPNV": bus,
 	"3D": osmb
 };
 
@@ -146,8 +187,8 @@ const map = L.map('map', {
     center: fhBaseCoords,
     zoom: zoom,
     minZoom: minZoom,
-    maxBounds: mapBounds,
-    layers: [osm, parking, food, bus, buildings],
+    maxBounds: worldBounds,
+    layers: [osm, parking, food, bus, buildings, fs],
 });
 
 const layerControl = L.control.layers(baseLayers, overlays);
@@ -190,7 +231,7 @@ let track = false;
 let handlerId = 0;
 L.easyButton('fa-crosshairs', (btn, map) => {
     if(!track) {
-        btn.button.style.backgroundColor = blue;
+        btn.button.style.backgroundColor = fhBlue;
         navigator.geolocation.getCurrentPosition(success, error, options);
         handlerId = navigator.geolocation.watchPosition(success, error, options);
         track = true;
@@ -265,7 +306,7 @@ L.easyButton({
             icon: 'fa-plus',
             title: 'add',
             onClick: function(btn, map) {
-                btn.button.style.backgroundColor = blue;
+                btn.button.style.backgroundColor = fhBlue;
                 L.DomUtil.removeClass(map.getContainer(), 'leaflet-grab');
                 L.DomUtil.addClass(map.getContainer(), 'leaflet-crosshair');
                 L.DomUtil.addClass(map.getContainer(), 'leaflet-interactive');
@@ -328,3 +369,18 @@ if(lat != undefined && lng != undefined)
     map.removeLayer(buildings);
     map.setView([lat, lng], map.getMaxZoom() - 1);
 }
+
+/*
+map.on('click', function(e) {
+	const start = '50.75888443836034,6.085395812988282';
+	const end = e.latlng.lat + ',' + e.latlng.lng;
+	const mapboxKey = 'pk.eyJ1IjoiZGF2aWRyZWNoayIsImEiOiJjbDk3NGY2emYwY3FmM3JsbWxnMzRod25zIn0.Ox7P9Zuh_xrlCxAoD5HO3A';
+	let url = 'https://api.mapbox.com/directions/v5/mapbox/driving/'+start+';'+end+'?geometries=geojson&access_token=' + mapboxKey;
+	//url = 'https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoiZGF2aWRyZWNoayIsImEiOiJjbDk3NGY2emYwY3FmM3JsbWxnMzRod25zIn0.Ox7P9Zuh_xrlCxAoD5HO3A';
+	fetch(url).then(res=>res.json()).then(data => {
+		console.log(data.routes[0].geometry.coordinates);
+		let route = L.polyline(data.routes[0].geometry.coordinates, {color: 'red'}).addTo(map);
+		//map.fitBounds(route.getBounds());
+	});
+});
+*/

@@ -54,17 +54,16 @@ AFRAME.registerComponent('path-entity', {
 				points.push(new THREE.Vector3(endPos[0], 0, endPos[1]));
 
 				const id = `line__${feature.properties.name.toLowerCase()}${i}`;
-				path.setAttribute(id, {
+				/*path.setAttribute(id, {
 					start: {x: startPos[0], y: 0, z: startPos[1]},
 					end: {x: endPos[0], y: 0, z: endPos[1]},
 					color: _color
-				});
+				});*/
 			}
-
+			
 			const geometry = new THREE.BufferGeometry().setFromPoints(points);
+			path.el.setObject3D(feature.properties.name, new THREE.Line(geometry, material));
 			this.rendererSystem.applyColorCorrection(material.color);
-			const line = new THREE.Line(geometry, material);
-			path.el.setObject3D(this.attrName, line);
 
 			return path;
 		}.bind(this);

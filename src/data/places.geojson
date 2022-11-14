@@ -9,7 +9,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.759521,6.082668]
+        "coordinates": [50.759334068547275,6.082850396633148]
     }
 },
 {
@@ -20,7 +20,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.760445,6.083084]
+        "coordinates": [50.760258766108045,6.083094477653504]
     }
 },
 {
@@ -31,7 +31,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.758835,6.081898]
+        "coordinates": [50.75879451180454,6.081994771957398]
     }
 },
 {
@@ -42,7 +42,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.758761,6.082601]
+        "coordinates": [50.758718158932844,6.082606315612794]
     }
 },
 {
@@ -53,7 +53,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.758912,6.081351]
+        "coordinates": [50.758797905262604,6.081404685974122]
     }
 },
 {
@@ -64,7 +64,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.758048,6.08163]
+        "coordinates": [50.758039461264936,6.081651449203491]
     }
 },
 {
@@ -75,7 +75,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.758002,6.082545]
+        "coordinates": [50.758341482942626,6.082651913166046]
     }
 },
 {
@@ -86,55 +86,7 @@
     },
     "geometry": {
         "type": "Point",
-        "coordinates": [50.758397,6.081096]
-    }
-},
-{
-    "type": "Feature",
-    "properties": {
-        "name": "Mensa Eupnener",
-		"color": "red",
-        "popUpContent": "Building E"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.759407,6.082322]
-    }
-},
-{
-    "type": "Feature",
-    "properties": {
-        "name": "Mensa Suedpark",
-		"color": "red",
-        "popUpContent": "Building D"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.757915,6.081952]
-    }
-},
-{
-    "type": "Feature",
-    "properties": {
-        "name": "Mensa KMAC",
-		"color": "red",
-        "popUpContent": "Building G"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.764799,6.078159]
-    }
-},
-{
-    "type": "Feature",
-    "properties": {
-        "name": "Mensa Bayern",
-		"color": "red",
-        "popUpContent": "Building H"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.755691,6.097063]
+        "coordinates": [50.75848570608987,6.0812169313430795]
     }
 }
 ]

@@ -17,7 +17,7 @@ function validateGeoJSONFeature(feature) {
 		throw new GeoJSONError('Invalid GeoJSON Feature', feature);
 }
 
-function createGeoJSONEntity(feature, projected, primitive, scale, color, position) {
+function GeoJSONEntity(feature, projected, primitive, scale, color, position) {
 	validateGeoJSONFeature(feature);
 
 	if(feature.geometry.type !== 'Point')
@@ -25,7 +25,7 @@ function createGeoJSONEntity(feature, projected, primitive, scale, color, positi
 	
 	const [ lat, lng ] = feature.geometry.coordinates;
 	const _scale = feature.properties.scale || scale || 1;
-	const _position = feature.properties.position || position || {x: 0, y: 1, z: 0};
+	const _position = feature.properties.position || position || {x: 0, y: 0, z: 0};
 	const _color = feature.properties.color || color || 'blue';
 	const _primitive = feature.properties.primitive || primitive || 'a-cone';
 	const _projected = projected || '';
@@ -36,7 +36,7 @@ function createGeoJSONEntity(feature, projected, primitive, scale, color, positi
     entity.setAttribute('position', _position);
 	
 	if(feature.properties.name) {
-		const textScale = _scale * 15;
+		const textScale = _scale * 10;
 		const text = document.createElement('a-text');
 		text.setAttribute('value', feature.properties.name);
 		text.setAttribute('scale', {x: textScale, y: textScale, z: textScale});
@@ -50,8 +50,8 @@ function createGeoJSONEntity(feature, projected, primitive, scale, color, positi
 	prim.setAttribute('material', {color: _color});
 	if(_primitive === 'a-cone') {
 		prim.setAttribute('radius-bottom', 0.1);
-		prim.setAttribute('radius-top', 1);
-		prim.setAttribute('height', 3);
+		prim.setAttribute('radius-top', 0.75);
+		prim.setAttribute('height', 2);
 	}
     entity.appendChild(prim);
     
@@ -70,7 +70,7 @@ AFRAME.registerComponent('geojson-entity', {
 		},
         scale: {
             type: 'number',
-            default: 20
+            default: 10
         },
 		color: {
 			type: 'string',
@@ -83,21 +83,15 @@ AFRAME.registerComponent('geojson-entity', {
     },
     multiple: true,
     init: function() {
-		this.i = 1;
-		this.geoJSONEntities = [];
-
 		this.visibilityHandler = () => {
 			this.geoJSONEntities.forEach(entity => {
+				alert(entity.getAttribute('distance'));
 				if(entity.getAttribute('distance') > 100)
 					entity.setAttribute('visible', false);
 				else
 					entity.setAttribute('visible', true);
 			});
 		};
-
-		this.loader = document.createElement('div');
-    	this.loader.classList.add('arjs-loader');
-    	document.body.appendChild(this.loader);
 		
 		const camera = document.querySelector('a-camera');
 		if(camera.getAttribute('gps-projected-camera'))
@@ -105,29 +99,42 @@ AFRAME.registerComponent('geojson-entity', {
 		else if(camera.getAttribute('gps-new-camera'))
 			this.projected = '-new';
 
+	},
+	update: function() {
+		this.loader = document.createElement('div');
+    	this.loader.classList.add('ar-loader');
+    	document.body.appendChild(this.loader);
+
+		if(this.geoJSONEntities?.length > 0)
+			this.geoJSONEntities.forEach(entity => this.el.sceneEl.removeChild(entity));
+
+		this.geoJSONEntities = [];
+		this.i = 0;
+		const data = this.data;
+
        	try {
 			window.dispatchEvent(new Event('geojson-load-start'));
 
-			fetch(this.data.url).then(res => res.json()).then(json => {
+			fetch(data.url).then(res => res.json()).then(json => {
 				if(typeof json !== 'object' || Array.isArray(json) || json === null)
 					throw new GeoJSONError('Invalid GeoJSON', json);
 
 				if(json.type === 'FeatureCollection') {
                		json.features.forEach(item => {
 						try {
-							const entity = createGeoJSONEntity(item, this.projected, this.data.primitive, this.data.scale, this.data.color);
+							const entity = GeoJSONEntity(item, this.projected, data.primitive, data.scale, data.color);
 							this.geoJSONEntities.push(entity);
                    			this.el.sceneEl.appendChild(entity);
 						} catch(e) { console.warn(e); }
 
 						window.dispatchEvent(new CustomEvent('geojson-load-progress', { 
-							progress: this.i++ / this.geoJSONEntities.length
+							progress: ++this.i / this.geoJSONEntities.length
 						}));
                		});
 				}
 				else {
 					try {
-						const entity = createGeoJSONEntity(json, this.projected, this.data.primitive, this.data.scale, this.data.color);
+						const entity = GeoJSONEntity(json, this.projected, data.primitive, data.scale, data.color);
 						this.geoJSONEntities.push(entity);
 						this.el.sceneEl.appendChild(entity);
 					} catch(e) { console.warn(e); }
@@ -139,7 +146,7 @@ AFRAME.registerComponent('geojson-entity', {
             });
         } catch(err) { console.trace(err); }
 
-		if(this.data.updateVisibility)
+		if(data.updateVisibility)
 			this.el.addEventListener('gps-entity-place-update-position', this.visibilityHandler);
 
 		window.dispatchEvent(new CustomEvent('geojson-load-end', { geojson: this.geoJSONEntities }));
@@ -147,7 +154,7 @@ AFRAME.registerComponent('geojson-entity', {
 		
     },
 	remove: function() {
-		if(this.data.updateVisibility)
+		if(data.updateVisibility)
 			this.el.removeEventListener('gps-entity-place-update-position', this.visibilityHandler);
 
 		for(const entity in this.geoJSONEntities) {

@@ -45,7 +45,7 @@ python3 server.py -H 192.168.178.22
 - [ ] use geojson in map
 - [ ] fix path visualizer path width
 - [ ] buttons css 
-- [ ] fix inital rotation issue ar view
+- [x] fix inital rotation issue ar view
 - [ ] bundle with webpack or similar
 
 ## Contributions

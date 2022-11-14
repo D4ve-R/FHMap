@@ -5,6 +5,7 @@
     "type": "Feature",
     "properties": {
         "name": "Mensa Eupnener",
+		"color": "red",
 		"popUpContent": "<b>Mensa Eupenerstr</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Gastronomie/mensa-eupener-strasse-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
     },
     "geometry": {
@@ -16,6 +17,7 @@
     "type": "Feature",
     "properties": {
         "name": "Mensa Südpark",
+		"color": "red",
         "popUpContent": "<b>Mensa Südpark</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Essen_und_Trinken/mensa-suedpark-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
     },
     "geometry": {
@@ -27,6 +29,7 @@
     "type": "Feature",
     "properties": {
         "name": "Mensa KMAC",
+		"color": "red",
         "popUpContent": "<b>Mensa KMAC</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Gastronomie/mensa-goethestrasse-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
     },
     "geometry": {
@@ -38,6 +41,7 @@
     "type": "Feature",
     "properties": {
         "name": "Mensa Bayern",
+		"color": "red",
         "popUpContent": "<b>Mensa Bayernallee</b><br/><small><a href=\"https://www.studierendenwerk-aachen.de/Gastronomie/mensa-bayernallee-wochenplan.html\" target=\"_blank\" rel=\"noopener\">Menu</a></small>"
     },
     "geometry": {
