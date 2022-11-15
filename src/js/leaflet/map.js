@@ -39,7 +39,7 @@ const bayernBounds = [
     [50.755942, 6.095996]
 ];
 
-const baboBounds = [
+const goeBounds = [
     [50.764504, 6.077097],
     [50.765155, 6.07699],
     [50.765766, 6.077864],
@@ -62,7 +62,7 @@ const boxGrabenBounds = [
 	[50.768629416756596, 6.0804283618927]
 ];
 
-const fhMask = L.polygon([worldBounds, eupenerBounds, bayernBounds, baboBounds, boxGrabenBounds], {
+const fhMask = L.polygon([worldBounds, eupenerBounds, bayernBounds, goeBounds, boxGrabenBounds], {
     color: 'black', 
     fillOpacity: 0.8,
     renderer: L.svg({padding: 1})
@@ -95,26 +95,26 @@ const mensa1 = L.marker([50.757915, 6.081952], {icon: mensaIcon}).bindPopup('<b>
 const mensa2 = L.marker([50.755691, 6.097063], {icon: mensaIcon}).bindPopup('<b>Mensa Bayernallee</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-bayernallee-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
 const mensa3 = L.marker([50.764799, 6.078159], {icon: mensaIcon}).bindPopup('<b>Mensa KMAC</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-goethestrasse-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
 
-const buildE = L.marker([50.759521, 6.082668]).bindPopup("<b>E</b>").on('click', (e) => {Swal.fire({title: 'Building E', html: '<div id="map"></div>'});}),
-      buildD = L.marker([50.760445, 6.083084]).bindPopup("<b>D</b>"),
-      buildF = L.marker([50.758912, 6.081351]).bindPopup("<b>F</b>"),
-      buildC = L.marker([50.758048, 6.08163]).bindPopup("<b>C</b>"),
-      buildG = L.marker([50.758835, 6.081898]).bindPopup("<b>G</b>"),
-      buildH = L.marker([50.758761, 6.082601]).bindPopup("<b>H</b>"),
-      buildW = L.marker([50.758397, 6.081096]).bindPopup("<b>W</b>"),
-      buildB = L.marker([50.758002, 6.082545]).bindPopup("<b>B</b>");
+const buildE = L.marker([50.759521, 6.082668]).bindPopup('<b>Gebäude E</b>'),
+      buildD = L.marker([50.760445, 6.083084]).bindPopup('<b>Gebäude D</b>'),
+      buildF = L.marker([50.758912, 6.081351]).bindPopup('<b>Gebäude F</b>'),
+      buildC = L.marker([50.758048, 6.08163]).bindPopup('<b>Gebäude C</b>'),
+      buildG = L.marker([50.758835, 6.081898]).bindPopup('<b>Gebäude G</b>'),
+      buildH = L.marker([50.758761, 6.082601]).bindPopup('<b>Gebäude H</b>'),
+      buildW = L.marker([50.758397, 6.081096]).bindPopup('<b>Gebäude W</b>'),
+      buildB = L.marker([50.758002, 6.082545]).bindPopup('<b>Gebäude B</b>');
 
-const goe1 = L.marker([50.76374021576448, 6.08069121837616]).bindPopup('<b>Gebäude 1</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
-      goe2 = L.marker([50.76423730220888, 6.08057051897049]).bindPopup('<b>Gebäude 2</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
-      goe3 = L.marker([50.7643085564883, 6.080983579158784]).bindPopup('<b>Gebäude 3</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
-      goe4 = L.marker([50.764128724050664, 6.081270575523377]).bindPopup('<b>Gebäude 4</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
-      goe5 = L.marker([50.763987911376404, 6.079985797405244]).bindPopup('<b>Gebäude 5</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>');
+const goe1 = L.marker([50.76374021576448, 6.08069121837616]).bindPopup('<b>Gebäude 1</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>'),
+      goe2 = L.marker([50.76423730220888, 6.08057051897049]).bindPopup('<b>Gebäude 2</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>'),
+      goe3 = L.marker([50.7643085564883, 6.080983579158784]).bindPopup('<b>Gebäude 3</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>'),
+      goe4 = L.marker([50.764128724050664, 6.081270575523377]).bindPopup('<b>Gebäude 4</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>'),
+      goe5 = L.marker([50.763987911376404, 6.079985797405244]).bindPopup('<b>Gebäude 5</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>');
 
-const bay1 = L.marker([50.75527706020304, 6.096489429473878]).bindPopup('<b>Trakt 1</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
-      bay2 = L.marker([50.754856237868154, 6.096816658973695]).bindPopup('<b>Trakt 2</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
-      bay3 = L.marker([50.75443201797519, 6.09717607498169]).bindPopup('<b>Trakt 3</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
-      bay4 = L.marker([50.75516846125302, 6.096982955932617]).bindPopup('<b>Trakt 4</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
-      bay5 = L.marker([50.754798544188596, 6.0973745584487915]).bindPopup('<b>Trakt 5</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>');
+const bay1 = L.marker([50.75527706020304, 6.096489429473878]).bindPopup('<b>Bayernallee Trakt 1</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+      bay2 = L.marker([50.754856237868154, 6.096816658973695]).bindPopup('<b>Bayernallee Trakt 2</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+      bay3 = L.marker([50.75443201797519, 6.09717607498169]).bindPopup('<b>Bayernallee Trakt 3</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+      bay4 = L.marker([50.75516846125302, 6.096982955932617]).bindPopup('<b>Bayernallee Trakt 4</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+      bay5 = L.marker([50.754798544188596, 6.0973745584487915]).bindPopup('<b>Bayernallee Trakt 5</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
 
 const box1 = L.marker([50.76883298101297, 6.079334020614625]).bindPopup('<b>Boxgraben</b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung/kontakt-und-anfahrt" target="_blank" rel="noopener">Info</a>')
 
@@ -157,11 +157,9 @@ const bibIcon = new L.Icon({
 }); 
 
 const bibEup = L.marker([50.7594833787482, 6.083233952522279], {icon: bibIcon}).bindPopup('<b>Bib Eupenerstr.</b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>'),
-      bibBay = L.marker([50.754935990778655, 6.097052693367005], {icon: bibIcon}).bindPopup('<b>Bib Bayernall.</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>'),
+      bibBay = L.marker([50.754935990778655, 6.097052693367005], {icon: bibIcon}).bindPopup('<b>Bib Bayernallee</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>'),
       bibBox = L.marker([50.76892967372444, 6.07895314693451], {icon: bibIcon}).bindPopup('<b>Bib Boxgraben</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>');
       
-      
-
 const studentParking = L.polygon([
         [50.759296, 6.083616],
         [50.759886, 6.083803],
@@ -277,7 +275,7 @@ L.easyButton('fa-crosshairs', (btn, map) => {
 }, { position: 'bottomright' }).addTo(map);
 
 /**
- * Add a marker at location
+ * Add a marker on click/touch
  *
  */
 
@@ -400,18 +398,3 @@ if(lat != undefined && lng != undefined)
     map.removeLayer(buildings);
     map.setView([lat, lng], map.getMaxZoom() - 1);
 }
-
-/*
-map.on('click', function(e) {
-	const start = '50.75888443836034,6.085395812988282';
-	const end = e.latlng.lat + ',' + e.latlng.lng;
-	const mapboxKey = 'pk.eyJ1IjoiZGF2aWRyZWNoayIsImEiOiJjbDk3NGY2emYwY3FmM3JsbWxnMzRod25zIn0.Ox7P9Zuh_xrlCxAoD5HO3A';
-	let url = 'https://api.mapbox.com/directions/v5/mapbox/driving/'+start+';'+end+'?geometries=geojson&access_token=' + mapboxKey;
-	//url = 'https://api.mapbox.com/directions/v5/mapbox/cycling/-84.518641,39.134270;-84.512023,39.102779?geometries=geojson&access_token=pk.eyJ1IjoiZGF2aWRyZWNoayIsImEiOiJjbDk3NGY2emYwY3FmM3JsbWxnMzRod25zIn0.Ox7P9Zuh_xrlCxAoD5HO3A';
-	fetch(url).then(res=>res.json()).then(data => {
-		console.log(data.routes[0].geometry.coordinates);
-		let route = L.polyline(data.routes[0].geometry.coordinates, {color: 'red'}).addTo(map);
-		//map.fitBounds(route.getBounds());
-	});
-});
-*/
