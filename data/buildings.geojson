@@ -2,92 +2,147 @@
     "type": "FeatureCollection",
     "features": [
 {
-    "type": "Feature",
-    "properties": {
-        "name": "E",
-        "popUpContent": "Building E"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.759521,6.082668]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "E",
+		"popUpContent": "Building E"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.759334068547275,6.082850396633148]
+	}
 },
 {
-    "type": "Feature",
-    "properties": {
-        "name": "D",
-        "popUpContent": "Building D"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.760445,6.083084]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "D",
+		"popUpContent": "Building D"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.760258766108045,6.083094477653504]
+	}
 },
 {
-    "type": "Feature",
-    "properties": {
-        "name": "G",
-        "popUpContent": "Building G"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.758835,6.081898]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "G",
+		"popUpContent": "Building G"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.75879451180454,6.081994771957398]
+	}
 },
 {
-    "type": "Feature",
-    "properties": {
-        "name": "H",
-        "popUpContent": "Building H"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.758761,6.082601]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "H",
+		"popUpContent": "Building H"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.758718158932844,6.082606315612794]
+	}
 },
 {
-    "type": "Feature",
-    "properties": {
-        "name": "F",
-        "popUpContent": "Building F"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.758912,6.081351]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "F",
+		"popUpContent": "Building F"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.758797905262604,6.081404685974122]
+	}
 },
 {
-    "type": "Feature",
-    "properties": {
-        "name": "C",
-        "popUpContent": "Building C"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.758048,6.08163]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "C",
+		"popUpContent": "Building C"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.758039461264936,6.081651449203491]
+	}
 },
 {
-    "type": "Feature",
-    "properties": {
-        "name": "B",
-        "popUpContent": "Building B"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.758002,6.082545]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "B",
+		"popUpContent": "Building B"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.758341482942626,6.082651913166046]
+	}
 },
 {
-    "type": "Feature",
-    "properties": {
-        "name": "W",
-        "popUpContent": "Building W"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [50.758397,6.081096]
-    }
+	"type": "Feature",
+	"properties": {
+		"name": "W",
+		"popUpContent": "Building W"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.75848570608987,6.0812169313430795]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe1",
+		"popUpContent": "Goethestr. Gebäude 1"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.76374021576448, 6.08069121837616]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe2",
+		"popUpContent": "Goethestr. Gebäude 2"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.76423730220888, 6.08057051897049]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe3",
+		"popUpContent": "Goethestr. Gebäude 3"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.7643085564883, 6.080983579158784]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe4",
+		"popUpContent": "Goethestr. Gebäude 4"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.764128724050664, 6.081270575523377]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe5",
+		"popUpContent": "Goethestr. Gebäude 5"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.763987911376404, 6.079985797405244]
+	}
 }
 ]
 }

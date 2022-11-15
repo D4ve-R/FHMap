@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
         <title>FHMap AR</title>
+		<link rel="icon" type="image/x-icon" href="favicon.ico">
 
         <!-- aframe -->
         <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
@@ -15,9 +16,14 @@
 		<!-- ar.js -->
 		<!--
 		<script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js"></script>
-		--> 
+		
         <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-
+		-->
+		<script src="js/arjs/aframe-ar.js"></script>
+		<!-- 
+		<script src="js/arjs/ar-threex-location-only.js"></script> 
+		-->
+		
 		<!-- Leaflet 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
              integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
@@ -39,10 +45,6 @@
 		<link rel="stylesheet" href="css/ar.css" />
 
 		<script src="js/utils.js"></script>
-		<!-- 
-		<script src="js/arjs/ar-threex-location-only.js"></script> 
-		<script src="js/arjs/aframe-ar.js"></script>
-		-->
 		<script src="js/arjs/urlLocation.js"></script>
 		<script src="js/arjs/geoJSONEntity.js"></script>
 		<script src="js/arjs/pathEntity.js"></script>
@@ -52,6 +54,22 @@
                     window.location.href = window.location.protocol + "//"
                         + window.location.host + "/FHMap/";
             };
+
+			let showing = false;
+			function showDropdown() {
+				document.getElementById("dropdown").style.display = showing ? "none" : "block";
+				showing = !showing;
+				document.getElementById("dropdown-button").classList.toggle("change");
+			}
+
+			function changePlaces(e) {
+				let select = document.getElementById("dropdown");
+				let value = select.options[select.selectedIndex].value;
+				document.getElementById("geojson").setAttribute("geojson-entity__places", "url:" + value);
+				select.style.display = "none";
+				showing = false;
+				document.getElementById("dropdown-button").classList.toggle("change");
+			}
         </script>
 
     </head>
@@ -70,41 +88,55 @@
 				look-controls="enabled: false;" 
 				arjs-look-controls='touchEnabled: false; smoothingFactor: 0.1'
                 gps-projected-camera="
+				
 					alert: true; 
-					gpsMinDistance: 6;
-					minDistance: 15;
-					positionMinAccuracy: 6;" 
-                position="0 1.5 0"
+					gpsMinDistance: 3;
+					minDistance: 10;
+					positionMinAccuracy: 7;" 
+                position="0 1.6 0"
 				rotation-reader
             ></a-camera>
 
-			<a-entity geojson-entity__places="url: data/places.geojson"></a-entity>
-			<a-entity geojson-entity__try="url: data/try.geojson"></a-entity>
-			<a-entity path-entity__try="url: data/path.geojson"></a-entity>
+			<a-entity id="geojson" geojson-entity__places="url: data/places.geojson;"></a-entity>
+			<!--<a-entity path-entity__try="url: data/path.geojson"></a-entity>-->
             <a-entity location-url></a-entity>
         </a-scene>
 
 		<div class="container">
+			<!--<button type="button" id="dropdown-button" onclick="showDropdown()"> Drop </button>-->
+			<div id="dropdown-button" onclick="showDropdown()">
+				<div class="bar1"></div>
+				<div class="bar2"></div>
+				<div class="bar3"></div>
+			</div>
 			<div class="embedded-map-container">
 				<div id="embedded-map"></div>
 			</div>
 		</div>
+
+		<select id="dropdown" onchange="changePlaces()" >
+			<option value="data/places.geojson">Buildings</option>
+			<option value="data/mensa.geojson">Mensa</option>
+			<option value="data/try.geojson">Test</option>
+		</select>
 
 		<script>
 			var map = new OSMBuildings({
 				container: 'embedded-map',
 				position: { latitude: 50.758761, longitude: 6.082601 },
 				zoom: 17,
-				tilt: 35,
+				tilt: 75,
 				disabled: true,
 				attribution: '©Data <a href="https://openstreetmap.org/copyright/">OpenStreetMap</a> ©3D <a href="https://osmbuildings.org/copyright/">OSM Buildings</a>'
 			})
 			
 			map.addMapTiles('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
-			map.addGeoJSONTiles('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
+			//map.addGeoJSONTiles('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
 
 			window.addEventListener('gps-camera-update-position', function (ev) {
-				map.setPosition({ latitude: ev.detail.position.latitude, longitude: ev.detail.position.longitude });
+				let lat = ev.detail.position.latitude;
+				let lon = ev.detail.position.longitude;
+				map.setPosition({ latitude: lat, longitude: lon });
 			});
 
 			window.addEventListener('deviceorientation', function (ev) {
