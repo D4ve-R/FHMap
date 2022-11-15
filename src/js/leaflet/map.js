@@ -76,7 +76,7 @@ const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const satelliteUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 const satellite = L.tileLayer(satelliteUrl, {
-    maxZoom: maxZoom - 2,
+    maxZoom: maxZoom - 1,
     attribution: '&copy; <a href="https://www.esri.com/legal/copyright-trademarks">Esri</a>'
 });
 
@@ -103,6 +103,20 @@ const buildE = L.marker([50.759521, 6.082668]).bindPopup("<b>E</b>").on('click',
       buildH = L.marker([50.758761, 6.082601]).bindPopup("<b>H</b>"),
       buildW = L.marker([50.758397, 6.081096]).bindPopup("<b>W</b>"),
       buildB = L.marker([50.758002, 6.082545]).bindPopup("<b>B</b>");
+
+const goe1 = L.marker([50.76374021576448, 6.08069121837616]).bindPopup('<b>Gebäude 1</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
+      goe2 = L.marker([50.76423730220888, 6.08057051897049]).bindPopup('<b>Gebäude 2</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
+      goe3 = L.marker([50.7643085564883, 6.080983579158784]).bindPopup('<b>Gebäude 3</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
+      goe4 = L.marker([50.764128724050664, 6.081270575523377]).bindPopup('<b>Gebäude 4</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>'),
+      goe5 = L.marker([50.763987911376404, 6.079985797405244]).bindPopup('<b>Gebäude 5</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a>');
+
+const bay1 = L.marker([50.75527706020304, 6.096489429473878]).bindPopup('<b>Trakt 1</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
+      bay2 = L.marker([50.754856237868154, 6.096816658973695]).bindPopup('<b>Trakt 2</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
+      bay3 = L.marker([50.75443201797519, 6.09717607498169]).bindPopup('<b>Trakt 3</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
+      bay4 = L.marker([50.75516846125302, 6.096982955932617]).bindPopup('<b>Trakt 4</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>'),
+      bay5 = L.marker([50.754798544188596, 6.0973745584487915]).bindPopup('<b>Trakt 5</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a>');
+
+const box1 = L.marker([50.76883298101297, 6.079334020614625]).bindPopup('<b>Boxgraben</b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung/kontakt-und-anfahrt" target="_blank" rel="noopener">Info</a>')
 
 const fsIcon = new L.Icon({
 	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -131,7 +145,7 @@ const rektorIcon = new L.Icon({
 	shadowSize: [41, 41]
 });
 
-const rektor = L.marker([50.75559606816141,6.096009314060212], {icon: rektorIcon}).bindPopup('<b>Rektorat</b><br/><a href="https://www.fh-aachen.de/hochschule/rektorat" target="_blank" rel="noopener">Info</a>');
+const rektor = L.marker([50.75559606816141,6.096009314060212], {icon: rektorIcon}).bindPopup('<b>Rektorat & Verwaltung</b><br/><a href="https://www.fh-aachen.de/hochschule/rektorat" target="_blank" rel="noopener">Info</a>');
 
 const studentParking = L.polygon([
         [50.759296, 6.083616],
@@ -161,7 +175,7 @@ const bus0 = L.circle([50.758011, 6.085252], {color: orange}).bindPopup("<b>Ronh
       bus4 = L.circle([50.755185, 6.095537], {color: orange}).bindPopup("<b>Bayernallee, H.2<b><br/><small>-> AC Siegel<br/><a "+aseagUrl+">Aseag</a></small>"),
       bus5 = L.circle([50.755369, 6.095586], {color: orange}).bindPopup("<b>Bayernallee, H.1<b><br/><small>-> AC City<br/><a "+aseagUrl+">Aseag</a></small>");
 
-const buildings = L.layerGroup([buildB, buildE, buildD, buildF, buildC, buildD, buildG, buildW, buildH, rektor]);
+const buildings = L.layerGroup([buildB, buildE, buildD, buildF, buildC, buildD, buildG, buildW, buildH, rektor, goe1, goe2, goe3, goe4, goe5, bay1, bay2, bay3, bay4, bay5, box1]);
 const fs = L.layerGroup([fs1, fs2, fs4, fs5, fs6, fs7, fs8]);
 const bus = L.layerGroup([bus0, bus1, bus2, bus3, bus4, bus5]);
 const food = L.featureGroup([mensa0, mensa1, mensa2, mensa3]);

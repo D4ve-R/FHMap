@@ -88,6 +88,73 @@
         "type": "Point",
         "coordinates": [50.75848570608987,6.0812169313430795]
     }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Verwaltung",
+		"color": "yellow",
+        "popUpContent": "Verwaltung & Rektorat"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.75559606816141, 6.096009314060212]
+    }
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe1",
+		"popUpContent": "Goethestr. Gebäude 1"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.76374021576448, 6.08069121837616]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe2",
+		"popUpContent": "Goethestr. Gebäude 2"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.76423730220888, 6.08057051897049]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe3",
+		"popUpContent": "Goethestr. Gebäude 3"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.7643085564883, 6.080983579158784]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe4",
+		"popUpContent": "Goethestr. Gebäude 4"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.764128724050664, 6.081270575523377]
+	}
+},
+{
+	"type": "Feature",
+	"properties": {
+		"name": "Goe5",
+		"popUpContent": "Goethestr. Gebäude 5"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [50.763987911376404, 6.079985797405244]
+	}
 }
 ]
 }

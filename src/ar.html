@@ -67,6 +67,8 @@
 				let value = select.options[select.selectedIndex].value;
 				document.getElementById("geojson").setAttribute("geojson-entity__places", "url:" + value);
 				select.style.display = "none";
+				showing = false;
+				document.getElementById("dropdown-button").classList.toggle("change");
 			}
         </script>
 
