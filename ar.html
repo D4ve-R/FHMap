@@ -131,7 +131,7 @@
 			})
 			
 			map.addMapTiles('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
-			//map.addGeoJSONTiles('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
+			map.addGeoJSONTiles('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
 
 			window.addEventListener('gps-camera-update-position', function (ev) {
 				let lat = ev.detail.position.latitude;
