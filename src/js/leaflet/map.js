@@ -131,7 +131,7 @@ const fs1 = L.marker([50.75517694555507,6.096261441707611], {icon: fsIcon}).bind
       fs2 = L.marker([50.75485284412427, 6.096585988998414], {icon: fsIcon}).bindPopup('<b>FB02 Bauingenieurwesen</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen" target="_blank" rel="noopener">Info</a>'),
       //fs3 = L.marker([50.758912, 6.081351]).bindPopup("FB03 Chemie & Biotech."),
       fs4 = L.marker([50.76873459173299, 6.0787439346313485], {icon: fsIcon}).bindPopup('<b>FB04 Gestaltung</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung" target="_blank" rel="noopener">Info</a>'),
-      fs5 = L.marker([50.7581395697898, 6.082625091075898], {icon: fsIcon}).bindPopup('<b>FB05 Elektro- & Informationstech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/elektrotechnik-und-informationstechnik" target="_blank" rel="noopener">Info</a>'),
+      fs5 = L.marker([50.75926110998038, 6.082472205162049], {icon: fsIcon}).bindPopup('<b>FB05 Elektro- & Informationstech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/elektrotechnik-und-informationstechnik" target="_blank" rel="noopener">Info</a>'),
       fs6 = L.marker([50.76487519379996, 6.079749763011932], {icon: fsIcon}).bindPopup('<b>FB06 Luft- & Raumfahrttech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/luft-und-raumfahrttechnik" target="_blank" rel="noopener">Info</a>'),
       fs7 = L.marker([50.75953088643949, 6.082909405231477], {icon: fsIcon}).bindPopup('<b>FB07 Wirtschaftswiss.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/wirtschaft" target="_blank" rel="noopener">Info</a>'),
       fs8 = L.marker([50.76410157947173, 6.081096231937409], {icon: fsIcon}).bindPopup('<b>FB08 Maschinenbau & Mechatronik</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik" target="_blank" rel="noopener">Info</a>');
@@ -146,6 +146,21 @@ const rektorIcon = new L.Icon({
 });
 
 const rektor = L.marker([50.75559606816141,6.096009314060212], {icon: rektorIcon}).bindPopup('<b>Rektorat & Verwaltung</b><br/><a href="https://www.fh-aachen.de/hochschule/rektorat" target="_blank" rel="noopener">Info</a>');
+
+const bibIcon = new L.Icon({
+	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+	iconSize: [25, 41],
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	shadowSize: [41, 41]
+}); 
+
+const bibEup = L.marker([50.7594833787482, 6.083233952522279], {icon: bibIcon}).bindPopup('<b>Bib Eupenerstr.</b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>'),
+      bibBay = L.marker([50.754935990778655, 6.097052693367005], {icon: bibIcon}).bindPopup('<b>Bib Bayernall.</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>'),
+      bibBox = L.marker([50.76892967372444, 6.07895314693451], {icon: bibIcon}).bindPopup('<b>Bib Boxgraben</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>');
+      
+      
 
 const studentParking = L.polygon([
         [50.759296, 6.083616],
@@ -176,6 +191,7 @@ const bus0 = L.circle([50.758011, 6.085252], {color: orange}).bindPopup("<b>Ronh
       bus5 = L.circle([50.755369, 6.095586], {color: orange}).bindPopup("<b>Bayernallee, H.1<b><br/><small>-> AC City<br/><a "+aseagUrl+">Aseag</a></small>");
 
 const buildings = L.layerGroup([buildB, buildE, buildD, buildF, buildC, buildD, buildG, buildW, buildH, rektor, goe1, goe2, goe3, goe4, goe5, bay1, bay2, bay3, bay4, bay5, box1]);
+const bibs = L.layerGroup([bibEup, bibBay, bibBox]);
 const fs = L.layerGroup([fs1, fs2, fs4, fs5, fs6, fs7, fs8]);
 const bus = L.layerGroup([bus0, bus1, bus2, bus3, bus4, bus5]);
 const food = L.featureGroup([mensa0, mensa1, mensa2, mensa3]);
@@ -191,6 +207,7 @@ const overlays = {
 	"Faculties": fs,
 	"Buildings": buildings,
     "Mensen": food,
+	"Bib": bibs,
     "Student Parking": studentParking,
     "Visitor Parking": visitorParking,
 	"ÖPNV": bus,
@@ -202,7 +219,7 @@ const map = L.map('map', {
     zoom: zoom,
     minZoom: minZoom,
     maxBounds: worldBounds,
-    layers: [osm, parking, food, bus, buildings, fs],
+    layers: [osm, parking, food, bus, buildings, fs, bibs],
 });
 
 const layerControl = L.control.layers(baseLayers, overlays);
