@@ -82,17 +82,7 @@ AFRAME.registerComponent('geojson-entity', {
 		}
     },
     multiple: true,
-    init: function() {
-		this.visibilityHandler = () => {
-			this.geoJSONEntities.forEach(entity => {
-				alert(entity.getAttribute('distance'));
-				if(entity.getAttribute('distance') > 100)
-					entity.setAttribute('visible', false);
-				else
-					entity.setAttribute('visible', true);
-			});
-		};
-		
+    init: function() {		
 		const camera = document.querySelector('a-camera');
 		if(camera.getAttribute('gps-projected-camera'))
 			this.projected = '-projected';
@@ -147,18 +137,20 @@ AFRAME.registerComponent('geojson-entity', {
         } catch(err) { console.trace(err); }
 
 		if(data.updateVisibility)
-			this.el.addEventListener('gps-entity-place-update-position', this.visibilityHandler);
+			this.el.addEventListener('gps-camera-update-position', this.visibilityHandler);
 
 		window.dispatchEvent(new CustomEvent('geojson-load-end', { geojson: this.geoJSONEntities }));
 		this.loader.remove();
-		
     },
 	remove: function() {
 		if(data.updateVisibility)
-			this.el.removeEventListener('gps-entity-place-update-position', this.visibilityHandler);
+			this.el.removeEventListener('gps-camera-update-position', this.visibilityHandler);
 
-		for(const entity in this.geoJSONEntities) {
-			this.el.sceneEl.removeChild(entity);
-		}
+		this.geoJSONEntities.forEach(entity => this.el.sceneEl.removeChild(entity));
+	},
+	visibilityHandler: function(e) {
+		e.target.getAttribute('distance') > 100 ?
+			e.target.setAttribute('visible', false)
+			: e.target.setAttribute('visible', true);
 	}
 });

@@ -2,11 +2,11 @@ const videoElem = document.getElementById('scanner');
 
 const qrScanner = new QrScanner(
     videoElem,
-    result => console.log('decoded qr code:', result),
+    result => alert(`decoded qr code: ${result.data}`),
 	{
-		maxScansPerSecond: 10,
+		maxScansPerSecond: 3,
 		preferedCamera: 'environment',
-		highlightScanRegion: false,
+		highlightScanRegion: true,
 		highlightCodeOutline: false,
 		// overlay: HTMLDivElement,
 		// returnDetailedScanResult: true

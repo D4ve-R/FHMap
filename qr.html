@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>FHMap QR</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		html, body, .container {
+			width: 100vw;
+			height: 100vh;
+			background-color: black;
+			overflow: hidden;
+		}
+
+		.container {
+			position: relative;
+		}
+	</style>
+	<script src="js/qrjs/qr-scanner.umd.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<video id="scanner" style="width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; object-fit: cover;"></video>
+	</div>
+
+	<script src="js/qrjs/scanner.js"></script>
+</body>
+</html>

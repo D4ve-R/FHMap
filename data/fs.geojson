@@ -1,0 +1,86 @@
+{
+    "type": "FeatureCollection",
+    "features": 
+[{
+    "type": "Feature",
+    "properties": {
+        "name": "Architektur",
+		"color": "green"
+	},
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.75517694555507,6.096261441707611]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Bauingw.",
+		"color": "green"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.75485284412427, 6.096585988998414]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Gestaltung",
+		"color": "green"
+   },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.76873459173299, 6.0787439346313485]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Elekt.&Infotech.",
+		"color": "green"
+        
+	},
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.75926110998038, 6.082472205162049]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Luft&Raumf.tech.",
+		"color": "green"
+        
+	},
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.76487519379996, 6.079749763011932]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Wirtsch.wiss.",
+		"color": "green"
+        
+	},
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.75953088643949, 6.082909405231477]
+    }
+},
+{
+    "type": "Feature",
+    "properties": {
+        "name": "Masch.bau.",
+		"color": "green"
+        
+	},
+    "geometry": {
+        "type": "Point",
+        "coordinates": [50.76410157947173, 6.081096231937409]
+    }
+}
+]
+}
