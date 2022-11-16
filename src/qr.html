@@ -10,20 +10,20 @@
 		}
 		html, body, .container {
 			width: 100vw;
-			height: 100%;
+			height: 100vh;
+			background-color: black;
+			overflow: hidden;
 		}
-		video#scanner {
-			position: fixed; right: 0; bottom: 0;
-			min-width: 100%; min-height: 100%;
-			width: auto; height: auto; z-index: -100;
-			background-size: cover;
+
+		.container {
+			position: relative;
 		}
 	</style>
 	<script src="js/qrjs/qr-scanner.umd.min.js"></script>
 </head>
 <body>
 	<div class="container">
-		<video id="scanner"></video>
+		<video id="scanner" style="width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; object-fit: cover;"></video>
 	</div>
 
 	<script src="js/qrjs/scanner.js"></script>

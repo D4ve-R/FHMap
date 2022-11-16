@@ -4,7 +4,7 @@ const qrScanner = new QrScanner(
     videoElem,
     result => alert(`decoded qr code: ${result.data}`),
 	{
-		maxScansPerSecond: 10,
+		maxScansPerSecond: 3,
 		preferedCamera: 'environment',
 		highlightScanRegion: true,
 		highlightCodeOutline: false,

@@ -90,19 +90,19 @@ const mensaIcon = L.divIcon({
     popupAnchor: [0, -20]
 });
 
-const mensa0 = L.marker([50.759407, 6.082322], {icon: mensaIcon, title: 'Mensa Eupener'}).bindPopup('<b>Mensa Eupenerstr</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-eupener-strasse-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
+const mensa0 = L.marker([50.759407, 6.082322], {icon: mensaIcon, title: 'Mensa Eupener'}).bindPopup('<b>Mensa Eupenerstr</b><br/><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-eupener-strasse-wochenplan.html" target="_blank" rel="noopener">Menu</a><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
 const mensa1 = L.marker([50.757915, 6.081952], {icon: mensaIcon, title: 'Mensa Südpark'}).bindPopup('<b>Mensa Südpark</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Essen_und_Trinken/mensa-suedpark-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
-const mensa2 = L.marker([50.755691, 6.097063], {icon: mensaIcon, title: 'Mensa Bayernallee'}).bindPopup('<b>Mensa Bayernallee</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-bayernallee-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
-const mensa3 = L.marker([50.764799, 6.078159], {icon: mensaIcon, title: 'Mensa KMAC'}).bindPopup('<b>Mensa KMAC</b><br/><small><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-goethestrasse-wochenplan.html" target="_blank" rel="noopener">Menu</a></small>');
+const mensa2 = L.marker([50.755691, 6.097063], {icon: mensaIcon, title: 'Mensa Bayernallee'}).bindPopup('<b>Mensa Bayernallee</b><br/><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-bayernallee-wochenplan.html" target="_blank" rel="noopener">Menu</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
+const mensa3 = L.marker([50.764799, 6.078159], {icon: mensaIcon, title: 'Mensa KMAC'}).bindPopup('<b>Mensa KMAC</b><br/><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-goethestrasse-wochenplan.html" target="_blank" rel="noopener">Menu</a><br/><a href="https://www.google.de/maps/dir//Hohenstaufenallee+10,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
 
-const buildE = L.marker([50.759521, 6.082668], {title: 'Eupenerstr E'}).bindPopup('<b>Gebäude E</b>'),
-    buildD = L.marker([50.760445, 6.083084], {title: 'Eupenerstr D'}).bindPopup('<b>Gebäude D</b>'),
-    buildF = L.marker([50.758912, 6.081351], {title: 'Eupenerstr F'}).bindPopup('<b>Gebäude F</b>'),
-    buildC = L.marker([50.758048, 6.08163], {title: 'Eupenerstr C'}).bindPopup('<b>Gebäude C</b>'),
-    buildG = L.marker([50.758835, 6.081898], {title: 'Eupenerstr G'}).bindPopup('<b>Gebäude G</b>'),
-    buildH = L.marker([50.758761, 6.082601], {title: 'Eupenerstr H'}).bindPopup('<b>Gebäude H</b>'),
-    buildW = L.marker([50.758397, 6.081096], {title: 'Eupenerstr W'}).bindPopup('<b>Gebäude W</b>'),
-    buildB = L.marker([50.758002, 6.082545], {title: 'Eupenerstr B'}).bindPopup('<b>Gebäude B</b>');
+const buildE = L.marker([50.759521, 6.082668], {title: 'Eupenerstr E'}).bindPopup('<b>Gebäude E</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    buildD = L.marker([50.760445, 6.083084], {title: 'Eupenerstr D'}).bindPopup('<b>Gebäude D</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    buildF = L.marker([50.758912, 6.081351], {title: 'Eupenerstr F'}).bindPopup('<b>Gebäude F</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    buildC = L.marker([50.758048, 6.08163], {title: 'Eupenerstr C'}).bindPopup('<b>Gebäude C</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    buildG = L.marker([50.758835, 6.081898], {title: 'Eupenerstr G'}).bindPopup('<b>Gebäude G</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    buildH = L.marker([50.758761, 6.082601], {title: 'Eupenerstr H'}).bindPopup('<b>Gebäude H</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    buildW = L.marker([50.758397, 6.081096], {title: 'Eupenerstr W'}).bindPopup('<b>Gebäude W</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    buildB = L.marker([50.758002, 6.082545], {title: 'Eupenerstr B'}).bindPopup('<b>Gebäude B</b><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
 
 const goe1 = L.marker([50.76374021576448, 6.08069121837616], {title: 'Göthestr 1'}).bindPopup('<b>Gebäude 1</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>'),
     goe2 = L.marker([50.76423730220888, 6.08057051897049], {title: 'Göthestr 2'}).bindPopup('<b>Gebäude 2</b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik/gebaeude" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>'),
@@ -116,7 +116,7 @@ const bay1 = L.marker([50.75527706020304, 6.096489429473878], {title: 'Bayernall
     bay4 = L.marker([50.75516846125302, 6.096982955932617], {title: 'Bayernallee Trakt 4'}).bindPopup('<b>Bayernallee Trakt 4</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
     bay5 = L.marker([50.754798544188596, 6.0973745584487915], {title: 'Bayernallee Trakt 5'}).bindPopup('<b>Bayernallee Trakt 5</b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen/studium/gebaeude-bayernallee" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
 
-const box1 = L.marker([50.76883298101297, 6.079334020614625], {title: 'Boxgraben'}).bindPopup('<b>Boxgraben</b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung/kontakt-und-anfahrt" target="_blank" rel="noopener">Info</a>')
+const box1 = L.marker([50.76883298101297, 6.079334020614625], {title: 'Boxgraben'}).bindPopup('<b>Boxgraben</b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung/kontakt-und-anfahrt" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Boxgraben+100,+52066+Aachen" target="_blank" rel="noopener">Route</a>')
 
 const fsIcon = new L.Icon({
 	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -127,14 +127,14 @@ const fsIcon = new L.Icon({
 	shadowSize: [41, 41]
 });
 
-const fs1 = L.marker([50.75517694555507,6.096261441707611], {icon: fsIcon, title: 'Fachschaft Architektur'}).bindPopup('<b>FB01 Architektur</b><br/><a href="https://www.fh-aachen.de/fachbereiche/architektur" target="_blank" rel="noopener">Info</a>'),
-    fs2 = L.marker([50.75485284412427, 6.096585988998414], {icon: fsIcon, title: 'Fachschaft Bauingw.'}).bindPopup('<b>FB02 Bauingenieurwesen</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen" target="_blank" rel="noopener">Info</a>'),
+const fs1 = L.marker([50.75517694555507,6.096261441707611], {icon: fsIcon, title: 'Fachschaft Architektur'}).bindPopup('<b>FB01 Architektur</b><br/><a href="https://www.fh-aachen.de/fachbereiche/architektur" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    fs2 = L.marker([50.75485284412427, 6.096585988998414], {icon: fsIcon, title: 'Fachschaft Bauingw.'}).bindPopup('<b>FB02 Bauingenieurwesen</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/bauingenieurwesen" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
     //fs3 = L.marker([50.758912, 6.081351]).bindPopup("FB03 Chemie & Biotech."),
-    fs4 = L.marker([50.76873459173299, 6.0787439346313485], {icon: fsIcon, title: 'Fachschaft Gestaltung'}).bindPopup('<b>FB04 Gestaltung</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung" target="_blank" rel="noopener">Info</a>'),
-    fs5 = L.marker([50.75926110998038, 6.082472205162049], {icon: fsIcon, title: 'Fachschaft Elektro & Informationt.'}).bindPopup('<b>FB05 Elektro- & Informationstech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/elektrotechnik-und-informationstechnik" target="_blank" rel="noopener">Info</a>'),
-    fs6 = L.marker([50.76487519379996, 6.079749763011932], {icon: fsIcon, title: 'Fachschaft Luft & Raumfahrtt.'}).bindPopup('<b>FB06 Luft- & Raumfahrttech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/luft-und-raumfahrttechnik" target="_blank" rel="noopener">Info</a>'),
-    fs7 = L.marker([50.75953088643949, 6.082909405231477], {icon: fsIcon, title: 'Fachschaft Wirtschaftswiss.'}).bindPopup('<b>FB07 Wirtschaftswiss.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/wirtschaft" target="_blank" rel="noopener">Info</a>'),
-    fs8 = L.marker([50.76410157947173, 6.081096231937409], {icon: fsIcon, title: 'Fachschaft Maschinenbau'}).bindPopup('<b>FB08 Maschinenbau & Mechatronik</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik" target="_blank" rel="noopener">Info</a>');
+    fs4 = L.marker([50.76873459173299, 6.0787439346313485], {icon: fsIcon, title: 'Fachschaft Gestaltung'}).bindPopup('<b>FB04 Gestaltung</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/gestaltung" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Boxgraben+100,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    fs5 = L.marker([50.75926110998038, 6.082472205162049], {icon: fsIcon, title: 'Fachschaft Elektro & Informationt.'}).bindPopup('<b>FB05 Elektro- & Informationstech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/elektrotechnik-und-informationstechnik" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    fs6 = L.marker([50.76487519379996, 6.079749763011932], {icon: fsIcon, title: 'Fachschaft Luft & Raumfahrtt.'}).bindPopup('<b>FB06 Luft- & Raumfahrttech.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/luft-und-raumfahrttechnik" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Hohenstaufenallee+6,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    fs7 = L.marker([50.75953088643949, 6.082909405231477], {icon: fsIcon, title: 'Fachschaft Wirtschaftswiss.'}).bindPopup('<b>FB07 Wirtschaftswiss.</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/wirtschaft" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+    fs8 = L.marker([50.76410157947173, 6.081096231937409], {icon: fsIcon, title: 'Fachschaft Maschinenbau'}).bindPopup('<b>FB08 Maschinenbau & Mechatronik</b></b><br/><a href="https://www.fh-aachen.de/fachbereiche/maschinenbau-und-mechatronik" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Goethestra%C3%9Fe+1,+52064+Aachen" target="_blank" rel="noopener">Route</a>');
 
 const rektorIcon = new L.Icon({
 	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
@@ -145,7 +145,7 @@ const rektorIcon = new L.Icon({
 	shadowSize: [41, 41]
 });
 
-const rektor = L.marker([50.75559606816141,6.096009314060212], {icon: rektorIcon, title: 'Rektorat'}).bindPopup('<b>Rektorat & Verwaltung</b><br/><a href="https://www.fh-aachen.de/hochschule/rektorat" target="_blank" rel="noopener">Info</a>');
+const rektor = L.marker([50.75559606816141,6.096009314060212], {icon: rektorIcon, title: 'Rektorat'}).bindPopup('<b>Rektorat & Verwaltung</b><br/><a href="https://www.fh-aachen.de/hochschule/rektorat" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+11,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
 
 const bibIcon = new L.Icon({
 	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
@@ -156,9 +156,9 @@ const bibIcon = new L.Icon({
 	shadowSize: [41, 41]
 }); 
 
-const bibEup = L.marker([50.7594833787482, 6.083233952522279], {icon: bibIcon, title: 'Bib Eupenerstr'}).bindPopup('<b>Bib Eupenerstr.</b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>'),
-      bibBay = L.marker([50.754935990778655, 6.097052693367005], {icon: bibIcon, title: 'Bib Bayernallee'}).bindPopup('<b>Bib Bayernallee</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>'),
-      bibBox = L.marker([50.76892967372444, 6.07895314693451], {icon: bibIcon, title: 'Bib Boxgraben'}).bindPopup('<b>Bib Boxgraben</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a>');
+const bibEup = L.marker([50.7594833787482, 6.083233952522279], {icon: bibIcon, title: 'Bib Eupenerstr'}).bindPopup('<b>Bib Eupenerstr.</b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+      bibBay = L.marker([50.754935990778655, 6.097052693367005], {icon: bibIcon, title: 'Bib Bayernallee'}).bindPopup('<b>Bib Bayernallee</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Bayernallee+9,+52066+Aachen" target="_blank" rel="noopener">Route</a>'),
+      bibBox = L.marker([50.76892967372444, 6.07895314693451], {icon: bibIcon, title: 'Bib Boxgraben'}).bindPopup('<b>Bib Boxgraben</b></b><br/><a href="https://www.fh-aachen.de/hochschule/bibliothek" target="_blank" rel="noopener">Info</a><br/><a href="https://www.google.de/maps/dir//Boxgraben+100,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
       
 const studentParking = L.polygon([
         [50.759296, 6.083616],
