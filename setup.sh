@@ -8,6 +8,11 @@ mkdir -p server/cert
 mv *.pem server/cert/
 
 mkdir server/public
-cp -r src/ server/public/
 
-python3 server.py
+npm install
+npm run build
+
+./build.sh
+
+npm run serve
+#python3 server.py

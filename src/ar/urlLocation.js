@@ -1,4 +1,5 @@
-// import getUrlParams from '../utils.js';
+import getUrlParams from '../utils.js';
+import * as AFRAME from "aframe";
 
 function createUrlEntity({ name, coords, projected, primitive, color, scale }) {
     const textScale = scale * 20;
@@ -47,9 +48,9 @@ AFRAME.registerComponent('location-url', {
 		}
     },
     init: function() {
-              const lat = getUrlParam('lat');
-              const lng = getUrlParam('lng');
-			  const name = getUrlParam('name');
+              const lat = getUrlParams('lat');
+              const lng = getUrlParams('lng');
+			  const name = getUrlParams('name');
 
 			  const camera = document.querySelector('a-camera');
 			  if(camera.getAttribute('gps-projected-camera'))

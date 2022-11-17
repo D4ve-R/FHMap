@@ -1,3 +1,5 @@
+import * as AFRAME from "aframe";
+
 class GeoJSONError extends Error {
 	constructor(message, geojson) {
 		const props = {
@@ -88,6 +90,24 @@ AFRAME.registerComponent('geojson-entity', {
 			this.projected = '-projected';
 		else if(camera.getAttribute('gps-new-camera'))
 			this.projected = '-new';
+
+		window.addEventListener('gps-camera-update-position', e => {
+			this.el.setAttribute('terrarium-dem', {
+				lat: e.detail.position.latitude,
+				lon: e.detail.position.longitude 
+			})
+		});
+
+		this.el.addEventListener('elevation-available', e => {
+            const position = camera.getAttribute('position');
+            position.y = e.detail.elevation + 1.6;
+            camera.setAttribute('position', position);
+        });
+
+		this.el.addEventListener('osm-data-loaded', e => {
+            console.log(e.detail);
+			//this.geoJSONEntities.forEach(entity => entity.setAttribute('position', true));
+		});
 
 	},
 	update: function() {

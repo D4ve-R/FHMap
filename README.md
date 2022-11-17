@@ -20,33 +20,36 @@ built with [Leaflet](https://github.com/Leaflet/Leaflet) and [AR.js](https://git
 ## Dev Setup
 ```
 cd FHMap
-chmod +x devSetup.sh
-./devSetup.sh
+chmod +x setup.sh
+./setup.sh
 ```
   
 must be served through https  
 dev server defaults to https://127.0.0.1:4443  
 can be changed to host device local network ip, to test on mobile  
 ```
+# set variables in .env file
+npm run serve
+
 # use local ip example
 python3 server.py -H 192.168.178.22
 ```
 
 ## "Build"
 ```
-./build.sh
+npm run build
 ```
 
 ## Todos
 
 - [x] add google maps ar like map to ar view
 - [ ] resize device location marker on map zoom
-- [ ] fix search function
+- [x] fix search function
 - [ ] use geojson in map
 - [ ] fix path visualizer path width
 - [ ] buttons css 
 - [x] fix inital rotation issue ar view
-- [ ] bundle with webpack or similar
+- [x] bundle with webpack or similar
 
 ## Contributions
 clone repo & create new branch  
