@@ -22,16 +22,16 @@ module.exports = (env, argv) => {
   };
   const module = {
     rules: [
-      {
-        test: /\.worker\.js$/,
-        use: {
-          loader: 'worker-loader',
-          options: {
-            inline: 'no-fallback'
-          }
-        }
-      }
-    ]
+		{
+		  test: /\.worker\.js$/,
+		  use: {
+			loader: 'worker-loader',
+			options: {
+			  inline: 'no-fallback'
+			}
+		  }
+		}
+	  ]
   };
 
   return [
@@ -39,7 +39,7 @@ module.exports = (env, argv) => {
 		name: 'ar-bundle',
 		entry: './src/ar/index.js',
 		output: {
-			path: path.resolve(__dirname, 'dist/js/ar'),
+			path: path.resolve(__dirname, 'dist','js','ar'),
       		filename: 'ar-bundle.js',
       		libraryTarget: 'umd',
       		globalObject: 'this'
@@ -51,8 +51,20 @@ module.exports = (env, argv) => {
 		name: 'map-bundle',
 		entry: './src/map/index.js',
 		output: {
-			path: path.resolve(__dirname, 'dist/js/map'),
+			path: path.resolve(__dirname, 'dist','js','map'),
       		filename: 'map-bundle.js',
+      		libraryTarget: 'umd',
+      		globalObject: 'this'
+		},
+		module,
+    	externals
+	},
+	{
+		name: 'qr-bundle',
+		entry: './src/qr/index.js',
+		output: {
+			path: path.resolve(__dirname, 'dist','js','qr'),
+      		filename: 'qr-bundle.js',
       		libraryTarget: 'umd',
       		globalObject: 'this'
 		},

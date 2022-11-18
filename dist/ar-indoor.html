@@ -13,20 +13,35 @@
 		<!-- aframe look-at -->
 		<script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 		
-		<script src="js/arjs/aframe-ar.js"></script>
+		<script src="js/ar/aframe-ar.js"></script>
 
 		<link rel="stylesheet" href="css/ar.css" />
 
         <script>
+			let running = false;
+
+			function run() {
+				setTimeout(function() {
+					if(!running)
+						return;
+					window.dispatchEvent(new CustomEvent('ar-movement', { detail: { x: 0, y: 0, z: 0.04 } } ));
+					run();
+				}, 1000/30);
+			}
+				
             function onClick() {
-				window.dispatchEvent(new CustomEvent('ar-movement', { detail: { x: 0, y: 0, z: -1 } } ));
-			};
+				const button = document.getElementById('move-button');
+				running = !running;
+				running && run();
+				running ? button.classList.add('move-active') : button.classList.remove('move-active');
+			}
+
         </script>
 
     </head>
     <body style="margin: 0; overflow: hidden;">
         <div class="container">
-            <button type="button" id="move-button" onclick="onClick()">
+            <button id="move-button" type="button" onclick="onClick()">
                 Move
             </button>
         </div>

@@ -11,8 +11,7 @@ mkdir server/public
 
 npm install
 npm run build
-
-./build.sh
+#./build.sh
 
 npm run serve
 #python3 server.py

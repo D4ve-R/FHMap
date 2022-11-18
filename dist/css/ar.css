@@ -15,15 +15,36 @@
 }
 
 #move-button {
-	top: 0;
-	right: 0;
-	margin-top: 1.5rem;
-	margin-right: 1.5rem;
-	float: right;
-	height: 2rem;
 	position: absolute;
-	font-weight: bold;
+	top: 80vh;
+	left: 50%;
+	margin-left: 1.5rem;
+	margin-bottom: 3rem;
+	height: 3rem;
+	width: 3rem;
 	z-index: 1000;
+	border-radius: 50%;
+	background-color: #00b1ac;
+	border: solid 1px #fff;
+}
+
+.move-active{
+	animation-name: pulse;
+	animation-duration: 1.5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+@keyframes pulse{
+	0%{
+		box-shadow: 0px 0px 5px 0px rgba(0, 255, 255, 0.3);
+	}
+	65%{
+		box-shadow: 0px 0px 5px 13px rgba(0,255,255,.3);
+	}
+	90%{
+		box-shadow: 0px 0px 5px 13px rgba(0,255,255,0);
+	}
 }
 
 #dropdown-button {

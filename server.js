@@ -10,15 +10,15 @@ const port = process.env.PORT || 4443;
 const API_SERVICE_URL = process.env.API_SERVICE_URL || "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/";
 
 const app = express();
-app.use(express.static(path.join(__dirname,"server/public")));
+app.use(express.static(path.join(__dirname,"server", "public")));
 
 https.createServer({
-	key: fs.readFileSync("server/cert/key.pem"),
-	cert: fs.readFileSync("server/cert/cert.pem"),
+	key: fs.readFileSync(path.join(__dirname,"server", "cert", "key.pem")),
+	cert: fs.readFileSync(path.join(__dirname, "server", "cert", "cert.pem")),
 	passphrase: process.env.SSL_PASSPHRASE
   },app)
   .listen(port, host, ()=>{
-    console.log('server is running at ' + host + ':' + port);
+    console.log('server is running at https://' + host + ':' + port);
   });
 
 
@@ -30,7 +30,6 @@ app.get("/dem/x/:x/y/:y/z/:z", createProxyMiddleware({
 	},
 	on: {
 		proxyReq: (proxyReq, req) => {
-			console.log('proxyReq', proxyReq.path);
 			proxyReq.path += `${req.params.z}/${req.params.x}/${req.params.y}.png`;
 		}
 	}
