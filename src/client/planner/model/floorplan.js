@@ -39,7 +39,7 @@ export class Floorplan {
 
   // hack
   wallEdges() {
-	var edges = []
+	const edges = []
 
 	this.walls.forEach((wall) => {
 	  if (wall.frontEdge) {
@@ -54,7 +54,7 @@ export class Floorplan {
 
   // hack : THREE.Mesh[]
   wallEdgePlanes() {
-	var planes = []
+	const planes = []
 	this.walls.forEach((wall) => {
 	  if (wall.frontEdge) {
 		planes.push(wall.frontEdge.plane);
@@ -122,13 +122,12 @@ export class Floorplan {
    * @returns The new corner.
    */
   newCorner(x, y, id) {
-	var corner = new Corner(this, x, y, id);
+	const corner = new Corner(this, x, y, id);
 	this.corners.push(corner);
 	corner.fireOnDelete(() => {
 	  this.removeCorner;
 	});
 	this.new_corner_callbacks.fire(corner);
-	console.log(this.walls);
 	return corner;
   }
 
@@ -156,7 +155,7 @@ export class Floorplan {
 
   overlappedCorner(x, y, tolerance) {
 	tolerance = tolerance || defaultFloorPlanTolerance;
-	for (var i = 0; i < this.corners.length; i++) {
+	for (let i = 0; i < this.corners.length; i++) {
 	  if (this.corners[i].distanceFrom(x, y) < tolerance) {
 		return this.corners[i];
 	  }
@@ -166,7 +165,7 @@ export class Floorplan {
 
   overlappedWall(x, y, tolerance) {
 	tolerance = tolerance || defaultFloorPlanTolerance;
-	for (var i = 0; i < this.walls.length; i++) {
+	for (let i = 0; i < this.walls.length; i++) {
 	  if (this.walls[i].distanceFrom(x, y) < tolerance) {
 		return this.walls[i];
 	  }
@@ -177,7 +176,7 @@ export class Floorplan {
   // import and export -- cleanup
 
   saveFloorplan() {
-	var floorplan = {
+	const floorplan = {
 	  corners: {},
 	  walls: [],
 	  wallTextures: [],
@@ -207,17 +206,17 @@ export class Floorplan {
   loadFloorplan(floorplan) {
 	this.reset();
 
-	var corners = {};
+	const corners = {};
 	if (floorplan == null || !('corners' in floorplan) || !('walls' in floorplan)) {
 		throw "Invalid floorplan";
 	}
-	for (var id in floorplan.corners) {
-	  var corner = floorplan.corners[id];
+	for (let id in floorplan.corners) {
+	  const corner = floorplan.corners[id];
 	  corners[id] = this.newCorner(corner.x, corner.y, id);
 	}
-	var scope = this;
+	const scope = this;
 	floorplan.walls.forEach((wall) => {
-	  var newWall = scope.newWall(
+	  const newWall = scope.newWall(
 		corners[wall.corner1], corners[wall.corner2]);
 	  if (wall.frontTexture) {
 		newWall.frontTexture = wall.frontTexture;
@@ -264,8 +263,8 @@ export class Floorplan {
 
   /** */
   reset() {
-	var tmpCorners = this.corners.slice(0);
-	var tmpWalls = this.walls.slice(0);
+	const tmpCorners = this.corners.slice(0);
+	const tmpWalls = this.walls.slice(0);
 	tmpCorners.forEach((corner) => {
 	  corner.remove();
 	})
@@ -343,9 +342,9 @@ export class Floorplan {
 	this.walls.forEach((wall) => {
 	  if (!wall.backEdge && !wall.frontEdge) {
 		wall.orphan = true;
-		var back = new HalfEdge(null, wall, false);
+		const back = new HalfEdge(null, wall, false);
 		back.generatePlane();
-		var front = new HalfEdge(null, wall, true);
+		const front = new HalfEdge(null, wall, true);
 		front.generatePlane();
 		orphanWalls.push(wall);
 	  }
@@ -370,19 +369,20 @@ export class Floorplan {
 	}
 
 	function _removeDuplicateRooms(roomArray) {
-	  var results = [];
-	  var lookup = {};
-	  var hashFunc = function (corner) {
+	  const results = [];
+	  const lookup = {};
+	  const hashFunc = function (corner) {
 		return corner.id
 	  };
-	  var sep = '-';
-	  for (var i = 0; i < roomArray.length; i++) {
+	  const sep = '-';
+	  for (let i = 0; i < roomArray.length; i++) {
 		// rooms are cycles, shift it around to check uniqueness
-		var add = true;
-		var room = roomArray[i];
-		for (var j = 0; j < room.length; j++) {
-		  var roomShift = Utils.cycle(room, j);
-		  var str = Utils.map(roomShift, hashFunc).join(sep);
+		let add = true;
+		const room = roomArray[i];
+		let str = null;
+		for (let j = 0; j < room.length; j++) {
+		  const roomShift = Utils.cycle(room, j);
+		  str = Utils.map(roomShift, hashFunc).join(sep);
 		  if (lookup.hasOwnProperty(str)) {
 			add = false;
 		  }
@@ -396,18 +396,18 @@ export class Floorplan {
 	}
 
 	function _findTightestCycle(firstCorner, secondCorner) {
-	  var stack = [];
+	  const stack = [];
 
-	  var next = {
+	  let next = {
 		corner: secondCorner,
 		previousCorners: [firstCorner]
 	  };
-	  var visited = {};
+	  const visited = {};
 	  visited[firstCorner.id] = true;
 
 	  while (next) {
 		// update previous corners, current corner, and visited corners
-		var currentCorner = next.corner;
+		const currentCorner = next.corner;
 		visited[currentCorner.id] = true;
 
 		// did we make it back to the startCorner?
@@ -415,10 +415,10 @@ export class Floorplan {
 		  return next.previousCorners;
 		}
 
-		var addToStack = [];
-		var adjacentCorners = next.corner.adjacentCorners();
-		for (var i = 0; i < adjacentCorners.length; i++) {
-		  var nextCorner = adjacentCorners[i];
+		const addToStack = [];
+		const adjacentCorners = next.corner.adjacentCorners();
+		for (let i = 0; i < adjacentCorners.length; i++) {
+		  const nextCorner = adjacentCorners[i];
 
 		  // is this where we came from?
 		  // give an exception if its the first corner and we aren't at the second corner
@@ -431,11 +431,11 @@ export class Floorplan {
 		  addToStack.push(nextCorner);
 		}
 
-		var previousCorners = next.previousCorners.slice(0);
+		const previousCorners = next.previousCorners.slice(0);
 		previousCorners.push(currentCorner);
 		if (addToStack.length > 1) {
 		  // visit the ones with smallest theta first
-		  var previousCorner = next.previousCorners[next.previousCorners.length - 1];
+		  const previousCorner = next.previousCorners[next.previousCorners.length - 1];
 		  addToStack.sort(function (a, b) {
 			return (_calculateTheta(previousCorner, currentCorner, b) -
 			  _calculateTheta(previousCorner, currentCorner, a));
@@ -460,7 +460,7 @@ export class Floorplan {
 
 	// find tightest loops, for each corner, for each adjacent
 	// TODO: optimize this, only check corners with > 2 adjacents, or isolated cycles
-	var loops = [];
+	const loops = [];
 
 	corners.forEach((firstCorner) => {
 	  firstCorner.adjacentCorners().forEach((secondCorner) => {
@@ -469,10 +469,8 @@ export class Floorplan {
 	});
 
 	// remove duplicates
-	var uniqueLoops = _removeDuplicateRooms(loops);
+	const uniqueLoops = _removeDuplicateRooms(loops);
 	//remove CW loops
-	var uniqueCCWLoops = Utils.removeIf(uniqueLoops, Utils.isClockwise);
-
-	return uniqueCCWLoops;
+	return Utils.removeIf(uniqueLoops, Utils.isClockwise);
   }
 }

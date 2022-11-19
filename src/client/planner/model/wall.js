@@ -1,9 +1,8 @@
 import { Config, configWallThickness, configWallHeight } from "../core/Config";
 import { Utils, Callbacks } from "../core";
 
-/** The default wall texture. */
 const defaultWallTexture = {
-  url: "rooms/textures/wallmap.png",
+  url: "data/textures/wallmap.png",
   stretch: true,
   scale: 0
 }
@@ -182,7 +181,7 @@ export class Wall {
 	} else if (this.end === corner) {
 	  return this.start;
 	} else {
-	  console.log('Wall does not connect to corner');
+	  console.warn('Wall does not connect to corner');
 	}
   }
 }

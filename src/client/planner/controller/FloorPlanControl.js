@@ -1,5 +1,5 @@
 import { Utils, Callbacks } from "../core";
-import { FloorPlanView, floorplannerModes } from "./FloorPlanView";
+import { FloorPlanView, floorplannerModes } from "../view";
 
 export class FloorplanControl {
     mode = 0;
@@ -42,7 +42,7 @@ export class FloorplanControl {
 
       this.setMode(floorplannerModes.MOVE);
 
-      var scope = this;
+      const scope = this;
 
       this.canvasElement.addEventListener('mousedown', () => {
         scope.mousedown();
@@ -130,9 +130,9 @@ export class FloorplanControl {
 
       // update object target
       if (this.mode != floorplannerModes.DRAW && !this.mouseDown) {
-        var hoverCorner = this.floorplan.overlappedCorner(this.mouseX, this.mouseY);
-        var hoverWall = this.floorplan.overlappedWall(this.mouseX, this.mouseY);
-        var draw = false;
+        const hoverCorner = this.floorplan.overlappedCorner(this.mouseX, this.mouseY);
+        const hoverWall = this.floorplan.overlappedWall(this.mouseX, this.mouseY);
+        let draw = false;
         if (hoverCorner != this.activeCorner) {
           this.activeCorner = hoverCorner;
           draw = true;

@@ -77,7 +77,7 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
      * 
      */
     setTexture(textureUrl, textureStretch, textureScale) {
-      var texture = {
+      const texture = {
         url: textureUrl,
         stretch: textureStretch,
         scale: textureScale
@@ -99,19 +99,20 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
         return new Vector3(corner.x, 0, corner.y);
       }
 
-      var v1 = transformCorner(this.interiorStart());
-      var v2 = transformCorner(this.interiorEnd());
-      var v3 = v2.clone();
+      const v1 = transformCorner(this.interiorStart());
+      const v2 = transformCorner(this.interiorEnd());
+      const v3 = v2.clone();
       v3.y = this.wall.height;
-      var v4 = v1.clone();
+      const v4 = v1.clone();
       v4.y = this.wall.height;
+	  const points = [
+		v1, v2, v3,
+		v1, v3, v4
+	  ]
 
-      var geometry = new BufferGeometry().setFromPoints([v1, v2, v3, v4]);
-
-      //geometry.faces.push(new Face3(0, 1, 2));
-      //geometry.faces.push(new Face3(0, 2, 3));
-      //geometry.computeFaceNormals();
-      //geometry.computeBoundingBox();
+      const geometry = new BufferGeometry().setFromPoints(points);
+	  geometry.computeVertexNormals();
+	  //geometry.computeBoundingBox();
 
       this.plane = new Mesh(geometry,
         new MeshBasicMaterial());
@@ -129,21 +130,20 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
     }
 
     interiorDistance() {
-      var start = this.interiorStart();
-      var end = this.interiorEnd();
+      const start = this.interiorStart();
+      const end = this.interiorEnd();
       return Utils.distance(start.x, start.y, end.x, end.y);
     }
 
     computeTransforms(transform, invTransform, start, end) {
 
-      var v1 = start;
-      var v2 = end;
+      const v1 = start;
+      const v2 = end;
+      const angle = Utils.angle(1, 0, v2.x - v1.x, v2.y - v1.y);
 
-      var angle = Utils.angle(1, 0, v2.x - v1.x, v2.y - v1.y);
-
-      var tt = new Matrix4();
+      const tt = new Matrix4();
       tt.makeTranslation(-v1.x, 0, -v1.y);
-      var tr = new Matrix4();
+      const tr = new Matrix4();
       tr.makeRotationY(-angle);
       transform.multiplyMatrices(tr, tt);
       invTransform.getInverse(transform);
@@ -189,7 +189,7 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
 
     // these return an object with attributes x, y
     interiorEnd() {
-      var vec = this.halfAngleVector(this, this.next);
+      const vec = this.halfAngleVector(this, this.next);
       return {
         x: this.getEnd().x + vec.x,
         y: this.getEnd().y + vec.y
@@ -197,7 +197,7 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
     }
 
     interiorStart() {
-      var vec = this.halfAngleVector(this.prev, this);
+      const vec = this.halfAngleVector(this.prev, this);
       return {
         x: this.getStart().x + vec.x,
         y: this.getStart().y + vec.y
@@ -212,7 +212,7 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
     }
 
     exteriorEnd()  {
-      var vec = this.halfAngleVector(this, this.next);
+      const vec = this.halfAngleVector(this, this.next);
       return {
         x: this.getEnd().x - vec.x,
         y: this.getEnd().y - vec.y
@@ -220,7 +220,7 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
     }
 
     exteriorStart()  {
-      var vec = this.halfAngleVector(this.prev, this);
+      const vec = this.halfAngleVector(this.prev, this);
       return {
         x: this.getStart().x - vec.x,
         y: this.getStart().y - vec.y
@@ -239,59 +239,65 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
      * Gets CCW angle from v1 to v2
      */
     halfAngleVector(v1, v2) {
+		let v1startX = null;
+		let v1startY = null;
+		let v1endX = null;
+		let v1endY = null;
+		let v2startX = null;
+		let v2startY = null;
+		let v2endX = null;
+		let v2endY = null;
       // make the best of things if we dont have prev or next
       if (!v1) {
-        var v1startX = v2.getStart().x - (v2.getEnd().x - v2.getStart().x);
-        var v1startY = v2.getStart().y - (v2.getEnd().y - v2.getStart().y);
-        var v1endX = v2.getStart().x;
-        var v1endY = v2.getStart().y;
+        v1startX = v2.getStart().x - (v2.getEnd().x - v2.getStart().x);
+        v1startY = v2.getStart().y - (v2.getEnd().y - v2.getStart().y);
+        v1endX = v2.getStart().x;
+        v1endY = v2.getStart().y;
       } else {
-        var v1startX = Number(v1.getStart().x);
-        var v1startY = Number(v1.getStart().y);
-        var v1endX = v1.getEnd().x;
-        var v1endY = v1.getEnd().y;
+        v1startX = Number(v1.getStart().x);
+        v1startY = Number(v1.getStart().y);
+        v1endX = v1.getEnd().x;
+        v1endY = v1.getEnd().y;
       }
 
       if (!v2) {
-        var v2startX = v1.getEnd().x;
-        var v2startY = v1.getEnd().y;
-        var v2endX = v1.getEnd().x + (v1.getEnd().x - v1.getStart().x);
-        var v2endY = v1.getEnd().y + (v1.getEnd().y - v1.getStart().y);
+        v2startX = v1.getEnd().x;
+        v2startY = v1.getEnd().y;
+        v2endX = v1.getEnd().x + (v1.getEnd().x - v1.getStart().x);
+        v2endY = v1.getEnd().y + (v1.getEnd().y - v1.getStart().y);
       } else {
-        var v2startX = v2.getStart().x;
-        var v2startY = v2.getStart().y;
-        var v2endX = v2.getEnd().x;
-        var v2endY = v2.getEnd().y;
+        v2startX = v2.getStart().x;
+        v2startY = v2.getStart().y;
+        v2endX = v2.getEnd().x;
+        v2endY = v2.getEnd().y;
       }
 
       // CCW angle between edges
-      var theta = Utils.angle2pi(
+      const theta = Utils.angle2pi(
         v1startX - v1endX,
         v1startY - v1endY,
         v2endX - v1endX,
         v2endY - v1endY);
 
       // cosine and sine of half angle
-      var cs = Math.cos(theta / 2.0);
-      var sn = Math.sin(theta / 2.0);
+      const cs = Math.cos(theta / 2.0);
+      const sn = Math.sin(theta / 2.0);
 
       // rotate v2
-      var v2dx = v2endX - v2startX;
-      var v2dy = v2endY - v2startY;
+      const v2dx = v2endX - v2startX;
+      const v2dy = v2endY - v2startY;
 
-      var vx = v2dx * cs - v2dy * sn;
-      var vy = v2dx * sn + v2dy * cs;
+      const vx = v2dx * cs - v2dy * sn;
+      const vy = v2dx * sn + v2dy * cs;
 
       // normalize
-      var mag = Utils.distance(0, 0, vx, vy);
-      var desiredMag = (this.offset) / sn;
-      var scalar = desiredMag / mag;
+      const mag = Utils.distance(0, 0, vx, vy);
+      const desiredMag = (this.offset) / sn;
+      const scalar = desiredMag / mag;
 
-      var halfAngleVector = {
+      return {
         x: vx * scalar,
         y: vy * scalar
       }
-
-      return halfAngleVector;
     }
   }

@@ -4,7 +4,7 @@ import { HalfEdge } from "./HalfEdges";
 
 /** Default texture to be used if nothing is provided. */
 const defaultRoomTexture = {
-  url: "rooms/textures/hardwood.png",
+  url: "data/textures/hardwood.png",
   scale: 400
 }
 
@@ -40,7 +40,7 @@ export class Room {
   }
 
   getUuid() {
-	var cornerUuids = Utils.map(this.corners, function (c) {
+	const cornerUuids = Utils.map(this.corners, function (c) {
 	  return c.id;
 	});
 	cornerUuids.sort();
@@ -52,8 +52,8 @@ export class Room {
   }
 
   getTexture() {
-	var uuid = this.getUuid();
-	var tex = this.floorplan.getFloorTexture(uuid);
+	const uuid = this.getUuid();
+	const tex = this.floorplan.getFloorTexture(uuid);
 	return tex || defaultRoomTexture;
   }
 
@@ -61,20 +61,19 @@ export class Room {
    * textureStretch always true, just an argument for consistency with walls
    */
   setTexture(textureUrl, textureStretch, textureScale) {
-	var uuid = this.getUuid();
-	this.floorplan.setFloorTexture(uuid, textureUrl, textureScale);
+	this.floorplan.setFloorTexture(this.getUuid(), textureUrl, textureScale);
 	this.floorChangeCallbacks.fire();
   }
 
   generatePlane() {
-	var points = [];
+	const points = [];
 	this.interiorCorners.forEach((corner) => {
 	  points.push(new Vector2(
 		corner.x,
 		corner.y));
 	});
-	var shape = new Shape(points);
-	var geometry = new ShapeGeometry(shape);
+	const shape = new Shape(points);
+	const geometry = new ShapeGeometry(shape);
 	this.floorPlane = new Mesh(geometry,
 	  new MeshBasicMaterial({
 		side: DoubleSide
@@ -93,7 +92,7 @@ export class Room {
   }
 
   updateInteriorCorners() {
-	var edge = this.edgePointer;
+	let edge = this.edgePointer;
 	while (true) {
 	  this.interiorCorners.push(edge.interiorStart());
 	  edge.generatePlane();

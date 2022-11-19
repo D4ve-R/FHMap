@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require('path')
 const https = require("https");
 const express = require("express");
-const SocketServer = require("./src/server/socketserver");
+const SocketServer = require(path.join(__dirname, 'src', 'server', 'socketserver.js'));
 const { createProxyMiddleware } = require('http-proxy-middleware');
 require('dotenv').config();
 
@@ -31,10 +31,6 @@ app.get('/indoor', (req, res) => {
 });
 
 app.get('/planner', (req, res) => {
-	res.sendFile(path.join(publicPath, 'planner.html'));
-});
-
-app.get('/floorplanner', (req, res) => {
 	res.sendFile(path.join(publicPath, 'floorplanner.html'));
 });
 

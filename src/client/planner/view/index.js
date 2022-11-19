@@ -1,4 +1,4 @@
 import { FloorPlanView, floorplannerModes } from "./FloorPlanView";
-import { FloorplanControl } from "./FloorPlanControl";
+import { View3d } from "./View3d";
 
-export { FloorPlanView, floorplannerModes, FloorplanControl };
+export { FloorPlanView, floorplannerModes, View3d };

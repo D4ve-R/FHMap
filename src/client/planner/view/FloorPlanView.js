@@ -93,8 +93,8 @@ export class FloorPlanView {
     }
 
     drawWall(wall) {
-      var hover = (wall === this.viewmodel.activeWall);
-      var color = wallColor;
+      const hover = (wall === this.viewmodel.activeWall);
+      let color = wallColor;
       if (hover && this.viewmodel.mode == floorplannerModes.DELETE) {
         color = deleteColor;
       } else if (hover) {
@@ -117,37 +117,21 @@ export class FloorPlanView {
     }
 
     drawEdgeLabel(edge) {
-      var pos = edge.interiorCenter();
-      var length = edge.interiorDistance();
-      if (length < 60) {
-        // dont draw labels on walls this short
-        return;
-      }
-      this.context.font = "normal 12px Arial";
-      this.context.fillStyle = "#000000";
-      this.context.textBaseline = "middle";
-      this.context.textAlign = "center";
-      this.context.strokeStyle = "#ffffff";
-      this.context.lineWidth = 4;
-
-      this.context.strokeText(Dimensions.cmToMeasure(length),
-        this.viewmodel.convertX(pos.x),
-        this.viewmodel.convertY(pos.y));
-      this.context.fillText(Dimensions.cmToMeasure(length),
-        this.viewmodel.convertX(pos.x),
-        this.viewmodel.convertY(pos.y));
+      const pos = edge.interiorCenter();
+      const length = edge.interiorDistance();
+	  this.drawLength(pos.x, pos.y, length);
     }
 
 	drawEdge(edge, hover) {
-      var color = edgeColor;
+      let color = edgeColor;
       if (hover && this.viewmodel.mode == floorplannerModes.DELETE) {
         color = deleteColor;
       } else if (hover) {
         color = edgeColorHover;
       }
-      var corners = edge.corners();
+      const corners = edge.corners();
 
-      var scope = this;
+      const scope = this;
       this.drawPolygon(
         Utils.map(corners, function (corner) {
           return scope.viewmodel.convertX(corner.x);
@@ -164,7 +148,7 @@ export class FloorPlanView {
     }
 
     drawRoom(room) {
-      var scope = this;
+      const scope = this;
       this.drawPolygon(
         Utils.map(room.corners, (corner) => {
           return scope.viewmodel.convertX(corner.x);
@@ -178,8 +162,8 @@ export class FloorPlanView {
     }
 
     drawCorner(corner) {
-      var hover = (corner === this.viewmodel.activeCorner);
-      var color = cornerColor;
+      const hover = (corner === this.viewmodel.activeCorner);
+      let color = cornerColor;
       if (hover && this.viewmodel.mode == floorplannerModes.DELETE) {
         color = deleteColor;
       } else if (hover) {
@@ -209,7 +193,9 @@ export class FloorPlanView {
           wallWidthHover,
           wallColorHover
         );
-      }
+		const length = Utils.distance(lastNode.x, lastNode.y, x, y) /// this.viewmodel.pixelsPerCm;
+		this.drawLength(x, y, length);
+	  }
     }
 
     drawLine(startX, startY, endX, endY, width, color) {
@@ -229,7 +215,7 @@ export class FloorPlanView {
       stroke = stroke || false;
       this.context.beginPath();
       this.context.moveTo(xArr[0], yArr[0]);
-      for (var i = 1; i < xArr.length; i++) {
+      for (let i = 1; i < xArr.length; i++) {
         this.context.lineTo(xArr[i], yArr[i]);
       }
       this.context.closePath();
@@ -264,11 +250,29 @@ export class FloorPlanView {
       const offsetY = this.calculateGridOffset(-this.viewmodel.originY);
       const width = this.canvasElement.width;
       const height = this.canvasElement.height;
-      for (var x = 0; x <= (width / gridSpacing); x++) {
+      for (let x = 0; x <= (width / gridSpacing); x++) {
         this.drawLine(gridSpacing * x + offsetX, 0, gridSpacing * x + offsetX, height, gridWidth, gridColor);
       }
-      for (var y = 0; y <= (height / gridSpacing); y++) {
+      for (let y = 0; y <= (height / gridSpacing); y++) {
         this.drawLine(0, gridSpacing * y + offsetY, width, gridSpacing * y + offsetY, gridWidth, gridColor);
       }
     }
+
+	drawLength(x,y,length) {
+		if(length < 75)
+			return;
+
+		this.context.font = "normal 12px Arial";
+		this.context.fillStyle = "#000000";
+		this.context.textBaseline = "middle";
+		this.context.textAlign = "center";
+		this.context.strokeStyle = "#ffffff";
+		this.context.lineWidth = 4;
+		this.context.strokeText(Dimensions.cmToMeasure(length),
+        this.viewmodel.convertX(x),
+        this.viewmodel.convertY(y));
+        this.context.fillText(Dimensions.cmToMeasure(length),
+        this.viewmodel.convertX(x),
+        this.viewmodel.convertY(y));
+	}
 }

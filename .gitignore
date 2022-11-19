@@ -1,7 +1,8 @@
 .DS_Store
 .env
 
-server
+server/
+!src/server/
 
 # Logs
 logs

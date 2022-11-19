@@ -72,18 +72,6 @@ module.exports = (env, argv) => {
     	externals
 	},
 	{
-		name: '3d-bundle',
-		entry: './src/client/planner/3d/index.js',
-		output: {
-			path: path.resolve(__dirname, 'dist','js','planner'),
-      		filename: '3d-bundle.js',
-      		libraryTarget: 'umd',
-      		globalObject: 'this'
-		},
-		module,
-    	externals
-	},
-	{
 		name: 'planner-bundle',
 		entry: './src/client/planner/index.js',
 		output: {

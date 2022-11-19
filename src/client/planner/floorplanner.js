@@ -1,13 +1,12 @@
 import { Utils } from "./core";
 import { Floorplan } from "./model";
-import { floorplannerModes, FloorplanControl } from "./view";
+import { floorplannerModes } from "./view";
+import { FloorplanControl } from "./controller";
 
-class ViewFloorplanner {  
+export class ViewFloorplanner {  
 	fpModel = new Floorplan();
   
 	constructor(elementId) {
-		const canvas = document.getElementById(elementId);
-		
 		this.floorplanner = new FloorplanControl(elementId, this.fpModel);
 		const move = document.getElementById('move');
 		const remove = document.getElementById('delete');
@@ -70,8 +69,3 @@ class ViewFloorplanner {
 	  this.floorplanner.resizeView();
 	}; 
 }; 
-
-
-window.addEventListener('load', function() {
-	new ViewFloorplanner('floorplanner-canvas');
-}, false);
