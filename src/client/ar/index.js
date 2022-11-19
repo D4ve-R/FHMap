@@ -1,3 +1,3 @@
 import "./geoJSONEntity";
-import "./urlLocation";
+import "./urlLocationEntity";
 import "./pathEntity";

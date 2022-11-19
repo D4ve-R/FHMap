@@ -37,7 +37,7 @@ module.exports = (env, argv) => {
   return [
 	{
 		name: 'ar-bundle',
-		entry: './src/ar/index.js',
+		entry: './src/client/ar/index.js',
 		output: {
 			path: path.resolve(__dirname, 'dist','js','ar'),
       		filename: 'ar-bundle.js',
@@ -49,7 +49,7 @@ module.exports = (env, argv) => {
 	},
 	{
 		name: 'map-bundle',
-		entry: './src/map/index.js',
+		entry: './src/client/map/index.js',
 		output: {
 			path: path.resolve(__dirname, 'dist','js','map'),
       		filename: 'map-bundle.js',
@@ -61,10 +61,34 @@ module.exports = (env, argv) => {
 	},
 	{
 		name: 'qr-bundle',
-		entry: './src/qr/index.js',
+		entry: './src/client/qr/index.js',
 		output: {
 			path: path.resolve(__dirname, 'dist','js','qr'),
       		filename: 'qr-bundle.js',
+      		libraryTarget: 'umd',
+      		globalObject: 'this'
+		},
+		module,
+    	externals
+	},
+	{
+		name: '3d-bundle',
+		entry: './src/client/planner/3d/index.js',
+		output: {
+			path: path.resolve(__dirname, 'dist','js','planner'),
+      		filename: '3d-bundle.js',
+      		libraryTarget: 'umd',
+      		globalObject: 'this'
+		},
+		module,
+    	externals
+	},
+	{
+		name: 'planner-bundle',
+		entry: './src/client/planner/index.js',
+		output: {
+			path: path.resolve(__dirname, 'dist','js','planner'),
+      		filename: 'planner-bundle.js',
       		libraryTarget: 'umd',
       		globalObject: 'this'
 		},
