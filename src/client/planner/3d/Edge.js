@@ -142,7 +142,7 @@ export class Edge {
 		//ambient: this.wall.color,
 		side: FrontSide,
 		map: this.texture,
-		// lightMap: lightMap
+		// lightMap: this.lightMap
 		});
 	
 		const fillerMaterial = new MeshBasicMaterial({
@@ -210,7 +210,7 @@ export class Edge {
 		  ]);
 	
 		  // add holes for each wall item
-		  this.wall.items?.forEach((item) => {
+		  this.wall.items.forEach((item) => {
 			var pos = item.position.clone();
 			pos.applyMatrix4(transform)
 			var halfSize = item.halfSize;
@@ -230,14 +230,7 @@ export class Edge {
 		  });
 	
 		  const geometry = new ShapeGeometry(shape);
-		  const array = geometry.getAttribute('position').array;
-		  const vertices = [];
-		  for(let i = 0; i < array.length; i+=3)
-		  	 vertices.push(new Vector3(array[i], array[i+1], array[i+2]));
-	
-		  vertices.forEach((v) => {
-			v.applyMatrix4(invTransform);
-		  });
+		  geometry.applyMatrix4(invTransform);
 	
 		  // make UVs
 		  var totalDistance = Utils.distance(v1.x, v1.z, v2.x, v2.z);
@@ -267,11 +260,12 @@ export class Edge {
 		  geometry.computeVertexNormals();
 		  */
 		 geometry.computeVertexNormals();
+
 		  var mesh = new Mesh(
 			geometry,
 			material);
 	
-		  return mesh;
+		return mesh;
 	}
 	
 	buildSideFiller(p1, p2, height, color) {

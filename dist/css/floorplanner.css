@@ -3,13 +3,13 @@ div {
 	padding: 0;
 }
 
-#floorplanner-controls {
+.floorplanner-controls {
 	position: absolute;
 	left: 0;
 	top: 0;
 	margin: 20px 0;
 	padding: 0 20px; 
-	width: 100%;
+	width: 50%;
 }
 
 #draw-walls-hint {

@@ -22,9 +22,9 @@ export class Floor {
 	}
 	
 	redraw() {
-		  this.removeFromScene();
-		  this.floorPlane = buildFloor();
-		  this.addToScene();
+		this.removeFromScene();
+		this.floorPlane = buildFloor();
+		this.addToScene();
 	}
 	
 	buildFloor() {

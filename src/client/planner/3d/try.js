@@ -78,8 +78,7 @@ const onMouseMove = (e) => {
 window.addEventListener('mousemove', onMouseMove);
 
 
-const animate = function () {
-	requestAnimationFrame( animate )
+const animate = () => {
 	renderer.render(scene, camera);
 };
 

@@ -4,15 +4,15 @@ import { floorplannerModes } from "./view";
 import { FloorplanControl } from "./controller";
 
 export class ViewFloorplanner {  
-	fpModel = new Floorplan();
-  
 	constructor(elementId) {
+		this.fpModel = new Floorplan();
 		this.floorplanner = new FloorplanControl(elementId, this.fpModel);
 		const move = document.getElementById('move');
 		const remove = document.getElementById('delete');
 		const draw = document.getElementById('draw');
 		const hint = document.getElementById('draw-walls-hint');
 		const activeStlye = 'btn-primary-disabled';
+		
 		
 		window.addEventListener('resize', () => {
 			this.handleWindowResize();
