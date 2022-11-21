@@ -4,7 +4,7 @@ import { HalfEdge } from "./HalfEdges";
 
 /** Default texture to be used if nothing is provided. */
 const defaultRoomTexture = {
-  url: "data/textures/hardwood.png",
+  url: "data/textures/gray-floor.png",
   scale: 400
 }
 
