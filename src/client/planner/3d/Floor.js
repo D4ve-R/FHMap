@@ -1,13 +1,16 @@
 import { 
 	Vector2,  
 	RepeatWrapping, 
-	MeshPhongMaterial, 
+	MeshPhongMaterial,
+	MeshBasicMaterial,
+	Color,
 	DoubleSide,
 	FrontSide,
 	Shape,
 	ShapeGeometry,
 	Mesh,
 	TextureLoader,
+	BufferGeometry
 } from 'three';
 
 export class Floor {
@@ -28,13 +31,13 @@ export class Floor {
 	}
 	
 	buildFloor() {
-		var textureSettings = this.room.getTexture();
+		const textureSettings = this.room.getTexture();
 		// setup texture
-		var floorTexture = new TextureLoader().load(textureSettings.url);
+		const floorTexture = new TextureLoader().load(textureSettings.url);
 		floorTexture.wrapS = RepeatWrapping;
 		floorTexture.wrapT = RepeatWrapping;
 		floorTexture.repeat.set(1, 1);
-		var floorMaterialTop = new MeshPhongMaterial({
+		const floorMaterialTop = new MeshPhongMaterial({
 			map: floorTexture,
 			side: DoubleSide,
 			// ambient: 0xffffff, TODO_Ekki
@@ -42,21 +45,27 @@ export class Floor {
 			specular: 0x0a0a0a
 		});
 
-		var textureScale = textureSettings.scale;
-		// http://stackoverflow.com/questions/19182298/how-to-texture-a-three-js-mesh-created-with-shapegeometry
-		// scale down coords to fit 0 -> 1, then rescale
+		const testMaterial = new MeshBasicMaterial({
+			map: floorTexture,
+			color: 0xcccccc,
+			side: DoubleSide
+		});
 
-		const points = [];
+		const textureScale = textureSettings.scale;
+
+		let points = [];
 		this.room.interiorCorners.forEach((corner) => {
 		points.push(new Vector2(
 		  corner.x / textureScale,
 		  corner.y / textureScale));
 		});
+
 		const shape = new Shape(points);
-
 		const geometry = new ShapeGeometry(shape);
+		//const geometry = new BufferGeometry().setFromPoints( points );
+		//geometry.computeVertexNormals();
 
-		const floor = new Mesh(geometry, floorMaterialTop);
+		const floor = new Mesh(geometry, testMaterial);
 
 		floor.rotation.set(Math.PI / 2, 0, 0);
 		floor.scale.set(textureScale, textureScale, textureScale);

@@ -7,6 +7,7 @@ import {
 	Vector2,
 	Vector3
 } from 'three';
+import { Callbacks } from '../core';
 
 // This set of controls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
@@ -28,6 +29,12 @@ class OrbitControls extends EventDispatcher {
 		this.object = object;
 		this.domElement = domElement;
 		this.domElement.style.touchAction = 'none'; // disable touch scroll
+
+		this.cameraMovedCallbacks = new Callbacks();
+
+		this.addEventListener(_changeEvent.type, function() {
+			this.cameraMovedCallbacks.fire();
+		}.bind(this));
 
 		// Set to false to disable this control
 		this.enabled = true;

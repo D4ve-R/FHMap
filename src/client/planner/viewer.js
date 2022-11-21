@@ -8,7 +8,7 @@ import {
 } from 'three';
 import { Utils } from './core';
 import { OrbitControls } from './controller';
-import { Floorplan3d, WebGL } from './3d';
+import { Floorplan3d, WebGL, Shader } from './3d';
 
 export class Viewer3d {
 	constructor(fpModel, elId) {
@@ -31,18 +31,20 @@ export class Viewer3d {
 
 		this.scene = new Scene();
 		this.scene.background = new Color( 0x000000 );
-		this.camera = new PerspectiveCamera( 65, width/height, 0.1, 1000 );
+		this.camera = new PerspectiveCamera( 65, width/height, 1, 10000 );
 		this.orbit = new OrbitControls(this.camera, this.renderer.domElement);
-		this.floorplan = new Floorplan3d(this.scene, fpModel, this.orbit);
+		this.shader = new Shader(this.scene);
 
 		this.domEl.appendChild( this.renderer.domElement );
 		this.handleWindowResize();
-		this.centerCamera();
 		this.fpModel.fireOnUpdatedRooms(this.centerCamera.bind(this));
 
 		window.addEventListener('resize', () => {
 			this.handleWindowResize();
 		});
+
+		this.floorplan = new Floorplan3d(this.scene, fpModel, this.orbit);
+		this.centerCamera();
 	}
 
 	render() {

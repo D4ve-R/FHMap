@@ -35,7 +35,7 @@ export class Edge {
 		this.visible = false;
 	
 		this.edge.redrawCallbacks.add(this.redraw.bind(this));
-		this.controls.cameraMovedCallbacks?.add(this.updateVisibility.bind(this));
+		this.controls.cameraMovedCallbacks.add(this.updateVisibility.bind(this));
 		this.updateTexture();
 		this.updatePlanes();
 		this.addToScene();
@@ -50,104 +50,103 @@ export class Edge {
 
 	remove() {
 		this.edge.redrawCallbacks.remove(this.redraw);
-		this.controls.cameraMovedCallbacks?.remove(this.updateVisibility);
+		this.controls.cameraMovedCallbacks.remove(this.updateVisibility);
 		this.removeFromScene();
 	}
 
 	removeFromScene() {
-		  this.planes.forEach((plane) => {
+		this.planes.forEach((plane) => {
 			this.scene.remove(plane);
-		  });
-		  this.basePlanes.forEach((plane) => {
+		});
+		this.basePlanes.forEach((plane) => {
 			this.scene.remove(plane);
-		  });
-		  this.planes = [];
-		  this.basePlanes = [];
+		});
+		this.planes = [];
+		this.basePlanes = [];
 	}
 	
 	addToScene() {
-		  this.planes.forEach((plane) => {
+		this.planes.forEach((plane) => {
 			this.scene.add(plane);
-		  });
-		  this.basePlanes.forEach((plane) => {
+		});
+		this.basePlanes.forEach((plane) => {
 			this.scene.add(plane);
-		  });
-		  this.updateVisibility();
+		});
+		this.updateVisibility();
 	}
 	
 	updateVisibility() {
-		  // finds the normal from the specified edge
-		  var start = this.edge.interiorStart();
-		  var end = this.edge.interiorEnd();
-		  var x = end.x - start.x;
-		  var y = end.y - start.y;
-		  // rotate 90 degrees CCW
-		  const normal = new Vector3(-y, 0, x).normalize();
-	
-		  // setup camera
-		  var position = this.controls.object.position.clone();
-		  var focus = new Vector3(
+		// finds the normal from the specified edge
+		var start = this.edge.interiorStart();
+		var end = this.edge.interiorEnd();
+		var x = end.x - start.x;
+		var y = end.y - start.y;
+		// rotate 90 degrees CCW
+		const normal = new Vector3(-y, 0, x).normalize();
+
+		// setup camera
+		var position = this.controls.object.position.clone();
+		var focus = new Vector3(
 			(start.x + end.x) / 2.0,
 			0,
 			(start.y + end.y) / 2.0);
-		  const direction = position.sub(focus).normalize();
-	
-		  // find dot
-		  const dot = normal.dot(direction);
-	
-		  // update visible
-		  this.visible = (dot >= 0);
-	
-		  // show or hide plans
-		  this.planes.forEach((plane) => {
+		const direction = position.sub(focus).normalize();
+
+		// find dot
+		const dot = normal.dot(direction);
+
+		// update visible
+		this.visible = (dot >= 0);
+
+		// show or hide plans
+		this.planes.forEach((plane) => {
 			plane.visible = this.visible;
-		  });
-	
-		  this.updateObjectVisibility();
+		});
+
+		this.updateObjectVisibility();
 	}
 	
 	updateObjectVisibility() {
-		  this.wall.items.forEach((item) => {
+		this.wall.items.forEach((item) => {
 			item.updateEdgeVisibility(this.visible, front);
-		  });
-		  this.wall.onItems.forEach((item) => {
+		});
+		this.wall.onItems.forEach((item) => {
 			item.updateEdgeVisibility(this.visible, front);
-		  });
+		});
 	}
 	
 	updateTexture(callback) {
-		  // callback is fired when texture loads
-		  callback = callback || function () {
+		callback = callback || function () {
 			this.scene.needsUpdate = true;
-		  }.bind(this);
-		  const textureData = this.edge.getTexture();
-		  const stretch = textureData.stretch;
-		  const url = textureData.url;
-		  const scale = textureData.scale;
-		  this.texture = new TextureLoader().load(url, callback);
-		  if (!stretch) {
+		}.bind(this);
+		const textureData = this.edge.getTexture();
+		const stretch = textureData.stretch;
+		const url = textureData.url;
+		const scale = textureData.scale;
+		this.texture = new TextureLoader().load(url, callback);
+		if (!stretch) {
 			const height = this.wall.height;
 			const width = this.edge.interiorDistance();
 			this.texture.wrapT = RepeatWrapping;
 			this.texture.wrapS = RepeatWrapping;
 			this.texture.repeat.set(width / scale, height / scale);
 			this.texture.needsUpdate = true;
-		  }
+		}
 	}
 	
 	updatePlanes() {
 		const wallMaterial = new MeshBasicMaterial({
-		color: 0xffffff,
-		// ambientColor: 0xffffff,
-		//ambient: this.wall.color,
-		side: FrontSide,
-		map: this.texture,
-		// lightMap: this.lightMap
+			color: 0xffffff,
+			// ambientColor: 0xffffff,
+			//ambient: this.wall.color,
+			side: FrontSide,
+			map: this.texture,
+			// lightMap: this.lightMap
 		});
 	
 		const fillerMaterial = new MeshBasicMaterial({
-		color: this.fillerColor,
-		side: DoubleSide
+			color: this.fillerColor,
+			side: DoubleSide
 		});
 	
 		// exterior plane
@@ -196,9 +195,12 @@ export class Edge {
 		  const v4 = v1.clone();
 		  v4.y = this.wall.height;
 	
-		  const points = [v1.clone(), v2.clone(), v3.clone(), v4.clone()];
+		  const points = [
+			v1.clone(), v2.clone(), v3.clone(), 
+			v1.clone(), v3.clone(), v4.clone(),
+		];
 	
-		  points.forEach((p) => {
+		  /*points.forEach((p) => {
 			p.applyMatrix4(transform);
 		  });
 	
@@ -230,12 +232,13 @@ export class Edge {
 		  });
 	
 		  const geometry = new ShapeGeometry(shape);
-		  geometry.applyMatrix4(invTransform);
+		  */
+		  //geometry.applyMatrix4(invTransform);
 	
 		  // make UVs
+		  /*
 		  var totalDistance = Utils.distance(v1.x, v1.z, v2.x, v2.z);
 		  var height = this.wall.height;
-		  /*
 		  geometry.faceVertexUvs[0] = [];
 	
 		  function vertexToUv(vertex) {
@@ -259,7 +262,9 @@ export class Edge {
 		  geometry.computeFaceNormals();
 		  geometry.computeVertexNormals();
 		  */
-		 geometry.computeVertexNormals();
+
+		  const geometry = new BufferGeometry().setFromPoints( points );
+		  geometry.computeVertexNormals();
 
 		  var mesh = new Mesh(
 			geometry,

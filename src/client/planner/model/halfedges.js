@@ -105,6 +105,7 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
       v3.y = this.wall.height;
       const v4 = v1.clone();
       v4.y = this.wall.height;
+
 	  const points = [
 		v1, v2, v3,
 		v1, v3, v4
@@ -112,21 +113,19 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
 
       const geometry = new BufferGeometry().setFromPoints(points);
 	  geometry.computeVertexNormals();
-	  //geometry.computeBoundingBox();
+	  geometry.computeBoundingBox();
 
       this.plane = new Mesh(geometry,
         new MeshBasicMaterial());
       this.plane.visible = false;
       this.plane.edge = this; // js monkey patch
 
-	  /*
       this.computeTransforms(
         this.interiorTransform, this.invInteriorTransform,
         this.interiorStart(), this.interiorEnd());
       this.computeTransforms(
         this.exteriorTransform, this.invExteriorTransform,
         this.exteriorStart(), this.exteriorEnd());
-		*/
     }
 
     interiorDistance() {
@@ -146,7 +145,8 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
       const tr = new Matrix4();
       tr.makeRotationY(-angle);
       transform.multiplyMatrices(tr, tt);
-      invTransform.getInverse(transform);
+	  invTransform = transform.clone();
+	  invTransform.invert();
     }
 
     /** Gets the distance from specified point.
