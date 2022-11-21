@@ -14,6 +14,9 @@ export class Viewer3d {
 	constructor(fpModel, elId) {
 		this.fpModel = fpModel;
 		this.domEl = document.getElementById(elId) || document.body;
+		const store = document.getElementById('store') || document.createElement('button');
+		const fileInput = document.getElementById('file') || document.createElement('input');
+		const exportBtn = document.getElementById('export') || document.createElement('button');
 		const width = this.domEl.clientWidth;
 		const height = this.domEl.clientHeight;
 
@@ -31,19 +34,47 @@ export class Viewer3d {
 
 		this.scene = new Scene();
 		this.scene.background = new Color( 0x000000 );
-		this.camera = new PerspectiveCamera( 65, width/height, 1, 10000 );
+		this.camera = new PerspectiveCamera( 65, width/height, 1, 15000 );
 		this.orbit = new OrbitControls(this.camera, this.renderer.domElement);
-		this.shader = new Shader(this.scene);
+		//this.shader = new Shader(this.scene);
 
 		this.domEl.appendChild( this.renderer.domElement );
 		this.handleWindowResize();
 		this.fpModel.fireOnUpdatedRooms(this.centerCamera.bind(this));
+		this.floorplan = new Floorplan3d(this.scene, fpModel, this.orbit);
 
 		window.addEventListener('resize', () => {
 			this.handleWindowResize();
 		});
+		
+		store.addEventListener('click', function() {
+			const fp = this.fpModel.saveFloorplan();
+			const data = JSON.stringify(fp);
+			const link = document.createElement('a');
+			link.href = window.URL.createObjectURL(new Blob([data], {type: 'text/plain'}));
+			link.download = 'floorplan.json';
+			link.click();
+		}.bind(this));
 
-		this.floorplan = new Floorplan3d(this.scene, fpModel, this.orbit);
+		exportBtn.addEventListener('click', function() {
+			const data = this.floorplan.exportOBJ();
+			const link = document.createElement('a');
+			link.href = window.URL.createObjectURL(new Blob([data], {type: 'text/plain'}));
+			link.download = 'floorplan.obj';
+			link.click();
+		}.bind(this));
+
+		fileInput.addEventListener('change', function() {
+			const file = fileInput.files[0];
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				const data = e.target.result;
+				const fp = JSON.parse(data);
+				this.fpModel.loadFloorplan(fp);
+			}.bind(this);
+			reader.readAsText(file);
+		}.bind(this));
+		
 		this.centerCamera();
 	}
 

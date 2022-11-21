@@ -62,6 +62,7 @@ export class Shader {
 		});
 	
 		this.mesh = new Mesh(sphere, material);
+		this.mesh.name = "sphere";
 		this.addToScene();
 	}
 

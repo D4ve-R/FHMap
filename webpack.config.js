@@ -82,6 +82,18 @@ module.exports = (env, argv) => {
 		},
 		module,
     	externals
+	},
+	{
+		name: 'show-bundle',
+		entry: './src/client/planner/show.js',
+		output: {
+			path: path.resolve(__dirname, 'dist','js','planner'),
+      		filename: 'show-bundle.js',
+      		libraryTarget: 'umd',
+      		globalObject: 'this'
+		},
+		module,
+    	externals
 	}
   ]
 };

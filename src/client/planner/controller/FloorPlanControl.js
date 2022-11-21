@@ -232,4 +232,8 @@ export class FloorplanControl {
     convertY(y) {
       return (y - this.originY * this.cmPerPixel) * this.pixelsPerCm;
     }
+
+	scaleView(scale) {
+		this.view.setScale(scale);
+	}
 }

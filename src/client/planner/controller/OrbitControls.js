@@ -44,7 +44,8 @@ class OrbitControls extends EventDispatcher {
 
 		// How far you can dolly in and out ( PerspectiveCamera only )
 		this.minDistance = 0;
-		this.maxDistance = Infinity;
+		//this.maxDistance = Infinity;
+		this.maxDistance = 14000;
 
 		// How far you can zoom in and out ( OrthographicCamera only )
 		this.minZoom = 0;

@@ -1,5 +1,6 @@
 import { Floor } from "./Floor";
 import { Edge } from "./Edge";
+import { OBJExporter } from "./OBJExporter";
 
 export class Floorplan3d { 
 	constructor(scene, floorplan, controls) {
@@ -38,4 +39,10 @@ export class Floorplan3d {
         this.edges.push(threeEdge);
       });
     }
+
+	exportOBJ() {
+		const exporter = new OBJExporter();
+		const obj = exporter.parse(this.scene);
+		return obj;
+	}
 }

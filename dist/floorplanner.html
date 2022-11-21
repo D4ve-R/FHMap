@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
 	<title>Floorplanner</title>
 
@@ -44,6 +44,15 @@
 	</div>
 	<div id="viewer" style="display: none;">
 		<div class="floorplanner-controls">
+			  <input type="file" id="file" placeholder="JSON File" accept=".json, application/json" style="background-color: rgb(255, 255, 255);">
+			  <button id="store" >
+				<span class="glyphicon glyphicon-move"></span>
+				Save
+			  </button>
+			  <button id="export" >
+				<span class="glyphicon glyphicon-move"></span>
+				Export
+			  </button>
 			<span class="pull-right">
 			  <button id="update-view">Plan &raquo;</button>
 			</span>

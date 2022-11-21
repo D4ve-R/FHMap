@@ -38,6 +38,8 @@ export class FloorPlanView {
     constructor(floorplan, viewmodel, canvas) {
       this.canvasElement = document.getElementById(canvas);
       this.context = this.canvasElement.getContext('2d');
+	  this.devicePixelRatio = window.devicePixelRatio || 1;
+	  this.scale = 1;
 	  this.floorplan = floorplan;
 	  this.viewmodel = viewmodel;
 
@@ -274,5 +276,10 @@ export class FloorPlanView {
         this.context.fillText(Dimensions.cmToMeasure(length),
         this.viewmodel.convertX(x),
         this.viewmodel.convertY(y));
+	}
+
+	setScale(scale) {
+		this.scale + scale;
+		this.context.scale(this.scale, this.scale);
 	}
 }

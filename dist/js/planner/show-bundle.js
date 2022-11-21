@@ -170,26 +170,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./src/client/planner/floorplanner.js":
-/*!********************************************!*\
-  !*** ./src/client/planner/floorplanner.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"ViewFloorplanner\": () => (/* binding */ ViewFloorplanner)\n/* harmony export */ });\n/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ \"./src/client/planner/core/index.js\");\n/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./model */ \"./src/client/planner/model/index.js\");\n/* harmony import */ var _view__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./view */ \"./src/client/planner/view/index.js\");\n/* harmony import */ var _controller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./controller */ \"./src/client/planner/controller/index.js\");\n\n\n\n\n\nclass ViewFloorplanner {  \n\tconstructor(elementId) {\n\t\tthis.fpModel = new _model__WEBPACK_IMPORTED_MODULE_1__.Floorplan();\n\t\tthis.floorplanner = new _controller__WEBPACK_IMPORTED_MODULE_3__.FloorplanControl(elementId, this.fpModel);\n\t\tconst move = document.getElementById('move');\n\t\tconst remove = document.getElementById('delete');\n\t\tconst draw = document.getElementById('draw');\n\t\tconst hint = document.getElementById('draw-walls-hint');\n\t\tconst activeStlye = 'btn-primary-disabled';\n\t\t\n\t\t\n\t\twindow.addEventListener('resize', () => {\n\t\t\tthis.handleWindowResize();\n\t\t});\n\t    this.handleWindowResize();\n  \n\t  // mode buttons\n\t  this.floorplanner.modeResetCallbacks.add(function(mode) {\n\t\tdraw.classList.add(activeStlye);\n\t\tremove.classList.remove(activeStlye);\n\t\tmove.classList.remove(activeStlye);\n\t\tif (mode == _view__WEBPACK_IMPORTED_MODULE_2__.floorplannerModes.MOVE) {\n\t\t\tmove.classList.add(activeStlye);\n\t\t} else if (mode == _view__WEBPACK_IMPORTED_MODULE_2__.floorplannerModes.DRAW) {\n\t\t\tdraw.classList.add(activeStlye);\n\t\t} else if (mode == _view__WEBPACK_IMPORTED_MODULE_2__.floorplannerModes.DELETE) {\n\t\t\tremove.classList.add(activeStlye);\n\t\t}\n  \n\t\tif (mode == _view__WEBPACK_IMPORTED_MODULE_2__.floorplannerModes.DRAW) {\n\t\t  hint.style.display = 'block';\n\t\t  hint.classList.add('slide-in');\n\t\t  this.handleWindowResize();\n\t\t  setTimeout(function() {\n\t\t\thint.classList.remove('slide-in');\n\t\t\tsetTimeout(()=>hint.style.display = 'none', 1000);\n\t\t  }, 3000);\n\t\t} else {\n\t\t  hint.style.display = 'none';\n\t\t}\n\t  }.bind(this));\n  \n\t  move.addEventListener('click', function(){\n\t\tthis.floorplanner.setMode(_view__WEBPACK_IMPORTED_MODULE_2__.floorplannerModes.MOVE);\n\t  }.bind(this));\n  \n\t  draw.addEventListener('click', function(){\n\t\tthis.floorplanner.setMode(_view__WEBPACK_IMPORTED_MODULE_2__.floorplannerModes.DRAW);\n\t  }.bind(this));\n  \n\t  remove.addEventListener('click', function(){\n\t\tthis.floorplanner.setMode(_view__WEBPACK_IMPORTED_MODULE_2__.floorplannerModes.DELETE);\n\t  }.bind(this));\n\t}\n  \n\tupdateFloorplanView() {\n\t  this.floorplanner.reset();\n\t}\n  \n\thandleWindowResize() {\n\t  const canvasWrapper = document.getElementById('floorplanner');\n\t  canvasWrapper.style.height = window.innerHeight - _core__WEBPACK_IMPORTED_MODULE_0__.Utils.offset(canvasWrapper).top + \"px\";\n\t  canvasWrapper.style.width = window.innerWidth - _core__WEBPACK_IMPORTED_MODULE_0__.Utils.offset(canvasWrapper).left + \"px\";\n\t  this.floorplanner.resizeView();\n\t}; \n}; \n\n\n//# sourceURL=webpack://fhmap/./src/client/planner/floorplanner.js?");
-
-/***/ }),
-
-/***/ "./src/client/planner/index.js":
-/*!*************************************!*\
-  !*** ./src/client/planner/index.js ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _floorplanner__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./floorplanner */ \"./src/client/planner/floorplanner.js\");\n/* harmony import */ var _viewer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./viewer */ \"./src/client/planner/viewer.js\");\n\n\n\nwindow.addEventListener('load', function() {\n\tconst vfp = new _floorplanner__WEBPACK_IMPORTED_MODULE_0__.ViewFloorplanner('floorplanner-canvas');\n\tconst viewer = new _viewer__WEBPACK_IMPORTED_MODULE_1__.Viewer3d(vfp.fpModel, 'viewer');\n\n\tdocument.getElementById('update-floorplan').addEventListener('click', function() {\n\t\tdocument.getElementById('floorplanner').style.display = 'none';\n\t\tdocument.getElementById('viewer').style.display = 'block';\n\t\tviewer.render();\n\t});\n\tdocument.getElementById('update-view').addEventListener('click', function() {\n\t\tdocument.getElementById('floorplanner').style.display = 'block';\n\t\tdocument.getElementById('viewer').style.display = 'none';\n\t});\n}, false);\n\n\n//# sourceURL=webpack://fhmap/./src/client/planner/index.js?");
-
-/***/ }),
-
 /***/ "./src/client/planner/model/Corner.js":
 /*!********************************************!*\
   !*** ./src/client/planner/model/Corner.js ***!
@@ -247,6 +227,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Corner\": () => (/* reexport safe */ _Corner__WEBPACK_IMPORTED_MODULE_0__.Corner),\n/* harmony export */   \"Floorplan\": () => (/* reexport safe */ _Floorplan__WEBPACK_IMPORTED_MODULE_4__.Floorplan),\n/* harmony export */   \"HalfEdge\": () => (/* reexport safe */ _HalfEdges__WEBPACK_IMPORTED_MODULE_3__.HalfEdge),\n/* harmony export */   \"Room\": () => (/* reexport safe */ _Room__WEBPACK_IMPORTED_MODULE_1__.Room),\n/* harmony export */   \"Wall\": () => (/* reexport safe */ _Wall__WEBPACK_IMPORTED_MODULE_2__.Wall)\n/* harmony export */ });\n/* harmony import */ var _Corner__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Corner */ \"./src/client/planner/model/Corner.js\");\n/* harmony import */ var _Room__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Room */ \"./src/client/planner/model/Room.js\");\n/* harmony import */ var _Wall__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Wall */ \"./src/client/planner/model/Wall.js\");\n/* harmony import */ var _HalfEdges__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./HalfEdges */ \"./src/client/planner/model/HalfEdges.js\");\n/* harmony import */ var _Floorplan__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Floorplan */ \"./src/client/planner/model/Floorplan.js\");\n\n\n\n\n\n\n\n\n\n//# sourceURL=webpack://fhmap/./src/client/planner/model/index.js?");
+
+/***/ }),
+
+/***/ "./src/client/planner/show.js":
+/*!************************************!*\
+  !*** ./src/client/planner/show.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _viewer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./viewer */ \"./src/client/planner/viewer.js\");\n/* harmony import */ var _model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./model */ \"./src/client/planner/model/index.js\");\n\n\n\nfunction getUrlParam(name){\n    if(name=(new RegExp('[?&;]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))\n        return decodeURIComponent(name[1]);\n}\n\nwindow.addEventListener('load', function() {\n\tconst fpModel = new _model__WEBPACK_IMPORTED_MODULE_1__.Floorplan();\n\tconst viewer = new _viewer__WEBPACK_IMPORTED_MODULE_0__.Viewer3d(fpModel, 'viewer');\n\tconst fileName = getUrlParam('file');\n\tif (fileName) {\n\t\tfetch('data/floors/' + fileName).then(res => res.json()).then(data => {\n\t\t\tfpModel.loadFloorplan(data);\n\t\t\tviewer.render();\n\t\t});\n\t}\n\n});\n\n//# sourceURL=webpack://fhmap/./src/client/planner/show.js?");
 
 /***/ }),
 
@@ -360,7 +350,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/client/planner/index.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/client/planner/show.js");
 /******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()
