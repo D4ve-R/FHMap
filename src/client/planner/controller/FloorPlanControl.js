@@ -1,5 +1,12 @@
 import { Utils, Callbacks } from "../core";
-import { FloorPlanView, floorplannerModes } from "../view";
+import { cmPerPixel, pixelsPerCm } from "../core/Dimensions";
+import { FloorPlanView } from "../view";
+
+export const floorplannerModes = {
+    MOVE: 0,
+    DRAW: 1,
+    DELETE: 2
+};
 
 export class FloorplanControl {
     mode = 0;
@@ -24,17 +31,16 @@ export class FloorplanControl {
 	snapTolerance = 25;
 
     /** */
-    constructor(canvasId, floorplan) {
-		this.floorplan = floorplan;
+    constructor(canvasId, model) {
+
+		this.floorplan = model.floorplan;
 
       this.canvasElement = document.getElementById(canvasId);
 
       this.view = new FloorPlanView(this.floorplan, this, canvasId);
 
-      const cmPerFoot = 30.48;
-      const pixelsPerFoot = 15.0;
-      this.cmPerPixel = cmPerFoot * (1.0 / pixelsPerFoot);
-      this.pixelsPerCm = 1.0 / this.cmPerPixel;
+      this.cmPerPixel = cmPerPixel;
+      this.pixelsPerCm = pixelsPerCm;
 
       this.wallWidth = 10.0 * this.pixelsPerCm;
 
@@ -56,6 +62,8 @@ export class FloorplanControl {
       this.canvasElement.addEventListener('mouseleave', () => {
         scope.mouseleave();
       });
+	  //this.canvasElement.addEventListener('DOMMouseScroll',this.handleScroll.bind(this),false);
+	  this.canvasElement.addEventListener('mousewheel',this.handleScroll.bind(this),false);
 
 	  window.addEventListener('keydown', (e) => {
 		if (e.code === "Escape") {
@@ -233,7 +241,24 @@ export class FloorplanControl {
       return (y - this.originY * this.cmPerPixel) * this.pixelsPerCm;
     }
 
-	scaleView(scale) {
-		this.view.setScale(scale);
+	setGridSize(size) {
+		this.view.gridSpacing = size;
+		this.view.draw();
+	}
+
+	zoom(clicks) {
+		const ctx = Utils.trackTransforms(this.view.context);
+		const pt = ctx.transformedPoint(this.mouseX, this.mouseY);
+		ctx.translate(pt.x, pt.y);
+		const factor = Math.pow(1.1, clicks);
+		ctx.scale(factor, factor);
+		ctx.translate(-pt.x, -pt.y);
+		this.view.draw();
+	}
+
+	handleScroll(event) {
+		const delta = event.wheelDelta ? event.wheelDelta/60 : event.detail ? -event.detail : 0;
+		if (delta) this.zoom(delta);
+		return event.preventDefault() && false;
 	}
 }

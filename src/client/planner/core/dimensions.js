@@ -8,6 +8,12 @@ export const dimCentiMeter = "cm";
 
 export const dimMilliMeter = "mm";
 
+export const cmPerFoot = 30.48;
+export const pixelsPerFoot = 15.0;
+//export const cmPerPixel = cmPerFoot * (1.0 / pixelsPerFoot);
+export const cmPerPixel = 1.0;
+export const pixelsPerCm = 1.0 / cmPerPixel;
+
 export class Dimensions {
    /** Converts cm to dimensioning string.
 	* @param cm Centi meter value to be converted.

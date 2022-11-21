@@ -1,15 +1,10 @@
 import { Utils, Dimensions } from "../core";
-
-export const floorplannerModes = {
-    MOVE: 0,
-    DRAW: 1,
-    DELETE: 2
-  };
+import { floorplannerModes } from "../controller";
 
   // grid parameters
   const gridSpacing = 20; // pixels
   const gridWidth = 1;
-  const gridColor = "#f1f1f1";
+  const gridColor = "#afafef";
 
   // room config
   const roomColor = "#f9f9f9";
@@ -35,13 +30,14 @@ export const floorplannerModes = {
    * The View to be used by a Floorplanner to render in/interact with.
    */
 export class FloorPlanView {
-    constructor(floorplan, viewmodel, canvas) {
+    constructor(floorplan, viewcontroller, canvas) {
       this.canvasElement = document.getElementById(canvas);
       this.context = this.canvasElement.getContext('2d');
 	  this.devicePixelRatio = window.devicePixelRatio || 1;
 	  this.scale = 1;
 	  this.floorplan = floorplan;
-	  this.viewmodel = viewmodel;
+	  this.viewcontroller = viewcontroller;
+	  this.gridSpacing = gridSpacing;
 
       this.handleWindowResize();
     }
@@ -70,8 +66,8 @@ export class FloorPlanView {
         this.drawCorner(corner);
       });
 
-      if (this.viewmodel.mode == floorplannerModes.DRAW) {
-        this.drawTarget(this.viewmodel.targetX, this.viewmodel.targetY, this.viewmodel.lastNode);
+      if (this.viewcontroller.mode == floorplannerModes.DRAW) {
+        this.drawTarget(this.viewcontroller.targetX, this.viewcontroller.targetY, this.viewcontroller.lastNode);
       }
 
       this.floorplan.getWalls().forEach((wall) => {
@@ -95,18 +91,18 @@ export class FloorPlanView {
     }
 
     drawWall(wall) {
-      const hover = (wall === this.viewmodel.activeWall);
+      const hover = (wall === this.viewcontroller.activeWall);
       let color = wallColor;
-      if (hover && this.viewmodel.mode == floorplannerModes.DELETE) {
+      if (hover && this.viewcontroller.mode == floorplannerModes.DELETE) {
         color = deleteColor;
       } else if (hover) {
         color = wallColorHover;
       }
       this.drawLine(
-        this.viewmodel.convertX(wall.getStartX()),
-        this.viewmodel.convertY(wall.getStartY()),
-        this.viewmodel.convertX(wall.getEndX()),
-        this.viewmodel.convertY(wall.getEndY()),
+        this.viewcontroller.convertX(wall.getStartX()),
+        this.viewcontroller.convertY(wall.getStartY()),
+        this.viewcontroller.convertX(wall.getEndX()),
+        this.viewcontroller.convertY(wall.getEndY()),
         hover ? wallWidthHover : wallWidth,
         color
       );
@@ -126,7 +122,7 @@ export class FloorPlanView {
 
 	drawEdge(edge, hover) {
       let color = edgeColor;
-      if (hover && this.viewmodel.mode == floorplannerModes.DELETE) {
+      if (hover && this.viewcontroller.mode == floorplannerModes.DELETE) {
         color = deleteColor;
       } else if (hover) {
         color = edgeColorHover;
@@ -136,10 +132,10 @@ export class FloorPlanView {
       const scope = this;
       this.drawPolygon(
         Utils.map(corners, function (corner) {
-          return scope.viewmodel.convertX(corner.x);
+          return scope.viewcontroller.convertX(corner.x);
         }),
         Utils.map(corners, function (corner) {
-          return scope.viewmodel.convertY(corner.y);
+          return scope.viewcontroller.convertY(corner.y);
         }),
         false,
         null,
@@ -153,10 +149,10 @@ export class FloorPlanView {
       const scope = this;
       this.drawPolygon(
         Utils.map(room.corners, (corner) => {
-          return scope.viewmodel.convertX(corner.x);
+          return scope.viewcontroller.convertX(corner.x);
         }),
         Utils.map(room.corners, (corner) =>  {
-          return scope.viewmodel.convertY(corner.y);
+          return scope.viewcontroller.convertY(corner.y);
         }),
         true,
         roomColor
@@ -164,16 +160,16 @@ export class FloorPlanView {
     }
 
     drawCorner(corner) {
-      const hover = (corner === this.viewmodel.activeCorner);
+      const hover = (corner === this.viewcontroller.activeCorner);
       let color = cornerColor;
-      if (hover && this.viewmodel.mode == floorplannerModes.DELETE) {
+      if (hover && this.viewcontroller.mode == floorplannerModes.DELETE) {
         color = deleteColor;
       } else if (hover) {
         color = cornerColorHover;
       }
       this.drawCircle(
-        this.viewmodel.convertX(corner.x),
-        this.viewmodel.convertY(corner.y),
+        this.viewcontroller.convertX(corner.x),
+        this.viewcontroller.convertY(corner.y),
         hover ? cornerRadiusHover : cornerRadius,
         color
       );
@@ -181,22 +177,22 @@ export class FloorPlanView {
 
     drawTarget(x, y, lastNode) {
       this.drawCircle(
-        this.viewmodel.convertX(x),
-        this.viewmodel.convertY(y),
+        this.viewcontroller.convertX(x),
+        this.viewcontroller.convertY(y),
         cornerRadiusHover,
         cornerColorHover
       );
-      if (this.viewmodel.lastNode) {
+      if (this.viewcontroller.lastNode) {
         this.drawLine(
-          this.viewmodel.convertX(lastNode.x),
-          this.viewmodel.convertY(lastNode.y),
-          this.viewmodel.convertX(x),
-          this.viewmodel.convertY(y),
+          this.viewcontroller.convertX(lastNode.x),
+          this.viewcontroller.convertY(lastNode.y),
+          this.viewcontroller.convertX(x),
+          this.viewcontroller.convertY(y),
           wallWidthHover,
           wallColorHover
         );
-		const length = Utils.distance(lastNode.x, lastNode.y, x, y) /// this.viewmodel.pixelsPerCm;
-		this.drawLength(x, y, length);
+		const length = Utils.distance(lastNode.x, lastNode.y, x, y) /// this.viewcontroller.pixelsPerCm;
+		this.drawLength((x + lastNode.x) / 2.0, (y + lastNode.y) / 2.0, length);
 	  }
     }
 
@@ -248,15 +244,15 @@ export class FloorPlanView {
     }
 
     drawGrid() {
-      const offsetX = this.calculateGridOffset(-this.viewmodel.originX);
-      const offsetY = this.calculateGridOffset(-this.viewmodel.originY);
+      const offsetX = this.calculateGridOffset(-this.viewcontroller.originX);
+      const offsetY = this.calculateGridOffset(-this.viewcontroller.originY);
       const width = this.canvasElement.width;
       const height = this.canvasElement.height;
-      for (let x = 0; x <= (width / gridSpacing); x++) {
-        this.drawLine(gridSpacing * x + offsetX, 0, gridSpacing * x + offsetX, height, gridWidth, gridColor);
+      for (let x = 0; x <= (width / this.gridSpacing); x++) {
+        this.drawLine(this.gridSpacing * x + offsetX, 0, this.gridSpacing * x + offsetX, height, gridWidth, gridColor);
       }
-      for (let y = 0; y <= (height / gridSpacing); y++) {
-        this.drawLine(0, gridSpacing * y + offsetY, width, gridSpacing * y + offsetY, gridWidth, gridColor);
+      for (let y = 0; y <= (height / this.gridSpacing); y++) {
+        this.drawLine(0, this.gridSpacing * y + offsetY, width, this.gridSpacing * y + offsetY, gridWidth, gridColor);
       }
     }
 
@@ -271,15 +267,10 @@ export class FloorPlanView {
 		this.context.strokeStyle = "#ffffff";
 		this.context.lineWidth = 4;
 		this.context.strokeText(Dimensions.cmToMeasure(length),
-        this.viewmodel.convertX(x),
-        this.viewmodel.convertY(y));
+        this.viewcontroller.convertX(x),
+        this.viewcontroller.convertY(y));
         this.context.fillText(Dimensions.cmToMeasure(length),
-        this.viewmodel.convertX(x),
-        this.viewmodel.convertY(y));
-	}
-
-	setScale(scale) {
-		this.scale + scale;
-		this.context.scale(this.scale, this.scale);
+        this.viewcontroller.convertX(x),
+        this.viewcontroller.convertY(y));
 	}
 }

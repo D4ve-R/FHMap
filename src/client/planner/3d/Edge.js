@@ -199,10 +199,12 @@ export class Edge {
 			v1.clone(), v2.clone(), v3.clone(), 
 			v1.clone(), v3.clone(), v4.clone(),
 		];
-	
-		  /*points.forEach((p) => {
+			/*
+		  points.forEach((p) => {
 			p.applyMatrix4(transform);
 		  });
+		  */
+		  
 	
 		  const shape = new Shape([
 			new Vector2(points[0].x, points[0].y),
@@ -231,8 +233,8 @@ export class Edge {
 			shape.holes.push(new Path(holePoints));
 		  });
 	
-		  const geometry = new ShapeGeometry(shape);
-		  */
+		  //const geometry = new ShapeGeometry(shape);
+		  
 		  //geometry.applyMatrix4(invTransform);
 	
 		  // make UVs
@@ -260,7 +262,6 @@ export class Edge {
 		  geometry.faceVertexUvs[1] = geometry.faceVertexUvs[0];
 	
 		  geometry.computeFaceNormals();
-		  geometry.computeVertexNormals();
 		  */
 
 		  const geometry = new BufferGeometry().setFromPoints( points );
