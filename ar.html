@@ -13,7 +13,7 @@
 		<!-- aframe look-at -->
 		<script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 		<!-- ar.js -->
-		<script src="js/arjs/aframe-ar.js"></script>
+		<script src="js/ar/aframe-ar.js"></script>
 		
 		<!-- Leaflet 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
@@ -38,10 +38,7 @@
 
 		<link rel="stylesheet" href="css/ar.css" />
 
-		<script src="js/utils.js"></script>
-		<script src="js/arjs/urlLocation.js"></script>
-		<script src="js/arjs/geoJSONEntity.js"></script>
-		<script src="js/arjs/pathEntity.js"></script>
+		<script src="js/ar/ar-bundle.js"></script>
 
         <script>
             function onClick() {
@@ -67,7 +64,7 @@
 
 			function goToQr() {
 				window.location.href = window.location.protocol + "//"
-                    + window.location.host +  "/FHMap/qr.html";
+                    + window.location.host + "/qr.html";
 			}
 
         </script>
