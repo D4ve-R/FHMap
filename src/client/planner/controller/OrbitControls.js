@@ -634,9 +634,7 @@ class OrbitControls extends EventDispatcher {
 
 				// prevent the browser from scrolling on cursor keys
 				event.preventDefault();
-
 				scope.update();
-
 			}
 
 

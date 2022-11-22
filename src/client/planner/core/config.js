@@ -8,6 +8,9 @@ export const configWallHeight = "wallHeight";
 export const configWallThickness = "wallThickness";
 
 export class Config {
+	configWallHeight = configWallHeight;
+	configWallThickness = configWallThickness;
+	
     static data = {
       dimUnit: dimCentiMeter,
 
@@ -32,7 +35,7 @@ export class Config {
       switch (key) {
         case configWallHeight:
         case configWallThickness:
-          return String(this.data[key]);
+          return Number(this.data[key]);
         default:
           throw new Error("Invalid numeric configuration parameter: " + key);
       }

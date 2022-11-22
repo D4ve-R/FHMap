@@ -1,5 +1,5 @@
 import { Utils, Callbacks } from "../core";
-import { Vector2, Vector3, Mesh, MeshBasicMaterial, PlaneGeometry, Raycaster } from "three";
+import { Vector2, Vector3, Mesh, MeshBasicMaterial, PlaneGeometry, Raycaster, Scene } from "three";
 import { Viewer3d } from "../view";
 import { Floorplan3d } from '../3d';
 
@@ -18,6 +18,7 @@ export class Control3d {
   
 	  	this.model = model;
 		this.scene = this.model.scene;
+		this.itemScene = new Scene();
 
 		this.itemSelectedCallbacks = new Callbacks(); // item
 		this.itemUnselectedCallbacks = new Callbacks();
@@ -26,7 +27,7 @@ export class Control3d {
 		this.floorClicked = new Callbacks(); // floor
 		this.nothingClicked = new Callbacks();
 
-		this.view = new Viewer3d(elId, this.model);
+		this.view = new Viewer3d(elId, this.model, this);
 	  	this.element = this.view.domEl;
 	  	this.camera = this.view.camera;
 		this.controls = this.view.orbit;
@@ -41,7 +42,7 @@ export class Control3d {
 
 	  	this.mouseDown = false;
 	  	this.mouseMoved = false; // has mouse moved since down click
-  
+
 	  	this.rotateMouseOver = false;
   
 	  	this.state = states.UNSELECTED;
@@ -59,6 +60,9 @@ export class Control3d {
 		this.setGroundPlane();
 	}
 	  
+	render() {
+		this.view.render();
+	}
   
 	  // invoked via callback when item is loaded
 	itemLoaded(item) {

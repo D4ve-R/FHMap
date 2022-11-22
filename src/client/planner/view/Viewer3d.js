@@ -6,10 +6,10 @@ import {
 } from 'three';
 import { Utils } from '../core';
 import { OrbitControls } from '../controller';
-import { Floorplan3d, WebGL, Shader } from '../3d';
+import { Floorplan3d, WebGL, Shader, Lights } from '../3d';
 
 export class Viewer3d {
-	constructor(elId, model, controller) {
+	constructor(elId, model, controller, controls) {
 		this.fpModel = model.floorplan;
 		this.domEl = document.getElementById(elId) || document.body;
 		const width = this.domEl.clientWidth;
@@ -21,21 +21,22 @@ export class Viewer3d {
 		});
 		//this.renderer.debug.checkShaderErrors = false;
 
-		//this.renderer.autoClear = false,
-        //this.renderer.shadowMap.enabled = true;
+		this.renderer.autoClear = false,
+        this.renderer.shadowMap.enabled = true;
       	//this.renderer.shadowMapSoft = true;
-      	//this.renderer.shadowMap.type = PCFSoftShadowMap;
+      	this.renderer.shadowMap.type = PCFSoftShadowMap;
 		this.renderer.setSize( width, height );
 
 		this.scene = model.scene.getScene();
 		this.camera = new PerspectiveCamera( 65, width/height, 1, 15000 );
-		this.orbit = controller || new OrbitControls(this.camera, this.renderer.domElement);
+		this.orbit = controls || new OrbitControls(this.camera, this.renderer.domElement);
+		this.controller = controller;
+		this.lights = new Lights(this.scene, this.fpModel);
 		//this.shader = new Shader(this.scene);
 
 		this.domEl.appendChild( this.renderer.domElement );
 		this.handleWindowResize();
 		this.fpModel.fireOnUpdatedRooms(this.centerCamera.bind(this));
-		//this.floorplan = new Floorplan3d(this.scene, this.fpModel, this.orbit);
 
 		window.addEventListener('resize', () => {
 			this.handleWindowResize();
@@ -48,7 +49,12 @@ export class Viewer3d {
 		this.handleWindowResize();
 
 		const animate = function () {
+			this.renderer.clear();
 			this.renderer.render(this.scene, this.camera);
+			if(this.controller) {
+				this.renderer.clearDepth();
+				this.renderer.render(this.controller.itemScene, this.camera);
+			}
 		}.bind(this);
 
 		if ( WebGL.isWebGLAvailable() ) {

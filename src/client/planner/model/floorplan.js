@@ -125,7 +125,7 @@ export class Floorplan {
 	const corner = new Corner(this, x, y, id);
 	this.corners.push(corner);
 	corner.fireOnDelete(function() {
-	  this.removeCorner;
+	  this.removeCorner(corner);
 	}.bind(this));
 	this.new_corner_callbacks.fire(corner);
 	return corner;
