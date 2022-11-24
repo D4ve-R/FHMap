@@ -1,4 +1,5 @@
 import { Floor } from "./Floor";
+import { Room } from "./Room";
 import { Edge } from "./Edge";
 import { OBJExporter } from "./OBJExporter";
 
@@ -9,6 +10,7 @@ export class Floorplan3d {
     	this.controls = controls;
     	this.floors = [];
     	this.edges = [];
+		this.rooms = [];
 
     	this.floorplan.fireOnUpdatedRooms(this.redraw.bind(this));
 	}
@@ -17,6 +19,10 @@ export class Floorplan3d {
       // clear scene
       this.floors.forEach((floor) => {
         floor.removeFromScene();
+      });
+
+	  this.rooms.forEach((room) => {
+        room.removeFromScene();
       });
 
       this.edges.forEach((edge) => {
@@ -28,8 +34,11 @@ export class Floorplan3d {
       // draw floors
      this.floorplan.getRooms().forEach((room) => {
         const threeFloor = new Floor(this.scene, room);
+		const threeRoom = new Room(this.scene, room);
         this.floors.push(threeFloor);
+		this.rooms.push(threeRoom);
         threeFloor.addToScene();
+		threeRoom.addToScene();
       });
 
       // draw edges

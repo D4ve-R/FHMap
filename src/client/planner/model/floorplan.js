@@ -15,6 +15,7 @@ export class Floorplan {
   walls = [];
   corners = [];
   rooms = [];
+  currentLevel = 0;
 
   new_wall_callbacks = new Callbacks();
 
@@ -121,13 +122,14 @@ export class Floorplan {
    * @param id An optional id. If unspecified, the id will be created internally.
    * @returns The new corner.
    */
-  newCorner(x, y, id) {
-	const corner = new Corner(this, x, y, id);
+  newCorner(x, y, z, id) {
+	const corner = new Corner(this, x, y, z, id);
 	this.corners.push(corner);
 	corner.fireOnDelete(function() {
 	  this.removeCorner(corner);
 	}.bind(this));
 	this.new_corner_callbacks.fire(corner);
+	this.currentLevel = corner.z;
 	return corner;
   }
 
@@ -187,7 +189,8 @@ export class Floorplan {
 	this.corners.forEach((corner) => {
 	  floorplan.corners[corner.id] = {
 		'x': corner.x,
-		'y': corner.y
+		'y': corner.y,
+		'z': corner.z
 	  };
 	});
 

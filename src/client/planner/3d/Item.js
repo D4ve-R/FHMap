@@ -1,4 +1,4 @@
-import { Utils } from '../core';
+import { Utils } from '../core';
 import {
 	Mesh,
 	Vector3,
@@ -132,7 +132,7 @@ export class Item extends Mesh {
   }
 
   /** Subclass can define to take action after a resize. */
-  resized();
+  resized(){}
 
   /** */
   getHeight() {
@@ -150,7 +150,7 @@ export class Item extends Mesh {
   }
 
   /** */
-  placeInRoom();
+  placeInRoom(){}
 
   /** */
   initObject = function () {
@@ -303,7 +303,7 @@ export class Item extends Mesh {
   }
 
   /** */
-  isValidPosition(vec3);
+  isValidPosition(vec3){}
 
   /** */
   showError(vec3) {

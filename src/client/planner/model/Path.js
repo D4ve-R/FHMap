@@ -1,3 +1,5 @@
+import { Utils } from '../core';
+
 export class Path {
 	constructor(floorplan, corners) {
 	this.floorplan = floorplan;
@@ -22,6 +24,6 @@ export class Path {
   getTexture() {
 	const uuid = this.getUuid();
 	const tex = this.floorplan.getFloorTexture(uuid);
-	return tex || defaultRoomTexture;
+	return tex;
   }
 }

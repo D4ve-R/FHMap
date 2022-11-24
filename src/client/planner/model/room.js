@@ -37,6 +37,7 @@ export class Room {
 	this.updateWalls();
 	this.updateInteriorCorners();
 	this.generatePlane();
+	this.level = corners[0].z || 0;
   }
 
   getUuid() {
@@ -93,11 +94,12 @@ export class Room {
 
   updateInteriorCorners() {
 	let edge = this.edgePointer;
-	while (true) {
+	let update = true;
+	while (update) {
 	  this.interiorCorners.push(edge.interiorStart());
 	  edge.generatePlane();
 	  if (edge.next === this.edgePointer) {
-		break;
+		update = false;
 	  } else {
 		edge = edge.next;
 	  }
@@ -147,5 +149,13 @@ export class Room {
 	// hold on to an edge reference
 	this.edgePointer = firstEdge;
   }
+
+  getCenter() {
+	let polygon = [];
+	this.interiorCorners.forEach((corner) => {
+		polygon.push([corner.x, corner.y]);
+	});
+	return Utils.getPolygonCenter(polygon);
+  }	
 }
   

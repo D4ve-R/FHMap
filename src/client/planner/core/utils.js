@@ -1,3 +1,4 @@
+import polylabel from 'polylabel';
 
 export class Utils {
 
@@ -424,5 +425,9 @@ export class Utils {
 			return pt.matrixTransform(xform.inverse());
 		}
 		return ctx;
+	}
+
+	getPolygonCenter(polygon) {
+		return polylabel([polygon]);
 	}
 }

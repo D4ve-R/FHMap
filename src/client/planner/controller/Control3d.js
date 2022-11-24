@@ -20,11 +20,11 @@ export class Control3d {
 		this.scene = this.model.scene;
 		this.itemScene = new Scene();
 
-		this.itemSelectedCallbacks = new Callbacks(); // item
+		this.itemSelectedCallbacks = new Callbacks();
 		this.itemUnselectedCallbacks = new Callbacks();
 	
-		this.wallClicked = new Callbacks(); // wall
-		this.floorClicked = new Callbacks(); // floor
+		this.wallClicked = new Callbacks();
+		this.floorClicked = new Callbacks();
 		this.nothingClicked = new Callbacks();
 
 		this.view = new Viewer3d(elId, this.model, this);
@@ -79,7 +79,7 @@ export class Control3d {
   
 	clickPressed(vec2) {
 		vec2 = vec2 || this.mouse;
-		const intersection = this.itemIntersection(mouse, selectedObject);
+		const intersection = this.itemIntersection(vec2, this.selectedObject);
 		if (intersection) {
 		  this.selectedObject.clickPressed(intersection);
 		}
@@ -87,7 +87,7 @@ export class Control3d {
   
 	clickDragged(vec2) {
 		vec2 = vec2 || this.mouse;
-		const intersection = scope.itemIntersection(this.mouse, this.selectedObject);
+		const intersection = this.itemIntersection(vec2, this.selectedObject);
 		if (intersection) {
 		  if (this.isRotating()) {
 			this.selectedObject.rotate(intersection);
@@ -190,7 +190,7 @@ export class Control3d {
   
 		  switch (this.state) {
 			case states.SELECTED:
-			  if (rotateMouseOver) {
+			  if (this.rotateMouseOver) {
 				this.switchState(states.ROTATING);
 			  } else if (this.intersectedObject != null) {
 				this.setSelectedObject(this.intersectedObject);
@@ -252,8 +252,8 @@ export class Control3d {
   
 	switchState(newState) {
 		if (newState != this.state) {
-		  onExit(this.state);
-		  onEntry(newState);
+		  this.onExit(this.state);
+		  this.onEntry(newState);
 		}
 		this.state = newState;
 		//this.hud.setRotating(this.isRotating());
@@ -304,26 +304,12 @@ export class Control3d {
 	  // mouse position, and the intersected object
 	  // both may be set to null if no intersection found
 	updateIntersections() {
-  
-		// check the rotate arrow
-		const hudObject = this.hud?.getObject();
-		if (hudObject) {
-		  const hudIntersects = this.getIntersections(
-			this.mouse,
-			hudObject,
-			false, false, true);
-		  if (hudIntersects.length > 0) {
-			this.rotateMouseOver = true;
-			this.hud.setMouseover(true);
-			this.intersectedObject = null;
-			return;
-		  }
-		}
 		this.rotateMouseOver = false;
 		//this.hud.setMouseover(false);
   
 		// check objects
-		const items = this.scene.getItems();
+		//const items = this.scene.getItems();
+		const items = this.scene.getScene().children;
 		const intersects = this.getIntersections(
 		  this.mouse,
 		  items,
@@ -431,6 +417,7 @@ export class Control3d {
 	  // TODO: there MUST be simpler logic for expressing this
 	updateMouseover() {
 		if (this.intersectedObject != null) {
+			//console.log(this.intersectedObject);
 		  if (this.mouseoverObject != null) {
 			if (this.mouseoverObject !== this.intersectedObject) {
 			  this.mouseoverObject.mouseOff();
@@ -462,7 +449,7 @@ export class Control3d {
   
 		const vector = new Vector3();
 		vector.copy(vec3);
-		vector.project(camera);
+		vector.project(this.camera);
   
 		const vec2 = new Vector2();
   
@@ -479,6 +466,6 @@ export class Control3d {
 
 	setCursorStyle(cursorStyle) {
 		this.element.style.cursor = cursorStyle;
-	};
+	}
 }
   

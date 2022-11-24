@@ -1,8 +1,23 @@
 var path = require('path');
+const { exec } = require('child_process');
+const buildScript = path.join(__dirname, 'build.sh');
+
+const copyPlugin = {
+	apply: (compiler) => {
+		compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+			exec(buildScript, (err, stdout, stderr) => {
+				if (stdout) process.stdout.write(stdout);
+				if (stderr) process.stderr.write(stderr);
+			});
+		});
+	}
+};
+
 
 module.exports = (env, argv) => {
   let devtool = false;
   if (argv.mode === 'development') {
+	env.dev = true;
     devtool = 'inline-source-map';
   }
   console.log(`${argv.mode} build`);
@@ -33,6 +48,9 @@ module.exports = (env, argv) => {
 		}
 	  ]
   };
+  const plugins = [
+	copyPlugin
+  ];
 
   return [
 	{
@@ -45,7 +63,8 @@ module.exports = (env, argv) => {
       		globalObject: 'this'
 		},
 		module,
-    	externals
+    	externals,
+		plugins
 	},
 	{
 		name: 'map-bundle',
@@ -57,7 +76,8 @@ module.exports = (env, argv) => {
       		globalObject: 'this'
 		},
 		module,
-    	externals
+    	externals,
+		plugins
 	},
 	{
 		name: 'qr-bundle',
@@ -69,7 +89,8 @@ module.exports = (env, argv) => {
       		globalObject: 'this'
 		},
 		module,
-    	externals
+    	externals,
+		plugins
 	},
 	{
 		name: 'planner-bundle',
@@ -81,7 +102,8 @@ module.exports = (env, argv) => {
       		globalObject: 'this'
 		},
 		module,
-    	externals
+    	externals,
+		plugins
 	},
 	{
 		name: 'show-bundle',
@@ -93,7 +115,8 @@ module.exports = (env, argv) => {
       		globalObject: 'this'
 		},
 		module,
-    	externals
+    	externals,
+		plugins
 	}
   ]
 };

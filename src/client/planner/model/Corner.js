@@ -28,10 +28,11 @@ export class Corner {
    * @param y Y coordinate.
    * @param id An optional unique id. If not set, created internally.
    */
-  constructor(floorplan, x, y, id) {
+  constructor(floorplan, x, y, z, id) {
 	this.floorplan = floorplan;
 	this.x = x;
 	this.y = y;
+	this.z = z || 0;
 	this.id = id || Utils.guid();
   }
 

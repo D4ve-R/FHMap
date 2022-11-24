@@ -6,7 +6,7 @@ import {
 } from 'three';
 import { Utils } from '../core';
 import { OrbitControls } from '../controller';
-import { Floorplan3d, WebGL, Shader, Lights } from '../3d';
+import { WebGL, Lights } from '../3d';
 
 export class Viewer3d {
 	constructor(elId, model, controller, controls) {

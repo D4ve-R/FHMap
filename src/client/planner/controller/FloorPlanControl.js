@@ -1,5 +1,5 @@
 import { Utils, Callbacks } from "../core";
-import { cmPerPixel, pixelsPerCm } from "../core/Dimensions";
+import { cmPerPixel, pixelsPerCm } from "../core/Dimensions";
 import { FloorPlanView } from "../view";
 
 export const floorplannerModes = {
@@ -29,6 +29,7 @@ export class FloorplanControl {
 	lastX = 0;
 	lastY = 0;
 	snapTolerance = 25;
+	level = 0;
 
     /** */
     constructor(canvasId, model) {
@@ -191,7 +192,7 @@ export class FloorplanControl {
 
       // drawing
       if (this.mode == floorplannerModes.DRAW && !this.mouseMoved) {
-        const corner = this.floorplan.newCorner(this.targetX, this.targetY);
+        const corner = this.floorplan.newCorner(this.targetX, this.targetY, this.level);
         if (this.lastNode != null) {
           this.floorplan.newWall(this.lastNode, corner);
         }
@@ -244,6 +245,11 @@ export class FloorplanControl {
 	setGridSize(size) {
 		this.view.gridSpacing = size;
 		this.view.draw();
+	}
+
+	setLevel(level) {
+		level = level || 0;
+		this.level = level;
 	}
 
 	zoom(clicks) {

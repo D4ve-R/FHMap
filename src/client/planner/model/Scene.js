@@ -78,7 +78,6 @@ export class SceneM {
 
   /** Removes all items. */
   clearItems() {
-	var items_copy = this.items
 	var scope = this;
 	this.items.forEach((item) => {
 	  scope.removeItem(item, true);

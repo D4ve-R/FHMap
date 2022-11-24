@@ -46,11 +46,12 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
      * @param wall The corresponding wall.
      * @param front True if front side.
      */
-    constructor(room, wall, front) {
+    constructor(room, wall, front, level) {
       this.front = front || false;
 	  this.room = room;
 	  this.front = front;
 	  this.wall = wall;
+	  
 
       this.offset = wall.thickness / 2.0;
       this.height = wall.height;
@@ -102,9 +103,9 @@ import { Matrix4, Vector3, BufferGeometry, Mesh, MeshBasicMaterial } from 'three
       const v1 = transformCorner(this.interiorStart());
       const v2 = transformCorner(this.interiorEnd());
       const v3 = v2.clone();
-      v3.y = this.wall.height;
+      v3.y = (1 + this.level) * this.wall.height;
       const v4 = v1.clone();
-      v4.y = this.wall.height;
+      v4.y = (1 + this.level) * this.wall.height;
 
 	  const points = [
 		v1, v2, v3,

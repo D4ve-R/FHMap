@@ -62,6 +62,7 @@ export class Wall {
 	this.start = start;
 	this.end = end;
 	this.id = this.getUuid();
+	this.level = start.z;
 
 	this.start.attachStart(this)
 	this.end.attachEnd(this);

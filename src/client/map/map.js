@@ -1,4 +1,4 @@
-//import {fetchGeoJSON} from './fetchGeoJSON.js';
+//import {fetchGeoJSON} from './fetchGeoJSON.js';//
 import getUrlParam from '../utils.js';
 
 const blue = '#0095ff';

@@ -1,8 +1,6 @@
 import { Utils } from "./core";
 import Model from "./model";
-import { FloorplanControl, floorplannerModes } from "./controller";
-import { Viewer3d } from "./view";
-import { Control3d } from "./controller";
+import { FloorplanControl, floorplannerModes, Control3d } from "./controller";
 
 export class Floorplanner {  
 	constructor(plannerElId, viewerElId) {
@@ -16,6 +14,7 @@ export class Floorplanner {
 		const draw = document.getElementById('draw');
 		const hint = document.getElementById('draw-walls-hint');
 		const gridSize = document.getElementById('gridsize');
+		const level = document.getElementById('level');
 
 		const store = document.getElementById('store');
 		const fileInput = document.getElementById('file');
@@ -69,6 +68,10 @@ export class Floorplanner {
 	  	gridSize.addEventListener('change', function(){
 			this.fpControl.setGridSize(gridSize.value);
 	  	}.bind(this));
+
+		level.addEventListener('change', function(){
+			this.fpControl.setLevel(parseInt(level.value));
+		}.bind(this));
 
 		store.addEventListener('click', function() {
 			const fp = this.fpModel.saveFloorplan();

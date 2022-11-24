@@ -1,4 +1,4 @@
-import { Utils } from '../core';
+//import { Utils } from '../core';
 import { 
   Vector2,
   TextureLoader,
@@ -9,7 +9,6 @@ import {
   BackSide,
   DoubleSide,
   Shape,
-  ShapeGeometry,
   Mesh,
   Path,
   BufferGeometry
@@ -108,10 +107,10 @@ export class Edge {
 	
 	updateObjectVisibility() {
 		this.wall.items.forEach((item) => {
-			item.updateEdgeVisibility(this.visible, front);
+			item.updateEdgeVisibility(this.visible, this.front);
 		});
 		this.wall.onItems.forEach((item) => {
-			item.updateEdgeVisibility(this.visible, front);
+			item.updateEdgeVisibility(this.visible, this.front);
 		});
 	}
 	
@@ -169,7 +168,7 @@ export class Edge {
 		// put into basePlanes since this is always visible
 		this.basePlanes.push(this.buildFiller(
 		this.edge, 0,
-		BackSide, this.baseColor));
+		DoubleSide, this.baseColor));
 	
 		// top
 		this.planes.push(this.buildFiller(
@@ -191,8 +190,8 @@ export class Edge {
 		  const v1 = this.toVec3(start);
 		  const v2 = this.toVec3(end);
 		  const v3 = v2.clone();
-		  v3.y = this.wall.height;
 		  const v4 = v1.clone();
+		  v3.y = this.wall.height;
 		  v4.y = this.wall.height;
 	
 		  const points = [
@@ -267,22 +266,22 @@ export class Edge {
 		  const geometry = new BufferGeometry().setFromPoints( points );
 		  geometry.computeVertexNormals();
 
-		  var mesh = new Mesh(
-			geometry,
-			material);
+		  const mesh = new Mesh(geometry, material);
+
+		  mesh.position.y += this.wall.level * this.wall.height;
 	
 		return mesh;
 	}
 	
 	buildSideFiller(p1, p2, height, color) {
 		  const points = [
-			this.toVec3(p1),
-			this.toVec3(p2),
-			this.toVec3(p2, height),
+			this.toVec3(p1, this.wall.level * height),
+			this.toVec3(p2, this.wall.level * height),
+			this.toVec3(p2, (this.wall.level + 1) * height),
 			
-			this.toVec3(p1),
-			this.toVec3(p2, height),
-			this.toVec3(p1, height)
+			this.toVec3(p1, this.wall.level * height),
+			this.toVec3(p2, (this.wall.level + 1) * height),
+			this.toVec3(p1, (this.wall.level + 1) * height)
 		  ];
 	
 		  const geometry = new BufferGeometry().setFromPoints( points );
@@ -292,29 +291,47 @@ export class Edge {
 			color: color,
 			side: DoubleSide
 		  });
+
+		  const mesh = new Mesh(geometry, fillerMaterial);
+		  //mesh.position.y += this.edge.level * height;
 	
-		  return new Mesh(geometry, fillerMaterial);
+		  return mesh;
 	}
 	
 	buildFiller(edge, height, side, color) {
+		/*
 		  const points = [
 			this.toVec2(edge.exteriorStart()),
 			this.toVec2(edge.exteriorEnd()),
 			this.toVec2(edge.interiorEnd()),
 			this.toVec2(edge.interiorStart())
 		  ];
+		*/
+		  const points = [
+			this.toVec3(edge.exteriorStart(),this.wall.level * this.wall.height),
+			this.toVec3(edge.exteriorEnd(),this.wall.level * this.wall.height),
+			this.toVec3(edge.interiorEnd(),this.wall.level * this.wall.height),
+
+			this.toVec3(edge.exteriorStart(),this.wall.level * this.wall.height),
+			this.toVec3(edge.interiorStart(),this.wall.level * this.wall.height),
+			this.toVec3(edge.interiorEnd(),this.wall.level * this.wall.height)
+		  ];
+
+		  //console.log(this.edge.level, this.wall.height);
 	
 		  const fillerMaterial = new MeshBasicMaterial({
 			color: color,
 			side: side
 		  });
 	
-		  const shape = new Shape(points);
-		  const geometry = new ShapeGeometry(shape);
+		  //const shape = new Shape(points);
+		  //const geometry = new ShapeGeometry(shape);
+		  const geometry = new BufferGeometry().setFromPoints( points );
+		  geometry.computeVertexNormals();
 	
 		  const filler = new Mesh(geometry, fillerMaterial);
-		  filler.rotation.set(Math.PI / 2, 0, 0);
-		  filler.position.y = height;
+		  //filler.position.y += this.edge.level * this.wall.height;
+		  //filler.rotation.set(Math.PI / 2, 0, 0);
 		  return filler;
 	}
 	

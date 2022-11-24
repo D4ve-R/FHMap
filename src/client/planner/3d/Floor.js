@@ -3,20 +3,22 @@ import {
 	RepeatWrapping, 
 	MeshPhongMaterial,
 	MeshBasicMaterial,
-	Color,
+	//Color,
 	DoubleSide,
 	FrontSide,
 	Shape,
 	ShapeGeometry,
 	Mesh,
 	TextureLoader,
-	BufferGeometry
+	//BufferGeometry
 } from 'three';
+import { Config, configWallHeight } from '../core';
 
 export class Floor {
 	constructor(scene, room) {
 		this.room = room;
 		this.scene = scene;
+		this.wallHeight = Config.getNumericValue(configWallHeight)
 	
 		this.room.fireOnFloorChange(this.redraw.bind(this));
 		this.floorPlane = this.buildFloor();
@@ -26,7 +28,7 @@ export class Floor {
 	
 	redraw() {
 		this.removeFromScene();
-		this.floorPlane = buildFloor();
+		this.floorPlane = this.buildFloor();
 		this.addToScene();
 	}
 	
@@ -62,11 +64,13 @@ export class Floor {
 
 		const shape = new Shape(points);
 		const geometry = new ShapeGeometry(shape);
+
 		//const geometry = new BufferGeometry().setFromPoints( points );
 		//geometry.computeVertexNormals();
 
 		const floor = new Mesh(geometry, testMaterial);
 
+		floor.position.y += this.room.level * this.wallHeight;
 		floor.rotation.set(Math.PI / 2, 0, 0);
 		floor.scale.set(textureScale, textureScale, textureScale);
 		floor.receiveShadow = true;
@@ -108,5 +112,4 @@ export class Floor {
 		//scene.remove(roofPlane);
 		this.scene.remove(this.room.floorPlane);
 	}
-
 }
