@@ -280,15 +280,16 @@ export class Corner {
 	// check corners
 	for (let i = 0; i < this.floorplan.getCorners().length; i++) {
 	  const corner = this.floorplan.getCorners()[i];
-	  if (this.distanceFromCorner(corner) < cornerTolerance && corner != this) {
+	  if (corner.z === this.z && this.distanceFromCorner(corner) < cornerTolerance && corner != this) {
 		this.combineWithCorner(corner);
 		return true;
 	  }
 	}
 	// check walls
-	for (let i = 0; i < this.floorplan.getWalls().length; i++) {
-	  const wall = this.floorplan.getWalls()[i];
-	  if (this.distanceFromWall(wall) < cornerTolerance && !this.isWallConnected(wall)) {
+	const walls = this.floorplan.getWalls();
+	for (let i = 0; i < walls.length; i++) {
+	  const wall = walls[i];
+	  if (this.z === wall.level && this.distanceFromWall(wall) < cornerTolerance && !this.isWallConnected(wall)) {
 		// update position to be on wall
 		const intersection = Utils.closestPointOnLine(this.x, this.y,
 		  wall.getStart().x, wall.getStart().y,

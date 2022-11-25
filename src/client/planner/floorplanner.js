@@ -5,8 +5,8 @@ import { FloorplanControl, floorplannerModes, Control3d } from "./controller";
 export class Floorplanner {  
 	constructor(plannerElId, viewerElId) {
 		this.model = new Model();
-		this.viewer = new Control3d(viewerElId, this.model);
 		this.fpControl = new FloorplanControl(plannerElId, this.model);
+		this.viewer = new Control3d(viewerElId, this.model);
 		this.fpModel = this.model.floorplan;
 
 		const move = document.getElementById('move');

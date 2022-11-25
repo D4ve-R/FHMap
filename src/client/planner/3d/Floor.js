@@ -15,15 +15,18 @@ import {
 import { Config, configWallHeight } from '../core';
 
 export class Floor {
-	constructor(scene, room) {
+	constructor(scene, room, view) {
 		this.room = room;
 		this.scene = scene;
+		this.view = view;
 		this.wallHeight = Config.getNumericValue(configWallHeight)
 	
 		this.room.fireOnFloorChange(this.redraw.bind(this));
+		this.view.controls.cameraMovedCallbacks.add(this.updateVisibility.bind(this));
 		this.floorPlane = this.buildFloor();
 		// roofs look weird, so commented out
 		//this.roofPlane = this.buildRoof();
+		this.updateVisibility();
 	}
 	
 	redraw() {
@@ -111,5 +114,10 @@ export class Floor {
 		this.scene.remove(this.floorPlane);
 		//scene.remove(roofPlane);
 		this.scene.remove(this.room.floorPlane);
+	}
+
+	updateVisibility() {
+		const visible = this.room.level <= this.view.level;
+		this.floorPlane.visible = visible;
 	}
 }

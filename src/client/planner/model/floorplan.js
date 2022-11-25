@@ -155,20 +155,20 @@ export class Floorplan {
 	return this.rooms;
   }
 
-  overlappedCorner(x, y, tolerance) {
+  overlappedCorner(x, y, level, tolerance) {
 	tolerance = tolerance || defaultFloorPlanTolerance;
 	for (let i = 0; i < this.corners.length; i++) {
-	  if (this.corners[i].distanceFrom(x, y) < tolerance) {
+	  if (this.corners[i].z === level && this.corners[i].distanceFrom(x, y) < tolerance) {
 		return this.corners[i];
 	  }
 	}
 	return null;
   }
 
-  overlappedWall(x, y, tolerance) {
+  overlappedWall(x, y, level, tolerance) {
 	tolerance = tolerance || defaultFloorPlanTolerance;
 	for (let i = 0; i < this.walls.length; i++) {
-	  if (this.walls[i].distanceFrom(x, y) < tolerance) {
+	  if (this.walls[i] === level && this.walls[i].distanceFrom(x, y) < tolerance) {
 		return this.walls[i];
 	  }
 	}
@@ -215,7 +215,7 @@ export class Floorplan {
 	}
 	for (let id in floorplan.corners) {
 	  const corner = floorplan.corners[id];
-	  corners[id] = this.newCorner(corner.x, corner.y, id);
+	  corners[id] = this.newCorner(corner.x, corner.y, corner.z, id);
 	}
 	const scope = this;
 	floorplan.walls.forEach((wall) => {

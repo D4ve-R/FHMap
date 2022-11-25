@@ -139,8 +139,8 @@ export class FloorplanControl {
 
       // update object target
       if (this.mode != floorplannerModes.DRAW && !this.mouseDown) {
-        const hoverCorner = this.floorplan.overlappedCorner(this.mouseX, this.mouseY);
-        const hoverWall = this.floorplan.overlappedWall(this.mouseX, this.mouseY);
+        const hoverCorner = this.floorplan.overlappedCorner(this.mouseX, this.mouseY, this.level);
+        const hoverWall = this.floorplan.overlappedWall(this.mouseX, this.mouseY, this.level);
         let draw = false;
         if (hoverCorner != this.activeCorner) {
           this.activeCorner = hoverCorner;

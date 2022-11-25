@@ -30,9 +30,9 @@ export class Control3d {
 		this.view = new Viewer3d(elId, this.model, this);
 	  	this.element = this.view.domEl;
 	  	this.camera = this.view.camera;
-		this.controls = this.view.orbit;
+		this.controls = this.view.controls;
 		this.floorplan = this.model.floorplan;
-		this.floorplan3d = new Floorplan3d(this.scene, this.floorplan, this.controls);
+		this.floorplan3d = new Floorplan3d(this.scene, this.floorplan, this.view);
 
 	  	this.hud = hud;
   
@@ -148,7 +148,7 @@ export class Control3d {
   
 	mouseMoveEvent(event) {
 		if (this.enabled) {
-		  event.preventDefault();
+		  //event.preventDefault();
   
 		  this.mouseMoved = true;
   
@@ -183,7 +183,7 @@ export class Control3d {
   
 	mouseDownEvent(event) {
 		if (this.enabled) {
-		  event.preventDefault();
+		  //event.preventDefault();
   
 		  this.mouseMoved = false;
 		  this.mouseDown = true;
@@ -264,6 +264,7 @@ export class Control3d {
 		  case states.UNSELECTED:
 			this.setSelectedObject(null);
 		  case states.SELECTED:
+			this.clickPressed();
 			this.controls.enabled = true;
 			break;
 		  case states.ROTATING:
@@ -295,11 +296,11 @@ export class Control3d {
 			break;
 		}
 	}
-  
+	/*
 	selectedObject() {
 		return this.selectedObject;
 	}
-  
+  	*/
 	  // updates the vector of the intersection with the plane of a given
 	  // mouse position, and the intersected object
 	  // both may be set to null if no intersection found
@@ -310,10 +311,12 @@ export class Control3d {
 		// check objects
 		//const items = this.scene.getItems();
 		const items = this.scene.getScene().children;
-		const intersects = this.getIntersections(
+		let intersects = this.getIntersections(
 		  this.mouse,
 		  items,
 		  false, true);
+
+		  intersects = intersects.filter((i) => i.object.name == "room");
   
 		if (intersects.length > 0) {
 		  this.intersectedObject = intersects[0].object;
@@ -341,6 +344,7 @@ export class Control3d {
   
 	  // returns the first intersection object
 	itemIntersection(vec2, item) {
+		/*
 		const customIntersections = item.customIntersectionPlanes();
 		let intersections = null;
 		if (customIntersections && customIntersections.length > 0) {
@@ -352,6 +356,13 @@ export class Control3d {
 		  return intersections[0];
 		} else {
 		  return null;
+		}
+		*/
+
+		if (this.selectedObject) {
+			return this.selectedObject;
+		} else {
+			return null;
 		}
 	}
   

@@ -38,7 +38,7 @@ export class FloorPlanView {
 	  this.floorplan = floorplan;
 	  this.viewcontroller = viewcontroller;
 	  this.gridSpacing = gridSpacing;
-
+	  
       this.handleWindowResize();
     }
 

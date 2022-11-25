@@ -9,11 +9,18 @@ import { OrbitControls } from '../controller';
 import { WebGL, Lights } from '../3d';
 
 export class Viewer3d {
+	level = 0;
+
 	constructor(elId, model, controller, controls) {
 		this.fpModel = model.floorplan;
 		this.domEl = document.getElementById(elId) || document.body;
 		const width = this.domEl.clientWidth;
 		const height = this.domEl.clientHeight;
+
+		const levelControl = document.createElement('input');
+		levelControl.type = 'number';
+		levelControl.id = 'levelControl';
+		levelControl.value = 0;
 
 		this.renderer = new WebGLRenderer({
 			antialias: true,
@@ -29,11 +36,16 @@ export class Viewer3d {
 
 		this.scene = model.scene.getScene();
 		this.camera = new PerspectiveCamera( 65, width/height, 1, 15000 );
-		this.orbit = controls || new OrbitControls(this.camera, this.renderer.domElement);
+		this.controls = controls || new OrbitControls(this.camera, this.renderer.domElement);
 		this.controller = controller;
 		this.lights = new Lights(this.scene, this.fpModel);
 		//this.shader = new Shader(this.scene);
 
+		levelControl.addEventListener('change', function(e) {
+			this.setLevel(parseInt(e.target.value));
+			this.centerCamera();
+		}.bind(this));
+		this.domEl.appendChild(levelControl);
 		this.domEl.appendChild( this.renderer.domElement );
 		this.handleWindowResize();
 		this.fpModel.fireOnUpdatedRooms(this.centerCamera.bind(this));
@@ -68,12 +80,12 @@ export class Viewer3d {
 
 	centerCamera() {
 		const center = this.fpModel.getCenter();
-		center.y = 150.0;
+		center.y = 150.0 + (this.level * 250);
 		const distance = this.fpModel.getSize().z * 1.5;
 		const pos = center.clone().add(new Vector3(0, distance, distance));
 		this.camera.position.copy(pos);
-		this.orbit.target.copy(center);
-		this.orbit.update();
+		this.controls.target.copy(center);
+		this.controls.update();
 	}
 
 	handleWindowResize() {
@@ -90,6 +102,15 @@ export class Viewer3d {
 		this.renderer.dispose();
 		this.scene.dispose();
 		this.camera.dispose();
-		this.orbit.dispose();
+		this.controls.dispose();
+	}
+
+	setLevel(level) {
+		this.level = level;
+		return this.level;
+	}
+
+	getLevel() {
+		return this.level;
 	}
 }

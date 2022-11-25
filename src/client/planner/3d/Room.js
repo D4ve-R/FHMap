@@ -17,37 +17,39 @@ import { Config, configWallHeight } from '../core';
 
 import * as font from 'three/examples/fonts/helvetiker_regular.typeface.json';
 
-export class Room {
-	constructor(scene, room) {
+export class Room extends Mesh {
+	constructor(scene, room, view) {
+		super();
 		this.room = room;
 		this.scene = scene;
+		this.view = view;
 		this.wallHeight = Config.getNumericValue(configWallHeight)
 	
 		this.room.fireOnFloorChange(this.redraw.bind(this));
-		this.roomObj = this.buildRoom();
+		this.view.controls.cameraMovedCallbacks.add(this.updateVisibility.bind(this));
+		this.buildRoom();
+		this.material = new MeshBasicMaterial({
+			color: 0x00ff00,
+			transparent: true,
+			opacity: 0.1,
+		});
+
+		this.updateVisibility();
 	}
 	
 	redraw() {
 		this.removeFromScene();
-		this.roomObj = this.buildRoom();
-		this.roomObj.add(this.getText());
+		this.buildRoom();
+		this.add(this.getText());
 		this.addToScene();
 	}
 	
 	buildRoom() {
-		const roomMaterial = new MeshBasicMaterial({
-			color: 0x00ff00,
-			transparent: true,
-			opacity: 0.5,
-		});
-
-		const textureScale = 1;
-
 		let points = [];
 		this.room.interiorCorners.forEach((corner) => {
 		points.push(new Vector2(
-		  corner.x / textureScale,
-		  corner.y / textureScale));
+		  corner.x,
+		  corner.y));
 		});
 
 		const shape = new Shape(points);
@@ -59,26 +61,20 @@ export class Room {
 			bevelEnabled: false,
 		});
 
-		const room = new Mesh(geometry, roomMaterial);
-
-		room.rotation.set(Math.PI / 2, 0, 0);
-		room.position.y += height + 1 + ((this.room.level) * this.wallHeight);
-		room.castShadow = false;
-		room.name = 'room';
-		return room;
+		this.geometry = geometry;
+		this.rotation.set(Math.PI / 2, 0, 0);
+		this.position.y += height + 1 + ((this.room.level) * this.wallHeight);
+		this.castShadow = false;
+		this.name = 'room';
+		return;
 	}
 	
 	addToScene() {
-		this.scene.add(this.roomObj);
-		//scene.add(roofPlane);
-		// hack so we can do intersect testing
-		this.scene.add(this.room.floorPlane);
+		this.scene.add(this);
 	}
 	
 	removeFromScene() {
-		this.scene.remove(this.roomObj);
-		//scene.remove(roofPlane);
-		this.scene.remove(this.room.floorPlane);
+		this.scene.remove(this);
 	}
 
 	getText() {
@@ -95,7 +91,7 @@ export class Room {
 	}
 
 	setOpacity(opacity) {
-		this.roomObj.material.opacity = opacity % 1;
+		this.material.opacity = opacity % 1;
 	}
 
 	mouseOver() {
@@ -108,8 +104,53 @@ export class Room {
 		this.hover = false;
 		this.updateHighlight();
 	};
+	
+	setSelected() {
+		this.selected = true;
+		this.updateHighlight();
+	  };
+	
+	  setUnselected() {
+		this.selected = false;
+		this.updateHighlight();
+	  };
 
 	updateHighlight() {
 		this.setOpacity(this.hover ? 0.6 : 0.1);
+	}
+
+	updateVisibility() {
+		const visible = this.room.level === this.view.level;
+		this.visible = visible;
+	}
+
+	clickPressed() {
+		console.log('clickPressed');
+	}
+
+	clickReleased() {
+		console.log('clickReleased');
+		const popUp = document.createElement('div');
+		popUp.id = 'popUp';
+		popUp.classList.add('pop-up');
+
+		const closeBtn = document.createElement('button');
+		closeBtn.classList.add('pop-up-closebtn');
+		closeBtn.onclick = () => {
+			popUp.style.display = 'none';
+			popUp.remove();
+		}
+		closeBtn.innerHTML = '&times;';
+		popUp.appendChild(closeBtn);
+
+		const content = document.createElement('div');
+		content.classList.add('pop-up-content');
+		const p = document.createElement('p');
+		p.innerHTML = 'Room Name: ' + this.room.name;
+		content.appendChild(p);
+		popUp.appendChild(content);
+		
+		popUp.style.display = 'block';
+		document.body.appendChild(popUp);
 	}
 }

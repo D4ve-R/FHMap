@@ -15,15 +15,15 @@ import {
 } from 'three';
 
 export class Edge {
-	constructor (scene, edge, controls) {
+	constructor (scene, edge, view) {
 		this.scene = scene;
 		this.edge = edge;
-		this.controls = controls;
+		this.view = view;
+		this.controls = this.view.controls;
 		this.wall = edge.wall;
 		this.front = edge.front;
 	
 		this.planes = [];
-		this.basePlanes = []; // always visible
 		this.texture = null;
 	
 		//this.lightMap = new TextureLoader().load("data/textures/walllightmap.png");
@@ -57,18 +57,12 @@ export class Edge {
 		this.planes.forEach((plane) => {
 			this.scene.remove(plane);
 		});
-		this.basePlanes.forEach((plane) => {
-			this.scene.remove(plane);
-		});
+	
 		this.planes = [];
-		this.basePlanes = [];
 	}
 	
 	addToScene() {
 		this.planes.forEach((plane) => {
-			this.scene.add(plane);
-		});
-		this.basePlanes.forEach((plane) => {
 			this.scene.add(plane);
 		});
 		this.updateVisibility();
@@ -95,7 +89,7 @@ export class Edge {
 		const dot = normal.dot(direction);
 
 		// update visible
-		this.visible = (dot >= 0);
+		this.visible = (dot >= 0) && (this.edge.wall.level <= this.view.getLevel());
 
 		// show or hide plans
 		this.planes.forEach((plane) => {
@@ -166,7 +160,7 @@ export class Edge {
 	
 		// bottom
 		// put into basePlanes since this is always visible
-		this.basePlanes.push(this.buildFiller(
+		this.planes.push(this.buildFiller(
 		this.edge, 0,
 		DoubleSide, this.baseColor));
 	
