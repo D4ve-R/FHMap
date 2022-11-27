@@ -1,5 +1,4 @@
-import { Viewer3d } from './view';
-import Model from './model';
+import { Control3d, Model } from 'floorplanner';
 
 function getUrlParam(name){
     if(name=(new RegExp('[?&;]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
@@ -8,11 +7,11 @@ function getUrlParam(name){
 
 window.addEventListener('load', function() {
 	const model = new Model();
-	const viewer = new Viewer3d('viewer', model);
+	const viewer = new Control3d('viewer', model, false);
 	const fileName = getUrlParam('file');
 	if (fileName) {
 		fetch('data/floors/' + fileName).then(res => res.json()).then(data => {
-			model.floorplan.loadFloorplan(data);
+			model.loadSerialized(JSON.stringify(data));
 			viewer.render();
 		});
 	}
