@@ -12,6 +12,14 @@ div {
 	width: 80%;
 }
 
+.floorplanner-controls button {
+	margin-left: 0.25rem;
+}
+
+.floorplanner-controls .active {
+	background-color: #38a5c6;
+}
+
 #levelControl {
 	position: absolute;
 	right: 0;
@@ -22,11 +30,12 @@ div {
 	z-index: 1000;
 }
 
-#draw-walls-hint {
+#floorplanner-hint {
 	position: absolute;
 	left: 20px;
 	bottom: 20px;
 	background-color: rgba(0, 0, 0, 0.50);
+	border-radius: 1rem;
 	color: #ffffff;
 	padding: 5px 10px;
 	z-index: 10;
@@ -124,13 +133,27 @@ div {
 	display: none;
 	position: absolute;
 	background-color: #f9f9f9;
-	min-width: 160px;
+	min-width: 150px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	padding: 12px 16px;
 	z-index: 1;
-	transform: translate(-50%);
+	transform: translate(-90%);
 }
   
 .dropdown:hover .dropdown-content {
-	display: block;
+	display: flex;
+	flex-direction: column;
 }
+
+.dropdown-content input[type=number] {
+	width: 2.5rem;
+}
+
+.dropdown-content input[type=file] {
+	background-color: rgb(201, 201, 201);
+}
+
+.dropdown-content > * {
+	margin: 0.25rem 0;
+}
+

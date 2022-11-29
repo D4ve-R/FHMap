@@ -1,26 +1,58 @@
 const path = require('path');
-const sqlite3 = require('sqlite3');
-const bodyParser = require("body-parser");
+const { MongoClient } = require('mongodb');
+
 require('dotenv').config();
 
-const dbFile = path.join(__dirname, 'server', 'db', 'db.sqlite3');
+function getRouteFactory(app, url, param, collection) {
+	app.get(url, (req, res) => {
+		const id = req.query[param];
+		if(id) {
+			collection.findOne({id: id}).then(function(result){
+				if(result)
+					res.status(200).json(result);
+				else
+					res.status(404).json({error: 'Not found id: ' + id});
+			});
+		}
+		else {
+			res.status(400).json({error: 'No id provided'});
+		}
+	});
+}
 
 class Database {
-	constructor(app) {
-		//this.db = new sqlite3.Database(dbFile);
-		this.app = app;
+	prefix = '/api';
+	constructor(app, prefix) {
+		prefix = prefix || this.prefix;
+		const client = new MongoClient(process.env.DB_URI);
+		client.connect().then(function(){
+			const dbName = process.env.DB_NAME || 'test';
+			this.db = client.db(dbName);
+			this.col = this.db.collection('test');
+			this.roomData = this.db.collection('roomdata');
+			console.log('✅ Connected to database ' + dbName);
+			console.log('routes available at ' + prefix);
+		}.bind(this));
 
-		this.app.use(bodyParser.urlencoded({ extended: false }));
+		//getRouteFactory(app, prefix+'/roomdata', 'id', this.roomData);
+		getRouteFactory(app, prefix+'/floorplan', 'id', this.col);
 
-		this.app.get('/api/floorplan', (req, res) => {
+		app.get(prefix+'/roomdata', (req, res) => {
+			this.roomData.findOne().then(function(result){
+					if(result)
+						res.status(200).json(result);
+					else
+						res.status(404).json({error: 'Not found'});
+				});
 			
 		});
 
-		this.app.post('/api/floorplan', (req, res) => {
-			const floorplan = req.body.floorplan;
-			console.log(floorplan);
-			res.end('200');
-		});
+		app.post(prefix+'/floorplan', (req, res) => {
+			this.col.insertOne(req.body);
+			const floorplan = req.body;
+			console.log(floorplan._id);
+			res.status(201).json(floorplan._id);
+		});	
 	}
 }
 
