@@ -91,7 +91,7 @@ div {
   
   /* The navigation links inside the overlay */
 .pop-up button {
-	padding: 8px;
+	padding: 14px;
 	text-decoration: none;
 	border: none;
 	font-size: 36px;
@@ -111,10 +111,10 @@ div {
 	position: absolute;
 	top: 20px;
 	right: 45px;
-	font-size: 2rem;
+	font-size: 3rem;
 }
 
-#ui-controls {
+.ui-controls {
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -122,6 +122,14 @@ div {
 	padding: 0 20px; 
 	float: right;
 	width: 2.5rem;
+}
+
+.ui-controls input[type=number] {
+	width: 2rem;
+}
+
+.ui-controls label {
+	color: #008DD0
 }
 
 .dropdown {
@@ -132,15 +140,16 @@ div {
 .dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #f9f9f9;
+	background-color: #F3EADA;
 	min-width: 150px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+	border-radius: 0.5rem;
 	padding: 12px 16px;
 	z-index: 1;
-	transform: translate(-90%);
+	transform: translate(-85%);
 }
   
-.dropdown:hover .dropdown-content {
+.dropdown:hover > .dropdown-content {
 	display: flex;
 	flex-direction: column;
 }
@@ -157,3 +166,40 @@ div {
 	margin: 0.25rem 0;
 }
 
+.item-menu {
+	/* Height & width depends on how you want to reveal the overlay (see JS below) */   
+	width: 30%;
+	position: absolute; /* Stay in place */
+	z-index: 1001; /* Sit on top */
+	flex-direction: column;
+	align-items: center;
+	right: 0;
+	bottom: 0;
+	margin-bottom: 1rem;
+	margin-right: 1rem;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	background-color: #F3EADA; /* Black fallback color */
+	overflow-x: hidden; /* Disable horizontal scroll */
+	transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+.item-menu > button:first-of-type {
+	border: none;
+	background: none;
+	align-self: flex-end;
+	width: 2rem;
+	height: 2rem;
+	top: 5px;
+	right: 5px;
+	font-size: 28px;
+}
+
+.item-menu > button:hover {
+	cursor: pointer;
+	color: red;
+}
+
+.item-menu > * {
+	margin: 0.25rem 0;
+}
