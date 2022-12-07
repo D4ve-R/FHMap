@@ -1,0 +1,38 @@
+    
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <title>FH Aachen Nav</title>
+		<link rel="icon" type="image/x-icon" href="favicon.ico">
+		<script type="text/javascript" src="js/utils.js"></script>
+		<style>
+			body {
+				padding: 0;
+				margin: 0;
+			}
+
+			html, body, #map {
+				height: 100%;
+				width: 100vw;
+			}
+		 
+		</style>
+	
+	</head>
+	<body>
+		<div>
+			<button>Nav</button>
+		</div>
+
+		<script>
+			const pos = getUrlParam('pos');
+			const nav = document.querySelector('button');
+			nav.addEventListener('click', () => {
+				window.location.href = 'hit.html?route='+ pos + 'e';
+			});
+		</script>
+	</body>
+<html>

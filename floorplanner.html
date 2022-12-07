@@ -19,44 +19,7 @@
 	</style>
 </head>
 <body>
-	<div id="floorplanner">
-		<canvas id="floorplanner-canvas" ></canvas>
-		<div class="floorplanner-controls">
-		  <button id="move" >
-			<span class="glyphicon glyphicon-move"></span>
-			Move Walls
-		  </button>
-		  <button id="draw" >
-			<span class="glyphicon glyphicon-pencil"></span>
-			Draw Walls
-		  </button>
-		  <button id="delete" >
-			<span class="glyphicon glyphicon-remove"></span>
-			Delete Walls
-		  </button>
-		  <span class="pull-right">
-			<button id="update-floorplan">Done &raquo;</button>
-		  </span>
-		</div>
-		<div id="draw-walls-hint">
-		  Press the "Esc" key to stop drawing walls
-		</div>
-	</div>
-	<div id="viewer" style="display: none;">
-		<div class="floorplanner-controls">
-			  <input type="file" id="file" placeholder="JSON File" accept=".json, application/json" style="background-color: rgb(255, 255, 255);">
-			  <button id="store" >
-				<span class="glyphicon glyphicon-move"></span>
-				Save
-			  </button>
-			  <button id="export" >
-				<span class="glyphicon glyphicon-move"></span>
-				Export
-			  </button>
-			<span class="pull-right">
-			  <button id="update-view">Plan &raquo;</button>
-			</span>
-		</div>
-	</div>
+	<div id="floorplanner"></div>
+	<div id="viewer" style="display: none;"></div>
 </body>
 </html>
