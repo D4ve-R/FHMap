@@ -22,7 +22,6 @@ const host = process.env.HOST || "127.0.0.1";
 const port = process.env.PORT || 4443;
 const publicPath = path.join(__dirname, 'server', 'public');
 
-const SocketServer = require(path.join(__dirname, 'src', 'server', 'socketserver.js'));
 const Database = require(path.join(__dirname, 'src', 'server', 'database.js'));
 const DEMProxy = require(path.join(__dirname, 'src', 'server', 'demproxy.js'));
 
@@ -31,7 +30,6 @@ app.use(express.static(publicPath));
 
 const server = https.createServer(serverOptions, app);
 
-const io = new SocketServer(server);
 app.use(express.json());
 const db = new Database(app);
 const demProxy = new DEMProxy(app);

@@ -50,7 +50,6 @@ class Database {
 		app.post(prefix+'/floorplan', (req, res) => {
 			this.col.insertOne(req.body);
 			const floorplan = req.body;
-			console.log(floorplan._id);
 			res.status(201).json(floorplan._id);
 		});	
 	}
