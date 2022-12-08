@@ -9,7 +9,7 @@ const wayPoints = [
 	{id: 7, pos: [50.75906768439201, 6.081734597682953], adj: [6, 8]},
 	{id: 8, pos: [50.758965881129676, 6.081726551055909], adj: [7, 9]},
 	{id: 9, pos: [50.758920069589365, 6.081675589084626], adj: [8, 10]},
-	{id: 10, pos: [50.75872155239645, 6.081597805023194], adj: [9, 16]}, // tmp node DFG
+	{id: 10, pos: [50.75872155239645, 6.081597805023194], adj: [9, 16]}, // tmp node FG
 	{id: 11, pos: [50.75845686149598, 6.0817426443099984], adj: [10, 12, 39]}, // tmp Node CF
 	{id: 12, pos: [50.75844328756329, 6.081517338752747], adj: [11, 13, 17]}, // tmp node W
 	{id: 13, pos: [50.758484009349544, 6.081275939941407], adj: [12]}, // W
@@ -28,7 +28,7 @@ const wayPoints = [
 	{id: 26, pos: [50.75926789682859, 6.082930862903596], adj: [25, 27]}, // E
 	{id: 27, pos: [50.75916779071738, 6.082799434661866], adj: [26, 28]},
 	{id: 28, pos: [50.75907107783027, 6.082721650600433], adj: [27, 29]},
-	{id: 29, pos: [50.758965881129676, 6.08267605304718], adj: [28, 30]},
+	{id: 29, pos: [50.758965881129676, 6.08267605304718], adj: [28, 30]}, // visitor parking
 	{id: 30, pos: [50.758898012165055, 6.082700192928315], adj: [29, 31]},
 	{id: 31, pos: [50.758891225263184, 6.082759201526643], adj: [30, 32]},
 	{id: 32, pos: [50.75871476546898, 6.082877218723298], adj: [31, 33]},
@@ -97,7 +97,7 @@ const ec = [
 ];
 
 const eg = [
-	...ew.slice(0, -2),
+	...ew.slice(0, -3),
 	...dg.slice(-1)
 ];
 
@@ -117,7 +117,7 @@ const hf = [ ...hg.slice(0, -1),
 ];
 
 const hw = [
-	...ew.slice(-4),
+	...ew.slice(-6),
 ];
 
 const hc = [
@@ -126,6 +126,58 @@ const hc = [
 ];
 
 const hb = wayPoints.slice(35, 38).map(p => p.pos);
+
+const gf = [
+	wayPoints[15].pos,
+	wayPoints[14].pos,
+	wayPoints[16].pos
+];
+
+const gw = [
+	wayPoints[15].pos,
+	wayPoints[14].pos,
+	wayPoints[39].pos,
+	...ew.slice(-4)
+];
+
+const gc = [
+	...gw.slice(0, -1),
+	...dc.slice(-4)
+];
+
+const gb = [
+	...gw.slice(0, 3),
+	wayPoints[36].pos,
+	wayPoints[37].pos
+];
+
+const fw = [
+	wayPoints[16].pos,
+	wayPoints[10].pos,
+	...dw.slice(-4)
+];
+
+const fc = [
+	...fw.slice(0, -1),
+	...dc.slice(-4)
+];
+
+const fb = [
+	...gf.slice(-1),
+	...gb.slice(1)
+];
+
+const wc = [
+	wayPoints[13].pos,
+	wayPoints[12].pos,
+	...dc.slice(-4)
+];
+
+const wb = [
+	...wc.slice(0,2),
+	...fb.slice(2)
+];
+
 
 function routing(route, map){
 	const routeOpts = {
@@ -206,6 +258,42 @@ function routing(route, map){
 			case 'hb':
 			case 'bh':
 				result = L.polyline(hb, routeOpts).addTo(map);
+				break;
+			case 'gf':
+			case 'fg':
+				result = L.polyline(gf, routeOpts).addTo(map);
+				break;
+			case 'gw':
+			case 'wg':
+				result = L.polyline(gw, routeOpts).addTo(map);
+				break;
+			case 'gc':
+			case 'cg':
+				result = L.polyline(gc, routeOpts).addTo(map);
+				break;
+			case 'gb':
+			case 'bg':
+				result = L.polyline(gb, routeOpts).addTo(map);
+				break;
+			case 'fw':
+			case 'wf':
+				result = L.polyline(fw, routeOpts).addTo(map);
+				break;
+			case 'fc':
+			case 'cf':
+				result = L.polyline(fc, routeOpts).addTo(map);
+				break;
+			case 'fb':
+			case 'bf':
+				result = L.polyline(fb, routeOpts).addTo(map);
+				break;
+			case 'wc':
+			case 'cw':
+				result = L.polyline(wc, routeOpts).addTo(map);
+				break;
+			case 'wb':
+			case 'bw':
+				result = L.polyline(wb, routeOpts).addTo(map);
 				break;
 		}
 		if(result) {

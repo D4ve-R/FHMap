@@ -1,38 +1,72 @@
-    
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-        <title>FH Aachen Nav</title>
+        <title>FH Aachen Navigation</title>
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
-		<script type="text/javascript" src="js/utils.js"></script>
+
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+             integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+             crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+            crossorigin=""></script>
+
+			<script type="text/javascript" src="js/utils.js"></script>
+			<script type="text/javascript" src="js/map/routes.js"></script>
+		<link rel="stylesheet" href="css/map.css" />
+     
 		<style>
-			body {
+
+			html, body {
+				height: 100%;
+				width: 100vw;
+			}
+			html {
 				padding: 0;
 				margin: 0;
 			}
 
-			html, body, #map {
-				height: 100%;
-				width: 100vw;
+			#map {
+				height: 70%;
+				width: 80%;
+				margin: 1rem auto;
 			}
-		 
 		</style>
 	
 	</head>
 	<body>
-		<div>
-			<button>Nav</button>
-		</div>
-
-		<script>
-			const pos = getUrlParam('pos');
-			const nav = document.querySelector('button');
-			nav.addEventListener('click', () => {
-				window.location.href = 'hit.html?route='+ pos + 'e';
-			});
-		</script>
+		<h1>Campus Navigation</h1>
+		<div id="content"></div>
+		<label for="start">Start: </label>
+		<select name="start" id="start">
+			<option value="b">Gebäude B</option>
+			<option value="c">Gebäude C</option>
+			<option value="d">Gebäude D</option>
+			<option value="e">Gebäude E</option>
+			<option value="f">Gebäude F</option>
+			<option value="g">Gebäude G</option>
+			<option value="h">Gebäude H</option>
+			<option value="w">Gebäude W</option>
+		</select>
+		<br>
+		<label for="nav">Ziel: </label>
+		<select name="nav" id="nav">
+			<option value="b">Gebäude B</option>
+			<option value="c">Gebäude C</option>
+			<option value="d">Gebäude D</option>
+			<option value="e">Gebäude E</option>
+			<option value="f">Gebäude F</option>
+			<option value="g">Gebäude G</option>
+			<option value="h">Gebäude H</option>
+			<option value="w">Gebäude W</option>
+		</select>
+		<br>
+		<button id="route">Map &raquo;</button>
+		<div id="map" style="border-radius: 0.5rem;"></div>
+		<script src="js/map/nav.js"></script>
 	</body>
 <html>
