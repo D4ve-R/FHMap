@@ -9,7 +9,7 @@ const wayPoints = [
 	{id: 7, pos: [50.75906768439201, 6.081734597682953], adj: [6, 8]},
 	{id: 8, pos: [50.758965881129676, 6.081726551055909], adj: [7, 9]},
 	{id: 9, pos: [50.758920069589365, 6.081675589084626], adj: [8, 10]},
-	{id: 10, pos: [50.75872155239645, 6.081597805023194], adj: [9, 16]}, // tmp node FG
+	{id: 10, pos: [50.75872155239645, 6.081597805023194], adj: [9, 14, 16]}, // tmp node FG
 	{id: 11, pos: [50.75845686149598, 6.0817426443099984], adj: [10, 12, 39]}, // tmp Node CF
 	{id: 12, pos: [50.75844328756329, 6.081517338752747], adj: [11, 13, 17]}, // tmp node W
 	{id: 13, pos: [50.758484009349544, 6.081275939941407], adj: [12]}, // W
@@ -40,7 +40,17 @@ const wayPoints = [
 	{id: 38, pos: [50.758470435424705, 6.081874072551728], adj: [36, 39]},
 	{id: 39, pos: [50.758470435424705, 6.081874072551728], adj: [11, 14, 38]}, // tmp Node CG
 	{id: 40, pos: [50.75854678870059, 6.082477569580078], adj: [36, 41]},
-	{id: 41, pos: [50.75861126470319, 6.082389056682587], adj: [14, 40]}
+	{id: 41, pos: [50.75861126470319, 6.082389056682587], adj: [14, 40]},
+	{id: 42, pos: [50.75989397934437, 6.083880364894868], adj: [22, 43]},
+	{id: 43, pos: [50.75980914480572, 6.084167361259461], adj: [42, 44, 45]},
+	{id: 44, pos: [50.75919324144391, 6.08392059803009], adj: [24, 43, 46]},
+	{id: 45, pos: [50.75970394976423, 6.0844141244888315], adj: [43, 46, 47]},
+	{id: 46, pos: [50.75915252027481, 6.08419418334961], adj: [44, 45, 48]},
+	{id: 47, pos: [50.7595699105784, 6.084685027599336], adj: [45, 48, 49]},
+	{id: 48, pos: [50.759105012199385, 6.084473133087159], adj: [46, 47, 50]},
+	{id: 49, pos: [50.75942399406624, 6.084883511066438], adj: [47, 50]},
+	{id: 50, pos: [50.75900660246119, 6.084701120853424], adj: [48, 49, 51]},
+	{id: 51, pos: [50.75891667614014, 6.084816455841065], adj: [50]}
 ];
 
 const d = wayPoints.slice(0, 11).map(p => p.pos);
@@ -108,7 +118,7 @@ const ef = [ ...ew.slice(0, -2),
 
 const hg = [
 	wayPoints[35].pos,
-	...wayPoints.slice(-2).map(p => p.pos),
+	...wayPoints.slice(40,42).map(p => p.pos),
 	...wayPoints.slice(14, 16).map(p => p.pos)
 ];
 
@@ -178,10 +188,9 @@ const wb = [
 	...fb.slice(2)
 ];
 
-
 function routing(route, map){
 	const routeOpts = {
-		color: '#00b1ac',
+		color: '#0095ff',
 		weight: 5,
 	}
 	if(route) {
@@ -299,5 +308,220 @@ function routing(route, map){
 		if(result) {
 			map.fitBounds(result.getBounds());
 		}
+	}
+}
+
+function haversine(lat1, lon1, lat2, lon2) {
+	const R = 6371e3; // meters
+	const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+	const φ2 = lat2 * Math.PI/180;
+	const Δφ = (lat2-lat1) * Math.PI/180;
+	const Δλ = (lon2-lon1) * Math.PI/180;
+
+	const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+		Math.cos(φ1) * Math.cos(φ2) *
+		Math.sin(Δλ/2) * Math.sin(Δλ/2);
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+	const d = R * c; // in meters
+	return d;
+}
+
+
+class Edge {
+	constructor(start, end) {
+		this.start = start;
+		this.end = end;
+		this.calcWeight();
+	}
+
+	calcWeight() {
+		const start = this.start.pos;
+		const end = this.end.pos;
+		this.weight = haversine(start[0], start[1], end[0], end[1]);
+	}
+
+	getClosestPoint(point) {
+		const start = this.start.pos;
+		const end = this.end.pos;
+		const a = end[0] - start[0];
+		const b = end[1] - start[1];
+		const c = a*a + b*b;
+		console.log(a, b, Math.sqrt(c));
+		const dot = (point[0] - start[0]) * a + (point[1] - start[1]) * b;
+		console.log(dot)
+		const closest = [
+			start[0] + a, //dot/c,
+			start[1] + b //dot/c
+		];
+		return closest;
+	}
+}
+
+class PriorityQueue {
+	constructor() {
+		this._nodes = [];
+	}
+
+	enqueue(key, priority) {
+		this._nodes.push({key: key, priority: priority});
+		this.sort();
+	}
+
+	dequeue() {
+		return this._nodes.shift().key;
+	}
+
+	sort() {
+		this._nodes.sort((a, b) => a.priority < b.priority);
+	}
+
+	isEmpty() {
+		return !this._nodes.length;
+	}
+}
+
+class Graph {
+	constructor(nodes) {
+		this.nodes = [];
+		this.edges = [];
+		for(let node of nodes) { 
+			this.nodes[node.id] = node;
+			node.adj.forEach(idx => {
+				const n = nodes[idx];
+				this.addEdge(node, n);
+			});
+		}
+	}
+
+	addEdge(start, end) {
+		const edge = new Edge(start, end);
+		this.edges[start.id] = this.edges[start.id] || [];
+		this.edges[end.id] = this.edges[end.id] || [];
+		this.edges[start.id].push(edge);
+	}
+
+	async dijkstra(start, end, map) {
+		const dist = {};
+		const prev = {};
+		const Q = new PriorityQueue();
+		const edges = this.edges;
+		let u;
+		let alt;
+
+		dist[start.id] = 0;
+		Q.enqueue(start.id, 0);
+		while(!Q.isEmpty()) {
+			u = Q.dequeue();
+
+			if(u === end.id) {
+				break;
+			}
+			for(let edge of edges[u]) {
+				alt = dist[u] + edge.weight;
+
+				const line = L.polyline([edge.start.pos, edge.end.pos], {
+					color: '#0000ff',
+					weight: 3
+				}).addTo(map);
+				await new Promise(resolve => setTimeout(resolve, 250));
+				//line.remove();
+
+				if(!dist[edge.end.id] || alt < dist[edge.end.id]) {
+					dist[edge.end.id] = alt;
+					prev[edge.end.id] = u;
+					Q.enqueue(edge.end.id, alt);
+				}
+			}
+		}
+		return {
+			distance: dist[end.id],
+			path: this.reconstructPath(prev, start, end)
+		};
+	}
+
+	async astar(start, end, map) {
+		const dist = {};
+		const prev = {};
+		const Q = new PriorityQueue();
+		const edges = this.edges;
+		let u;
+		let alt;
+
+		dist[start.id] = 0;
+		Q.enqueue(start.id, 0);
+		while(!Q.isEmpty()) {
+			u = Q.dequeue();
+
+			if(u === end.id) {
+				break;
+			}
+			for(let edge of edges[u]) {
+				alt = dist[u] + edge.weight;
+
+				const line = L.polyline([edge.start.pos, edge.end.pos], {
+					color: '#00' + Math.floor(Math.random()* 0xf).toString(16)+'fff',
+					weight: 3
+				}).addTo(map);
+				await new Promise(resolve => setTimeout(resolve, 10));
+				//line.remove();
+
+				if(!dist[edge.end.id] || alt < dist[edge.end.id]) {
+					dist[edge.end.id] = alt;
+					prev[edge.end.id] = u;
+					Q.enqueue(edge.end.id, alt + this.heuristic(edge.end, end));
+				}
+			}
+		}
+		return {
+			distance: dist[end.id],
+			path: this.reconstructPath(prev, start, end)
+		};
+	}
+
+	heuristic(start, end) {
+		return haversine(start.pos[0], start.pos[1], end.pos[0], end.pos[1]) / 2.0;
+	}
+
+	reconstructPath(prev, start, end) {
+		const path = [];
+		let u = end;
+
+		while(prev[u.id] !== undefined) {
+			path.push(u);
+			u = this.nodes[prev[u.id]];
+			if(u === start) {
+				path.push(u);
+				break;
+			}
+		}
+		return path;
+	}
+
+	getClosestPoint(point) {
+		let min = Infinity;
+		let closestPoint = null;
+		this.nodes.forEach(node => {
+			const dist = haversine(point[0], point[1], node.pos[0], node.pos[1]);
+			if (dist < min) {
+				min = dist;
+				closestPoint = node;
+			}
+		});
+		/*
+		// get closest point on edge
+			this.edges[closestPoint.id].forEach(edge =>  {
+				const closest = edge.getClosestPoint(point);
+				const dLat = point[0] - closest[0];
+				const dLng = point[1] - closest[1];
+				const dist = Math.sqrt(dLat*dLat + dLng*dLng);
+				if (dist < min) {
+					min = dist;
+					closestEdge = edge;
+					closestPoint = closest;
+				}
+			});
+			*/
+		return closestPoint;
 	}
 }

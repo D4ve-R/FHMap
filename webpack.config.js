@@ -117,6 +117,19 @@ module.exports = (env, argv) => {
 		module,
     	externals,
 		plugins
+	},
+	{
+		name: 'ar-indoor',
+		entry: './src/client/planner/ar-indoor.js',
+		output: {
+			path: path.resolve(__dirname, 'dist','js','planner'),
+      		filename: 'ar-indoor.js',
+      		libraryTarget: 'umd',
+      		globalObject: 'this'
+		},
+		module,
+    	externals,
+		plugins
 	}
   ]
 };

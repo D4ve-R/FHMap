@@ -180,7 +180,7 @@ div.debug {
     border-radius: 5px;
 }
 
-.arjs-loader, .ar-loader {
+.arjs-loader, .ar-loader, .vr-loader {
     position: fixed;
     z-index: 1001;
     overflow: show;

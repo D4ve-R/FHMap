@@ -167,7 +167,7 @@ const studentParking = L.polygon([
         [50.759880, 6.084899],
         [50.759380, 6.085059],
         [50.759017, 6.084959],
-    ]
+    ], {color: fhBlue}
 ).bindPopup('<b>Student Parking</b><br/><small><a href="https://www.fh-aachen.de/hochschule/studierendensekretariat/parkausweis" target="_blank" rel="noopener">Parking Pass</a> required</small>');
 
 const visitorParking = L.polygon([

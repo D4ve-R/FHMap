@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-        <title>FH Aachen Campus Navigator</title>
+        <title>Campus WayPoints</title>
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
 
         <!-- Leaflet -->
@@ -31,17 +31,17 @@
 			}
 
 			.container {
-				height: 70%;
+				height: 80%;
 				width: 90%;
 				margin: 1rem auto;
 				border-radius: 0.5rem;
-				position: relative;
 			}
 		</style>
 	
 	</head>
 	<body>
-		<h1>Campus Navigator</h1>
+		<h1>Campus Waypoints</h1>
+		<div id="content"></div>
 		<label for="start">Start: </label>
 		<select name="start" id="start">
 			<option value="b">Gebäude B</option>
@@ -68,7 +68,80 @@
 		<br>
 		<button id="route">Map &raquo;</button>
 		<div class="container" id="map"></div>
-		<div class="container" id="content" style="display: none;"></div>
-		<script src="js/map/nav.js"></script>
+		<script>
+
+const minZoom = 14;
+const maxZoom = 19;
+const zoom = 17;
+
+const fhBaseCoords = [50.75913555311056, 6.082413196563721];
+
+const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: maxZoom,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }
+);
+const map = L.map('map', {
+    center: fhBaseCoords,
+    zoom: zoom,
+    minZoom: minZoom,
+    layers: osm,
+});
+
+fetch('data/campus.json').then(response => response.json()).then(async(data) => {
+	function drawGraph(nodes, map) {
+		const edges = new Set();
+		nodes.forEach(node => {
+			node.adj.forEach(idx => {
+				const n = nodes[idx];
+				if (edges.has(node.id+"-"+n.id) || edges.has(n.id+"-"+node.id)) return;
+				edges.add(node.id+"-"+n.id);
+				L.polyline([node.pos, n.pos], {
+					color: '#00ff00',
+					weight: 3
+				}).addTo(map);
+			});
+		});
+		nodes.forEach(node => {
+			L.circle(node.pos, {
+				color: '#0000ff',
+				fillColor: '#0000ff',
+				fillOpacity: 0.9,
+				radius: 2
+			}).addTo(map).bindPopup("ID: "+node.id+"<br>Pos: "+node.pos+"<br>Adj: "+node.adj);
+		});
+	}
+	drawGraph(data, map);
+	const graph = new Graph(data);
+	
+	map.on('click', async(e) => {
+		const pos = [e.latlng.lat, e.latlng.lng]
+		const node = graph.getClosestPoint(pos);
+
+		L.circle(pos, {
+			color: '#ff0000',
+			fillColor: '#ff0000',
+			fillOpacity: 0.9,
+			radius: 2
+		}).addTo(map).bindPopup("ID: "+node.id+"<br>Pos: "+node.pos+"<br>Adj: "+node.adj);
+
+		L.polyline([node.pos, pos], {
+				color: '#ff0000',
+				weight: 3
+		}).addTo(map);
+
+		const route = await graph.astar(node, data[15], map);
+		for(let i = route.path.length-1; i > 0; i--) {
+			L.polyline([route.path[i].pos, route.path[i-1].pos], {
+				color: '#ff0000',
+				weight: 3
+			}).addTo(map);
+			await new Promise(resolve => setTimeout(resolve, 100));
+		}
+	});
+
+});
+	
+		</script>
 	</body>
 <html>

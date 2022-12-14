@@ -11,6 +11,7 @@ AFRAME.registerComponent('path-entity', {
 			default: 'green'
 		}
 	},
+	dependencies: ['gps-projected-camera'],
 	multiple: true,
 	init: function() {
 		this.projected = '';
@@ -25,9 +26,15 @@ AFRAME.registerComponent('path-entity', {
 		else if(camera.getAttribute('gps-new-camera'))
 			this.projected = '-new';
 
+
 		this.camera = camera.components[`gps${this.projected}-camera`];
+
+		window.addEventListener('gps-camera-origin-coord-set', this.create.bind(this));
 	},
 	update: function() {
+		this.create();
+	},
+	create: function() {
 		this.pathEntities?.length > 0 && this.pathEntities.forEach(pathEntity => pathEntity.remove());
 		this.pathEntities = [];
 		this.i = 1;
@@ -66,7 +73,7 @@ AFRAME.registerComponent('path-entity', {
 		window.dispatchEvent(new CustomEvent('geojson-load-end', { path: this.pathEntities }));
 		this.loader.remove();
 	},
-	_createPathEntity : function(feature, color) {
+	_createPathEntity: function(feature, color) {
 		const _color = feature.properties.color || color || 'blue';
 		this.rendererSystem = this.el.sceneEl.systems.renderer;
 	
@@ -78,8 +85,8 @@ AFRAME.registerComponent('path-entity', {
 	
 		const path = document.createElement('a-entity');
 		const material = new THREE.LineBasicMaterial({
-			color: new THREE.Color(_color),
-			linewidth: 5,
+			color: new THREE.Color(0x00ff00),
+			linewidth: 10,
 		});
 		
 		let points = [];
@@ -88,9 +95,8 @@ AFRAME.registerComponent('path-entity', {
 			const [ endLat, endLng ] = feature.geometry.coordinates[i+1];
 			const startPos = this.camera.latLonToWorld(startLat, startLng);
 			const endPos = this.camera.latLonToWorld(endLat, endLng);
-
-			points.push(new THREE.Vector3(startPos[0], 0, startPos[1]));
-			points.push(new THREE.Vector3(endPos[0], 0, endPos[1]));
+			points.push(new THREE.Vector3(startPos[0], 0.3, startPos[1]));
+			points.push(new THREE.Vector3(endPos[0], 0.3, endPos[1]));
 
 			const id = `line__${feature.properties.name.toLowerCase()}${i}`;
 			/*path.setAttribute(id, {
@@ -101,7 +107,7 @@ AFRAME.registerComponent('path-entity', {
 		}
 		
 		const geometry = new THREE.BufferGeometry().setFromPoints(points);
-		path.el.setObject3D(feature.properties.name, new THREE.Line(geometry, material));
+		path.setObject3D(feature.properties.name, new THREE.Line(geometry, material));
 		this.rendererSystem.applyColorCorrection(material.color);
 
 		return path;
