@@ -1,4 +1,4 @@
-import Floorplanner from 'floorplanner';
+import { Floorplanner } from 'floorplanner';
 import api from './api';
 
 window.addEventListener('load', function() {

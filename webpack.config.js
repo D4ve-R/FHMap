@@ -80,19 +80,6 @@ module.exports = (env, argv) => {
 		plugins
 	},
 	{
-		name: 'qr-bundle',
-		entry: './src/client/qr/index.js',
-		output: {
-			path: path.resolve(__dirname, 'dist','js','qr'),
-      		filename: 'qr-bundle.js',
-      		libraryTarget: 'umd',
-      		globalObject: 'this'
-		},
-		module,
-    	externals,
-		plugins
-	},
-	{
 		name: 'planner-bundle',
 		entry: './src/client/planner/index.js',
 		output: {

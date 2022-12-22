@@ -1,5 +1,6 @@
-//import fetchGeoJSON from './fetchGeoJSON.js';
+
 // import getUrlParams from '../utils.js';
+const router = new Router('data/campus.geojson');
 
 const blue = '#0095ff';
 const fhBlue = '#00b1ac';
@@ -82,12 +83,13 @@ const satellite = L.tileLayer(satelliteUrl, {
 
 const osmb = new OSMBuildings().load('https://{s}.data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
 
-const mensaIcon = L.divIcon({
-    html: '<i class="fa fa-utensils"></i>',
-    className: 'mensaIcon',
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
-    popupAnchor: [0, -20]
+const mensaIcon = new L.Icon({
+	iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+	shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+	iconSize: [25, 41],
+	iconAnchor: [12, 41],
+	popupAnchor: [1, -34],
+	shadowSize: [41, 41]
 });
 
 const mensa0 = L.marker([50.759407, 6.082322], {icon: mensaIcon, title: 'Mensa Eupener'}).bindPopup('<b>Mensa Eupenerstr</b><br/><a href="https://www.studierendenwerk-aachen.de/Gastronomie/mensa-eupener-strasse-wochenplan.html" target="_blank" rel="noopener">Menu</a><br/><a href="https://www.google.de/maps/dir//Eupenerstrasse+70,+52066+Aachen" target="_blank" rel="noopener">Route</a>');
@@ -246,7 +248,7 @@ function success(pos) {
         map.removeLayer(marker);
 
     marker = L.circle([pos.coords.latitude, pos.coords.longitude], {
-        color: 'red',
+        color: 'blue',
         fillOpacity: 0.99,
         radius: 3
     }).addTo(map);
@@ -407,7 +409,23 @@ if(lat != undefined && lng != undefined)
     map.setView([lat, lng], map.getMaxZoom() - 1);
 }
 
-const route = getUrlParam('route');
-if(route)
-	routing(route, map);
+async function handleRoute(route) {
+	if(route){
+		const [start, end] = route.split('-');
+		if(!start || !end) return;
+		const result = await router.calculateRouteFromName(start, end);
+		for(let i = result.path.length-1; i > 0; i--) {
+			const line = L.polyline([result.path[i].pos, result.path[i-1].pos], {
+				color: '#ff0000',
+				weight: 3
+			}).addTo(map);
+		}
+		
+		navigator.geolocation.getCurrentPosition(success, error, options);
+        handlerId = navigator.geolocation.watchPosition(success, error, options);
+        track = true;
+	}
+}
+const param = getUrlParam('route');
+handleRoute(param);
 	

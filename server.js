@@ -50,13 +50,6 @@ app.get('/floor', (req, res) => {
 	res.sendFile(path.join(publicPath, 'floor.html'));
 });
 
-app.get('/qr', (req, res) => {
-	res.sendFile(path.join(publicPath, 'qr.html'));
-});
-
-app.get('/3d', (req, res) => {
-	res.sendFile(path.join(publicPath, '3d.html'));
-});
 
 server.listen(port, host, ()=>{
     console.log('✅ Server is running at https://' + host + ':' + port);

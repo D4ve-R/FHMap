@@ -1,4 +1,5 @@
-const wayPoints = [
+/*
+let wayPoints =[
 	{id: 0, pos: [50.76022313589829, 6.08319103717804], adj: [1]}, // D
 	{id: 1, pos: [50.760022927548526, 6.083132028579712], adj: [0, 2, 21]},
 	{id: 2, pos: [50.76007722142296, 6.082751154899598], adj: [1, 3]},
@@ -188,145 +189,23 @@ const wb = [
 	...fb.slice(2)
 ];
 
-function routing(route, map){
-	const routeOpts = {
-		color: '#0095ff',
-		weight: 5,
-	}
-	if(route) {
-		let result = null;
-		switch(route) {
-			case 'ed':
-			case 'de':
-				result = L.polyline(de, routeOpts).addTo(map);
-				break;
-			case 'wd':
-			case 'dw':
-				result = L.polyline(dw, routeOpts).addTo(map);
-				break;
-			case 'fd':
-			case 'df':
-				result = L.polyline(df, routeOpts).addTo(map);
-				break;
-			case 'gd':
-			case 'dg':
-				result = L.polyline(dg, routeOpts).addTo(map);
-				break;
-			case 'cd':
-			case 'dc':
-				result = L.polyline(dc, routeOpts).addTo(map);
-				break;
-			case 'dh':
-			case 'hd':
-				result = L.polyline(dh, routeOpts).addTo(map);
-				break;
-			case 'db':
-			case 'bd':
-				result = L.polyline(db, routeOpts).addTo(map);
-				break;
-			case 'eh':
-			case 'he':
-				result = L.polyline(eh, routeOpts).addTo(map);
-				break;
-			case 'eb':
-			case 'be':
-				result = L.polyline(eb, routeOpts).addTo(map);
-				break;
-			case 'ew':
-			case 'we':
-				result = L.polyline(ew, routeOpts).addTo(map);
-				break;
-			case 'ec':
-			case 'ce':
-				result = L.polyline(ec, routeOpts).addTo(map);
-				break;
-			case 'eg':
-			case 'ge':
-				result = L.polyline(eg, routeOpts).addTo(map);
-				break;
-			case 'ef':
-			case 'fe':
-				result = L.polyline(ef, routeOpts).addTo(map);
-				break;
-			case 'hg':
-			case 'gh':
-				result = L.polyline(hg, routeOpts).addTo(map);
-				break;
-			case 'hf':
-			case 'fh':
-				result = L.polyline(hf, routeOpts).addTo(map);
-				break;
-			case 'hw':
-			case 'wh':
-				result = L.polyline(hw, routeOpts).addTo(map);
-				break;
-			case 'hc':
-			case 'ch':
-				result = L.polyline(hc, routeOpts).addTo(map);
-				break;
-			case 'hb':
-			case 'bh':
-				result = L.polyline(hb, routeOpts).addTo(map);
-				break;
-			case 'gf':
-			case 'fg':
-				result = L.polyline(gf, routeOpts).addTo(map);
-				break;
-			case 'gw':
-			case 'wg':
-				result = L.polyline(gw, routeOpts).addTo(map);
-				break;
-			case 'gc':
-			case 'cg':
-				result = L.polyline(gc, routeOpts).addTo(map);
-				break;
-			case 'gb':
-			case 'bg':
-				result = L.polyline(gb, routeOpts).addTo(map);
-				break;
-			case 'fw':
-			case 'wf':
-				result = L.polyline(fw, routeOpts).addTo(map);
-				break;
-			case 'fc':
-			case 'cf':
-				result = L.polyline(fc, routeOpts).addTo(map);
-				break;
-			case 'fb':
-			case 'bf':
-				result = L.polyline(fb, routeOpts).addTo(map);
-				break;
-			case 'wc':
-			case 'cw':
-				result = L.polyline(wc, routeOpts).addTo(map);
-				break;
-			case 'wb':
-			case 'bw':
-				result = L.polyline(wb, routeOpts).addTo(map);
-				break;
-		}
-		if(result) {
-			map.fitBounds(result.getBounds());
-		}
-	}
-}
+*/
 
 function haversine(lat1, lon1, lat2, lon2) {
 	const R = 6371e3; // meters
-	const φ1 = lat1 * Math.PI/180; // φ, λ in radians
-	const φ2 = lat2 * Math.PI/180;
-	const Δφ = (lat2-lat1) * Math.PI/180;
-	const Δλ = (lon2-lon1) * Math.PI/180;
+	const p1 = lat1 * Math.PI/180; 
+	const p2 = lat2 * Math.PI/180;
+	const dp = (lat2-lat1) * Math.PI/180;
+	const dl = (lon2-lon1) * Math.PI/180;
 
-	const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-		Math.cos(φ1) * Math.cos(φ2) *
-		Math.sin(Δλ/2) * Math.sin(Δλ/2);
+	const a = Math.sin(dp/2) * Math.sin(dp/2) +
+		Math.cos(p1) * Math.cos(p2) *
+		Math.sin(dl/2) * Math.sin(dl/2);
 	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
 	const d = R * c; // in meters
 	return d;
 }
-
 
 class Edge {
 	constructor(start, end) {
@@ -373,20 +252,29 @@ class PriorityQueue {
 	}
 
 	sort() {
-		this._nodes.sort((a, b) => a.priority < b.priority);
+		this._nodes.sort((a, b) => a.priority < b.priority ? -1 : 1);
 	}
 
 	isEmpty() {
-		return !this._nodes.length;
+		return !this._nodes.length > 0;
 	}
 }
 
 class Graph {
+	nodes = [];
+	edges = [];
+	endPoints = {};
+
 	constructor(nodes) {
-		this.nodes = [];
-		this.edges = [];
+		this.init(nodes);
+	}
+
+	init(nodes){
 		for(let node of nodes) { 
 			this.nodes[node.id] = node;
+			if(node.adj.length < 2){
+				this.endPoints[node.name] = node;
+			}
 			node.adj.forEach(idx => {
 				const n = nodes[idx];
 				this.addEdge(node, n);
@@ -440,7 +328,7 @@ class Graph {
 		};
 	}
 
-	async astar(start, end, map) {
+	async astar(start, end) {
 		const dist = {};
 		const prev = {};
 		const Q = new PriorityQueue();
@@ -458,13 +346,6 @@ class Graph {
 			}
 			for(let edge of edges[u]) {
 				alt = dist[u] + edge.weight;
-
-				const line = L.polyline([edge.start.pos, edge.end.pos], {
-					color: '#00' + Math.floor(Math.random()* 0xf).toString(16)+'fff',
-					weight: 3
-				}).addTo(map);
-				await new Promise(resolve => setTimeout(resolve, 10));
-				//line.remove();
 
 				if(!dist[edge.end.id] || alt < dist[edge.end.id]) {
 					dist[edge.end.id] = alt;
@@ -523,5 +404,82 @@ class Graph {
 			});
 			*/
 		return closestPoint;
+	}
+}
+
+class Router {
+	routes = {};
+	graph = null;
+	loaded = false;
+	constructor(geoJSONUrl)
+	{
+		this.loadPointsFromGeoJSON(geoJSONUrl).then((wayPoints) => {
+			this.graph = new Graph(wayPoints);
+			this.loaded = true;
+		});
+	}
+
+	async loadPointsFromGeoJSON(url) {
+		const res = await fetch(url);
+		const data = await res.json();
+		const wayPoints = data.features.map((feature, i) => {
+			return {
+				id: feature.properties.id,
+				pos: feature.geometry.coordinates,
+				adj: feature.properties.adj,
+				name: feature.properties.name || ''
+			};
+		});
+		return wayPoints;
+	}
+
+	async checkLoaded() {
+		if (!this.loaded) {
+			await new Promise(resolve => setTimeout(resolve, 50));
+			await this.checkLoaded();
+		}
+	}
+
+	getRoutes() {
+		return this.routes;
+	}
+
+	async calculateRoute(start, end) {
+		return await this.graph.astar(start, end)
+	}
+
+	calculateAllRoutes() {
+		this.checkLoaded();
+		for (let start in graph.endPoints) {
+			for (let end in graph.endPoints) {
+				if (start !== end) {
+					this.calculateRoute(start, end).then((route) => {
+						this.routes[start.name + end.name] = route;
+					});
+				}
+			}
+		}
+		return this.routes;
+	}
+
+	async calculateRouteFromGps(start, end) {
+		await this.checkLoaded();
+		const startNode = this.graph.getClosestPoint(start);
+		const endNode = this.graph.getClosestPoint(end);
+		return await this.calculateRoute(startNode, endNode);
+	}
+
+	async calculateRouteFromId(start, end) {
+		await this.checkLoaded();
+		const startNode = this.graph.nodes[start];
+		const endNode = this.graph.nodes[end];
+		return await this.calculateRoute(startNode, endNode);
+	}
+
+	async calculateRouteFromName(start, end) {
+		await this.checkLoaded();
+		const startNode = this.graph.endPoints[start];
+		const endNode = this.graph.endPoints[end];
+		return await this.calculateRoute(startNode, endNode);
 	}
 }

@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-        <title>Campus WayPoints</title>
+        <title>Campus Data Explorer</title>
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
 
         <!-- Leaflet -->
@@ -44,6 +44,7 @@
 		<div id="content"></div>
 		<label for="start">Start: </label>
 		<select name="start" id="start">
+			<option value="Z">Start</option>
 			<option value="b">Gebäude B</option>
 			<option value="c">Gebäude C</option>
 			<option value="d">Gebäude D</option>
@@ -56,6 +57,7 @@
 		<br>
 		<label for="nav">Ziel: </label>
 		<select name="nav" id="nav">
+			<option value="Z">End</option>
 			<option value="b">Gebäude B</option>
 			<option value="c">Gebäude C</option>
 			<option value="d">Gebäude D</option>
@@ -70,7 +72,7 @@
 		<div class="container" id="map"></div>
 		<script>
 
-const minZoom = 14;
+const minZoom = 13;
 const maxZoom = 19;
 const zoom = 17;
 
@@ -88,6 +90,10 @@ const map = L.map('map', {
     layers: osm,
 });
 
+const graphGroup = L.layerGroup().addTo(map);
+const markers = L.layerGroup().addTo(map);
+const borders = L.layerGroup().addTo(map);
+
 fetch('data/campus.json').then(response => response.json()).then(async(data) => {
 	function drawGraph(nodes, map) {
 		const edges = new Set();
@@ -99,7 +105,7 @@ fetch('data/campus.json').then(response => response.json()).then(async(data) => 
 				L.polyline([node.pos, n.pos], {
 					color: '#00ff00',
 					weight: 3
-				}).addTo(map);
+				}).addTo(graphGroup);
 			});
 		});
 		nodes.forEach(node => {
@@ -108,7 +114,7 @@ fetch('data/campus.json').then(response => response.json()).then(async(data) => 
 				fillColor: '#0000ff',
 				fillOpacity: 0.9,
 				radius: 2
-			}).addTo(map).bindPopup("ID: "+node.id+"<br>Pos: "+node.pos+"<br>Adj: "+node.adj);
+			}).addTo(graphGroup).bindPopup("ID: "+node.id+"<br>Pos: "+node.pos+"<br>Adj: "+node.adj);
 		});
 	}
 	drawGraph(data, map);
@@ -130,7 +136,7 @@ fetch('data/campus.json').then(response => response.json()).then(async(data) => 
 				weight: 3
 		}).addTo(map);
 
-		const route = await graph.astar(node, data[15], map);
+		const route = await graph.astar(node, data[15]);
 		for(let i = route.path.length-1; i > 0; i--) {
 			L.polyline([route.path[i].pos, route.path[i-1].pos], {
 				color: '#ff0000',
@@ -141,6 +147,25 @@ fetch('data/campus.json').then(response => response.json()).then(async(data) => 
 	});
 
 });
+
+fetch('data/buildings.geojson').then(response => response.json()).then(data => {
+	const features = data.features.filter(f => f.properties.name.startsWith("Eupenerstr."));
+	for(let feature of features) {
+		const name = feature.properties.name;
+		const id = feature.properties.id;
+		const pos = feature.geometry.coordinates;
+		const marker = L.marker(pos).addTo(markers).bindPopup(name);
+		const bounds = feature.properties.boundsGeometry.coordinates;
+		const polygon = L.polygon(bounds).addTo(borders).bindPopup(name);
+	}
+});
+
+const layerControl = L.control.layers({"Map":osm}, {
+	"waypoints": graphGroup,
+	"markers": markers,
+	"borders": borders
+});
+map.addControl(layerControl);
 	
 		</script>
 	</body>

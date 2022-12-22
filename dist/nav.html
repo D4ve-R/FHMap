@@ -17,7 +17,9 @@
 
 			<script type="text/javascript" src="js/utils.js"></script>
 			<script type="text/javascript" src="js/map/routes.js"></script>
+			<script src="js/planner/show-bundle.js"></script>
 		<link rel="stylesheet" href="css/map.css" />
+		<link rel="stylesheet" href="css/floorplanner.css">
      
 		<style>
 
@@ -36,14 +38,28 @@
 				margin: 1rem auto;
 				border-radius: 0.5rem;
 				position: relative;
+				box-shadow: 0 0 0.3rem rgba(0,0,0,0.5);
+				overflow: hidden;
+			}
+
+			.navbar {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+				align-items: center;
+				width: 90%;
+				font-size: 1.2rem;
 			}
 		</style>
 	
 	</head>
 	<body>
 		<h1>Campus Navigator</h1>
+		<div class="navbar">
+			<div>
 		<label for="start">Start: </label>
 		<select name="start" id="start">
+			<option value="Z">Start</option>
 			<option value="b">Gebäude B</option>
 			<option value="c">Gebäude C</option>
 			<option value="d">Gebäude D</option>
@@ -53,9 +69,11 @@
 			<option value="h">Gebäude H</option>
 			<option value="w">Gebäude W</option>
 		</select>
-		<br>
+	</div>
+		<div>
 		<label for="nav">Ziel: </label>
 		<select name="nav" id="nav">
+			<option value="Z">End</option>
 			<option value="b">Gebäude B</option>
 			<option value="c">Gebäude C</option>
 			<option value="d">Gebäude D</option>
@@ -65,10 +83,15 @@
 			<option value="h">Gebäude H</option>
 			<option value="w">Gebäude W</option>
 		</select>
-		<br>
-		<button id="route">Map &raquo;</button>
+		</div>
+		
+		<button id="route">Route &raquo;</button>
+	</div>
 		<div class="container" id="map"></div>
-		<div class="container" id="content" style="display: none;"></div>
+		<div class="container" id="content" style="display: none;">
+			<div id="viewer" >
+			</div>
+		</div>
 		<script src="js/map/nav.js"></script>
 	</body>
 <html>
